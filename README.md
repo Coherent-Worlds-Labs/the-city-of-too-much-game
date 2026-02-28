@@ -42,7 +42,6 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
 - World-pack contract: [`worlds/README.md`](worlds/README.md)
 - Default world-pack: [`worlds/the-city-of-too-much.en.json`](worlds/the-city-of-too-much.en.json)
 - Gameplay shell: [`ui/index.html`](ui/index.html)
-- Timeline view: [`ui/timeline.html`](ui/timeline.html)
 - Core scripts:
   - `npm run check:bootstrap`
   - `npm run lint`

@@ -60,7 +60,6 @@ OPENROUTER_DEBUG=true
    - enact flow shows two loading stages
    - history and status fields update
 3. Trigger multiple turns until an outcome overlay appears.
-4. Open `ui/timeline.html` and confirm timeline entries are rendered.
 
 ## Troubleshooting
 

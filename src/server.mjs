@@ -160,11 +160,7 @@ const server = createServer(async (req, res) => {
       serveFile(res, resolve("ui/index.html"));
       return;
     }
-    if (pathname === "/timeline" || pathname === "/timeline.html") {
-      serveFile(res, resolve("ui/timeline.html"));
-      return;
-    }
-    if (pathname === "/styles.css" || pathname === "/main.js" || pathname === "/timeline.js") {
+    if (pathname === "/styles.css" || pathname === "/main.js") {
       serveFile(res, resolve(`ui${pathname}`));
       return;
     }
