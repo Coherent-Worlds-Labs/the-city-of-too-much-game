@@ -1,7 +1,8 @@
 ---
 id: "202602282312-84MBYD"
 title: "Add fullscreen scene mode with in-scene navigation and protocol-carnival overlay"
-status: "TODO"
+result_summary: "Scene can be expanded/collapsed fullscreen with full navigation and axis overlay."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T23:15:02.865Z"
   updated_by: "CODER"
   note: "Verified: scene can be expanded to fullscreen with navigation intact, fullscreen overlay includes Protocol-Carnival axis, and scene can be collapsed back via toggle or Esc; lint/tests pass."
-commit: null
-comments: []
+commit:
+  hash: "b94dd603af93182cac46d21942bc4d37a9c025e1"
+  message: "🚧 84MBYD ui: add fullscreen scene mode with overlay axis"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: fullscreen scene mode works with in-scene navigation controls, fullscreen Protocol-Carnival axis overlay, and reversible exit flow; lint/tests pass."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: scene can be expanded to fullscreen with navigation intact, fullscreen overlay includes Protocol-Carnival axis, and scene can be collapsed back via toggle or Esc; lint/tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T23:15:36.414Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: fullscreen scene mode works with in-scene navigation controls, fullscreen Protocol-Carnival axis overlay, and reversible exit flow; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T23:15:02.867Z"
+doc_updated_at: "2026-02-28T23:15:36.414Z"
 doc_updated_by: "CODER"
 description: "Implement a fullscreen toggle for the scene block. In fullscreen mode keep scene navigation controls available and render the Protocol-Carnival axis overlay on top of the image, with ability to exit fullscreen."
 id_source: "generated"
