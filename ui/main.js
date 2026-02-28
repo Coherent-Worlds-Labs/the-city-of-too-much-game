@@ -239,6 +239,26 @@ const renderStatus = () => {
   elements.turn.textContent = String(state.turn);
 };
 
+const setNeutralVisualState = () => {
+  state.axis = 0.5;
+  state.direction = "balanced";
+  state.mood = "Tense Balance";
+  state.stability = "High";
+};
+
+const applyVisualStateForSelectedTurn = (turnIndex) => {
+  if (!Number.isInteger(turnIndex) || turnIndex <= 0) {
+    setNeutralVisualState();
+    return;
+  }
+  const historicalTurn = state.history.find((entry) => entry.turnIndex === turnIndex);
+  if (!historicalTurn) {
+    setNeutralVisualState();
+    return;
+  }
+  hydrateFromTurn(historicalTurn);
+};
+
 const renderHistory = () => {
   const entries = [];
   if (state.initialImageUrl) {
@@ -283,9 +303,13 @@ const renderHistory = () => {
       }
       if (entry.key === "initial") {
         state.selectedViewType = "initial";
+        setNeutralVisualState();
       } else {
         state.selectedViewType = "timeline";
         state.selectedTimelineIndex = entry.timelineIndex ?? -1;
+        applyVisualStateForSelectedTurn(
+          state.timeline[state.selectedTimelineIndex]?.turnIndex ?? null
+        );
       }
       state.sceneImageUrl = entry.imageUrl ?? null;
       render();
@@ -406,10 +430,7 @@ const applyLoadedGameState = (payload) => {
   if (state.history.length > 0) {
     hydrateFromTurn(state.history.at(-1));
   } else {
-    state.axis = 0.5;
-    state.direction = "balanced";
-    state.mood = "Tense Balance";
-    state.stability = "High";
+    setNeutralVisualState();
   }
 
   if (state.timeline.length > 0) {
