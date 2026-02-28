@@ -1,7 +1,9 @@
 ---
 id: "202602282150-DJ1Y4Z"
 title: "Log full image-generation prompt without truncation"
-status: "TODO"
+result_summary: "Full image prompt is visible in debug logs at request time."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +20,13 @@ verification:
   updated_at: "2026-02-28T21:52:43.663Z"
   updated_by: "TESTER"
   note: "Image request debug logs now include the full prompt text."
-commit: null
-comments: []
+commit:
+  hash: "64c64b5121b10e36e5a63fdb2e9a164de8cca3f6"
+  message: "🚧 DJ1Y4Z code: log full image request prompt"
+comments:
+  -
+    author: "INTEGRATOR"
+    body: "Verified: Image-generation debug logging now prints the full request prompt text without truncation, while sanitized payload logging still protects against large base64 noise."
 events:
   -
     type: "verify"
@@ -27,9 +34,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Image request debug logs now include the full prompt text."
+  -
+    type: "status"
+    at: "2026-02-28T21:53:29.485Z"
+    author: "INTEGRATOR"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Image-generation debug logging now prints the full request prompt text without truncation, while sanitized payload logging still protects against large base64 noise."
 doc_version: 2
-doc_updated_at: "2026-02-28T21:52:43.666Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T21:53:29.485Z"
+doc_updated_by: "INTEGRATOR"
 description: "When image generation request is made in debug mode, print the full final prompt in logs while preserving base64 truncation for payload blobs."
 id_source: "generated"
 ---
