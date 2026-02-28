@@ -21,7 +21,6 @@ const state = {
 
 const elements = {
   title: document.getElementById("title"),
-  subtitle: document.getElementById("subtitle"),
   axisDot: document.getElementById("axis-dot"),
   scene: document.getElementById("scene"),
   loadingStage: document.getElementById("loading-stage"),
@@ -228,12 +227,6 @@ const renderMotifs = () => {
 };
 
 const renderStatus = () => {
-  elements.subtitle.textContent =
-    state.direction === "protocol"
-      ? "Leaning toward Protocol"
-      : state.direction === "carnival"
-        ? "Growing Carnival"
-        : "Tense Balance";
   elements.mood.textContent = state.mood;
   elements.stability.textContent = state.stability;
   elements.turn.textContent = String(state.turn);
