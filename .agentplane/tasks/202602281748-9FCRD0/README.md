@@ -1,7 +1,9 @@
 ---
 id: "202602281748-9FCRD0"
 title: "Fix OpenRouter image generation endpoint to chat/completions"
-status: "DOING"
+result_summary: "OpenRouter image endpoint mismatch fixed and verified."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +20,16 @@ verification:
   updated_at: "2026-02-28T17:50:15.440Z"
   updated_by: "TESTER"
   note: "OpenRouter image endpoint fix verified"
-commit: null
+commit:
+  hash: "c51f7483be0b6af60046ef4107791db7e6c8f7f9"
+  message: "✅ 9FCRD0 image: switch OpenRouter calls to chat/completions multimodal"
 comments:
   -
     author: "CODER"
     body: "Start: replacing image generation request path with OpenRouter chat/completions multimodal flow and updating parser/tests."
+  -
+    author: "INTEGRATOR"
+    body: "Verified: image generation now uses OpenRouter's supported chat/completions multimodal route, eliminating the 404 from images/generations and preserving runtime image parsing."
 events:
   -
     type: "status"
@@ -37,9 +44,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "OpenRouter image endpoint fix verified"
+  -
+    type: "status"
+    at: "2026-02-28T17:50:47.258Z"
+    author: "INTEGRATOR"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: image generation now uses OpenRouter's supported chat/completions multimodal route, eliminating the 404 from images/generations and preserving runtime image parsing."
 doc_version: 2
-doc_updated_at: "2026-02-28T17:50:15.441Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T17:50:47.258Z"
+doc_updated_by: "INTEGRATOR"
 description: "Replace unsupported /images/generations calls with OpenRouter-supported chat/completions image flow and update parser/tests."
 id_source: "generated"
 ---
