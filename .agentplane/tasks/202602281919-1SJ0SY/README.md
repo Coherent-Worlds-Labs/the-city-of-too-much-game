@@ -1,7 +1,8 @@
 ---
 id: "202602281919-1SJ0SY"
 title: "Overlay applied-card caption and image step arrows"
-status: "DOING"
+result_summary: "Scene overlay now supports direct step navigation with applied-card caption."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T19:21:58.134Z"
   updated_by: "CODER"
   note: "Verified: Added in-image applied-card caption and arrow step navigation; automated verification passed via node scripts/lint.mjs and node --test."
-commit: null
+commit:
+  hash: "138041ab61b7a9bea9b64df065bcb7d9b0ed631c"
+  message: "🚧 1SJ0SY ui: add in-scene step arrows and applied-card caption"
 comments:
   -
     author: "CODER"
     body: "Start: Implementing in-image step caption and left/right scene navigation controls with history-synced rendering and responsive styling."
+  -
+    author: "CODER"
+    body: "Verified: Added applied-card overlay text at scene bottom-left and in-image previous/next navigation arrows; lint and tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: Added in-image applied-card caption and arrow step navigation; automated verification passed via node scripts/lint.mjs and node --test."
+  -
+    type: "status"
+    at: "2026-02-28T19:23:02.751Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added applied-card overlay text at scene bottom-left and in-image previous/next navigation arrows; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T19:21:58.135Z"
+doc_updated_at: "2026-02-28T19:23:02.751Z"
 doc_updated_by: "CODER"
 description: "Show applied card text in scene bottom-left overlay and add left/right overlay arrow controls for previous/next step navigation directly on the image."
 id_source: "generated"
