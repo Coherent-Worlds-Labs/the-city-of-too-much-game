@@ -12,6 +12,7 @@ const requiredTopLevelFields = [
 ];
 
 const hasText = (value) => typeof value === "string" && value.trim().length > 0;
+const isEnglishLocale = (locale) => hasText(locale) && locale.trim().toLowerCase().startsWith("en");
 
 export const validateWorldPack = (candidate) => {
   const errors = [];
@@ -38,6 +39,8 @@ export const validateWorldPack = (candidate) => {
     errors.push("locale must be a non-empty string.");
   }
 
+  const enforceEnglishCards = isEnglishLocale(candidate.locale);
+
   if (!Array.isArray(candidate.cards)) {
     errors.push("cards must be an array.");
   } else {
@@ -60,7 +63,7 @@ export const validateWorldPack = (candidate) => {
       }
       if (!hasText(card.text)) {
         errors.push(`card ${card.id ?? "<unknown>"} has empty text.`);
-      } else if (CYRILLIC_RE.test(card.text)) {
+      } else if (enforceEnglishCards && CYRILLIC_RE.test(card.text)) {
         errors.push(`card ${card.id ?? "<unknown>"} contains non-English (Cyrillic) text.`);
       }
       if (!hasText(card.group)) {
