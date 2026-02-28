@@ -1,7 +1,8 @@
 ---
 id: "202602281813-2H3RJA"
 title: "Add true resume flow, explicit restart, and clickable timeline playback"
-status: "DOING"
+result_summary: "Refresh now resumes saved game; restart is explicit; history snapshots are playable from genesis to current."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T18:19:43.887Z"
   updated_by: "CODER"
   note: "Executed lint and full test suite after implementing resume-first startup, explicit restart, clickable genesis-to-current history playback, and SQLite seed-scene compatibility updates."
-commit: null
+commit:
+  hash: "da95f6ba8182ecb2eba4096fb55c7a5dc1944b5f"
+  message: "🚧 2H3RJA code: add resume-first startup restart and timeline playback"
 comments:
   -
     author: "CODER"
     body: "Start: implementing resume-first startup, explicit restart control, and clickable timeline history from genesis to current scene."
+  -
+    author: "CODER"
+    body: "Verified: implemented resume-first startup from persisted game state, explicit Restart for fresh run, clickable genesis-to-current history playback, and passed lint plus full tests."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Executed lint and full test suite after implementing resume-first startup, explicit restart, clickable genesis-to-current history playback, and SQLite seed-scene compatibility updates."
+  -
+    type: "status"
+    at: "2026-02-28T18:21:03.123Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: implemented resume-first startup from persisted game state, explicit Restart for fresh run, clickable genesis-to-current history playback, and passed lint plus full tests."
 doc_version: 2
-doc_updated_at: "2026-02-28T18:19:43.888Z"
+doc_updated_at: "2026-02-28T18:21:03.123Z"
 doc_updated_by: "CODER"
 description: "Prevent refresh from auto-starting a new seed generation, restore existing game state by saved gameId, provide explicit restart action, and allow clicking left history entries (genesis->current) to preview corresponding scene image."
 id_source: "generated"
