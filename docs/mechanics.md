@@ -3,6 +3,10 @@
 This document is the implementation-grounded mechanics specification for **The City of Too Much**.
 It combines design intent from the SOW materials (`sow/*`) with the current runtime behavior in the codebase.
 
+Formal counterpart:
+
+- Mathematical model: `docs/math-model.md`
+
 ## 1. Core Design Model
 
 The game models a city evolving between two semantic poles:
@@ -236,4 +240,3 @@ Use this checklist to validate mechanics after changes:
 4. Image prompt includes anchors + continuity + evolution trail.
 5. Timeline contains Genesis and all turns.
 6. Closed worlds remain viewable without blocking overlays.
-
