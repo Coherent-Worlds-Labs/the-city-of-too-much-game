@@ -1,7 +1,8 @@
 ---
 id: "202602282317-QQTV80"
 title: "Center scene loading message overlay"
-status: "TODO"
+result_summary: "Scene loading message now renders centered in the image block."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T23:18:50.663Z"
   updated_by: "CODER"
   note: "Verified: 'Rendering the new reality...' is now centered in the scene block with spinner preserved; lint and tests pass."
-commit: null
-comments: []
+commit:
+  hash: "812cfbe8d57d30ec94e0385ff18861dd5baa8de9"
+  message: "🚧 QQTV80 ui: center scene loading message overlay"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: loading message is centered inside the scene block during generation while spinner and visibility behavior remain unchanged; lint and tests pass."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: 'Rendering the new reality...' is now centered in the scene block with spinner preserved; lint and tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T23:19:18.919Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: loading message is centered inside the scene block during generation while spinner and visibility behavior remain unchanged; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T23:18:50.664Z"
+doc_updated_at: "2026-02-28T23:19:18.919Z"
 doc_updated_by: "CODER"
 description: "Move the scene loading message ('Rendering the new reality...') to the center of the image block while preserving spinner and visibility behavior."
 id_source: "generated"
