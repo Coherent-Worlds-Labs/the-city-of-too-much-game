@@ -23,6 +23,9 @@ const elements = {
   title: document.getElementById("title"),
   axisDot: document.getElementById("axis-dot"),
   scene: document.getElementById("scene"),
+  sceneStepCard: document.getElementById("scene-step-card"),
+  scenePrevBtn: document.getElementById("scene-prev-btn"),
+  sceneNextBtn: document.getElementById("scene-next-btn"),
   loadingStage: document.getElementById("loading-stage"),
   motifList: document.getElementById("motif-list"),
   historyList: document.getElementById("history-list"),
@@ -239,6 +242,95 @@ const setNeutralVisualState = () => {
   state.stability = "High";
 };
 
+const getSceneEntries = () => {
+  const entries = [];
+  if (state.initialImageUrl) {
+    entries.push({
+      key: "initial",
+      type: "initial",
+      title: "Initial state",
+      text: "World baseline",
+      cardText: "Initial state",
+      imageUrl: state.initialImageUrl,
+      turnIndex: 0
+    });
+  }
+  state.timeline.forEach((entry, index) => {
+    entries.push({
+      key: `timeline-${index}`,
+      type: "timeline",
+      timelineIndex: index,
+      title: entry.turnIndex === 0 ? "Genesis" : `Turn ${entry.turnIndex}`,
+      text: entry.cardText ?? (entry.turnIndex === 0 ? "Seed scene" : "Scene update"),
+      cardText: entry.cardText ?? (entry.turnIndex === 0 ? "Seed scene" : "Scene update"),
+      imageUrl: entry.imageUrl ?? null,
+      turnIndex: entry.turnIndex ?? null
+    });
+  });
+  return entries;
+};
+
+const getSelectedSceneEntry = (entries = getSceneEntries()) => {
+  if (entries.length === 0) {
+    return null;
+  }
+  if (state.selectedViewType === "initial") {
+    return entries.find((entry) => entry.key === "initial") ?? entries[0];
+  }
+  if (state.selectedViewType === "timeline" && state.selectedTimelineIndex >= 0) {
+    return entries.find((entry) => entry.key === `timeline-${state.selectedTimelineIndex}`) ?? entries.at(-1);
+  }
+  return entries.at(-1);
+};
+
+const applySelectedSceneEntry = (entry) => {
+  if (!entry) {
+    return;
+  }
+  if (entry.type === "initial") {
+    state.selectedViewType = "initial";
+    state.selectedTimelineIndex = -1;
+    setNeutralVisualState();
+  } else {
+    state.selectedViewType = "timeline";
+    state.selectedTimelineIndex = entry.timelineIndex ?? -1;
+    applyVisualStateForSelectedTurn(entry.turnIndex ?? null);
+  }
+  state.sceneImageUrl = entry.imageUrl ?? null;
+};
+
+const moveSelectedSceneEntry = (delta) => {
+  const entries = getSceneEntries();
+  if (entries.length === 0) {
+    return;
+  }
+  const selected = getSelectedSceneEntry(entries);
+  const selectedIndex = selected ? entries.findIndex((entry) => entry.key === selected.key) : entries.length - 1;
+  const nextIndex = Math.max(0, Math.min(entries.length - 1, selectedIndex + delta));
+  if (nextIndex === selectedIndex) {
+    return;
+  }
+  applySelectedSceneEntry(entries[nextIndex]);
+  render();
+};
+
+const renderSceneStepOverlay = () => {
+  const entries = getSceneEntries();
+  const selected = getSelectedSceneEntry(entries);
+  const selectedIndex = selected ? entries.findIndex((entry) => entry.key === selected.key) : -1;
+
+  if (!selected) {
+    elements.sceneStepCard.textContent = "Applied card: n/a";
+    elements.scenePrevBtn.disabled = true;
+    elements.sceneNextBtn.disabled = true;
+    return;
+  }
+
+  elements.sceneStepCard.textContent = `Applied card: ${selected.cardText}`;
+  elements.scenePrevBtn.disabled = selectedIndex <= 0;
+  elements.sceneNextBtn.disabled = selectedIndex < 0 || selectedIndex >= entries.length - 1;
+};
+
 const applyVisualStateForSelectedTurn = (turnIndex) => {
   if (!Number.isInteger(turnIndex) || turnIndex <= 0) {
     setNeutralVisualState();
@@ -253,26 +345,13 @@ const applyVisualStateForSelectedTurn = (turnIndex) => {
 };
 
 const renderHistory = () => {
-  const entries = [];
-  if (state.initialImageUrl) {
-    entries.push({
-      key: "initial",
-      title: "Initial state",
-      text: "World baseline",
-      imageUrl: state.initialImageUrl,
-      active: state.selectedViewType === "initial"
-    });
-  }
-  entries.push(
-    ...state.timeline.map((entry, index) => ({
-      key: `timeline-${index}`,
-      timelineIndex: index,
-      title: entry.turnIndex === 0 ? "Genesis" : `Turn ${entry.turnIndex}`,
-      text: entry.cardText ?? (entry.turnIndex === 0 ? "Seed scene" : "Scene update"),
-      imageUrl: entry.imageUrl ?? null,
-      active: state.selectedViewType === "timeline" && state.selectedTimelineIndex === index
-    }))
-  );
+  const entries = getSceneEntries().map((entry) => ({
+    ...entry,
+    active:
+      entry.type === "initial"
+        ? state.selectedViewType === "initial"
+        : state.selectedViewType === "timeline" && state.selectedTimelineIndex === entry.timelineIndex
+  }));
 
   if (entries.length === 0) {
     elements.historyList.innerHTML = "<li class=\"history-empty\">No snapshots yet.</li>";
@@ -294,17 +373,7 @@ const renderHistory = () => {
       if (!entry) {
         return;
       }
-      if (entry.key === "initial") {
-        state.selectedViewType = "initial";
-        setNeutralVisualState();
-      } else {
-        state.selectedViewType = "timeline";
-        state.selectedTimelineIndex = entry.timelineIndex ?? -1;
-        applyVisualStateForSelectedTurn(
-          state.timeline[state.selectedTimelineIndex]?.turnIndex ?? null
-        );
-      }
-      state.sceneImageUrl = entry.imageUrl ?? null;
+      applySelectedSceneEntry(entry);
       render();
     });
   });
@@ -383,6 +452,7 @@ const render = () => {
   elements.title.textContent = state.worldTitle;
   renderIndicator();
   renderScene();
+  renderSceneStepOverlay();
   renderMotifs();
   renderStatus();
   renderHistory();
@@ -568,6 +638,12 @@ elements.restartBtn.addEventListener("click", () => {
 });
 elements.headerRestartBtn.addEventListener("click", () => {
   void restart();
+});
+elements.scenePrevBtn.addEventListener("click", () => {
+  moveSelectedSceneEntry(-1);
+});
+elements.sceneNextBtn.addEventListener("click", () => {
+  moveSelectedSceneEntry(1);
 });
 
 void init();
