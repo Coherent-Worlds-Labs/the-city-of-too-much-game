@@ -1,7 +1,8 @@
 ---
 id: "202602282306-88ZCC9"
 title: "Allow non-English card text for non-en locales in world-pack validation"
-status: "TODO"
+result_summary: "Locale-aware validation now supports Russian world packs without weakening English guardrails."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T23:08:26.411Z"
   updated_by: "CODER"
   note: "Verified: validator now rejects Cyrillic only for en locales and accepts ru world-pack text; lint and tests pass; ru pack loads via WORLD_PACK_FILE."
-commit: null
-comments: []
+commit:
+  hash: "58b27e1108090241668948d3d1c4fba08ef3b7c3"
+  message: "🚧 88ZCC9 code: make world-pack cyrillic validation locale-aware"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: world-pack validation is now locale-aware; en locales still reject Cyrillic card text while ru packs are accepted; tests updated and passing; ru world pack loads via WORLD_PACK_FILE."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: validator now rejects Cyrillic only for en locales and accepts ru world-pack text; lint and tests pass; ru pack loads via WORLD_PACK_FILE."
+  -
+    type: "status"
+    at: "2026-02-28T23:08:55.696Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: world-pack validation is now locale-aware; en locales still reject Cyrillic card text while ru packs are accepted; tests updated and passing; ru world pack loads via WORLD_PACK_FILE."
 doc_version: 2
-doc_updated_at: "2026-02-28T23:08:26.413Z"
+doc_updated_at: "2026-02-28T23:08:55.696Z"
 doc_updated_by: "CODER"
 description: "Fix world-pack validator so Cyrillic card text is allowed for locale=ru while keeping English-only guard for locale=en packs."
 id_source: "generated"
