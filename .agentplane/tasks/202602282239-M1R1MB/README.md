@@ -1,7 +1,9 @@
 ---
 id: "202602282239-M1R1MB"
 title: "Harden history list auto-scroll on scene arrow navigation"
-status: "TODO"
+result_summary: "Active history step remains visible during left/right navigation without moving the main page."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +20,13 @@ verification:
   updated_at: "2026-02-28T22:41:22.582Z"
   updated_by: "TESTER"
   note: "Arrow navigation now reliably keeps active history item in visible list area."
-commit: null
-comments: []
+commit:
+  hash: "164afcaf53570b2c5374d3c3e613776d7afec74b"
+  message: "🚧 M1R1MB ui: harden history visibility on arrow navigation"
+comments:
+  -
+    author: "INTEGRATOR"
+    body: "Verified: Scene arrow navigation now enforces History list visibility for the active step via container-local scrolling only, with no page-level auto-scroll behavior."
 events:
   -
     type: "verify"
@@ -27,9 +34,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Arrow navigation now reliably keeps active history item in visible list area."
+  -
+    type: "status"
+    at: "2026-02-28T22:42:01.924Z"
+    author: "INTEGRATOR"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Scene arrow navigation now enforces History list visibility for the active step via container-local scrolling only, with no page-level auto-scroll behavior."
 doc_version: 2
-doc_updated_at: "2026-02-28T22:41:22.584Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T22:42:01.924Z"
+doc_updated_by: "INTEGRATOR"
 description: "Ensure left/right step navigation always scrolls History container so active item is visible, without any main-page scroll movement."
 id_source: "generated"
 ---
