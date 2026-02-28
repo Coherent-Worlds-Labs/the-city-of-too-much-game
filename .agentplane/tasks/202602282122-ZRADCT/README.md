@@ -1,7 +1,9 @@
 ---
 id: "202602282122-ZRADCT"
 title: "Constrain history auto-focus to panel-only scrolling"
-status: "TODO"
+result_summary: "History visibility sync is panel-local and page-level scrolling is locked."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +20,13 @@ verification:
   updated_at: "2026-02-28T21:24:31.009Z"
   updated_by: "TESTER"
   note: "Panel-only history scroll behavior implemented; no page scroll jumps."
-commit: null
-comments: []
+commit:
+  hash: "a7227063a8b15d9853d97d8c8d48def4b1b34da4"
+  message: "🚧 ZRADCT ui: keep history auto-focus inside panel"
+comments:
+  -
+    author: "INTEGRATOR"
+    body: "Verified: History auto-focus now scrolls only within the History list container, and the main page no longer jumps during scene arrow navigation."
 events:
   -
     type: "verify"
@@ -27,9 +34,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Panel-only history scroll behavior implemented; no page scroll jumps."
+  -
+    type: "status"
+    at: "2026-02-28T21:25:01.989Z"
+    author: "INTEGRATOR"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: History auto-focus now scrolls only within the History list container, and the main page no longer jumps during scene arrow navigation."
 doc_version: 2
-doc_updated_at: "2026-02-28T21:24:31.010Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T21:25:01.989Z"
+doc_updated_by: "INTEGRATOR"
 description: "When navigating scene steps with left/right arrows, keep the active History entry visible by scrolling only the History list container. Do not scroll the main page."
 id_source: "generated"
 ---
