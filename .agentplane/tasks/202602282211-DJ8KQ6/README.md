@@ -1,7 +1,9 @@
 ---
 id: "202602282211-DJ8KQ6"
 title: "Write detailed gameplay mechanics documentation from implementation and SOW"
-status: "TODO"
+result_summary: "Repository now contains docs/mechanics.md with full gameplay mechanics and README linkage."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "DOCS"
 depends_on: []
@@ -18,8 +20,13 @@ verification:
   updated_at: "2026-02-28T22:13:39.563Z"
   updated_by: "TESTER"
   note: "Detailed mechanics documentation added and linked from README."
-commit: null
-comments: []
+commit:
+  hash: "8903ec6879e5aaf62011916b922514678dcfea29"
+  message: "🚧 DJ8KQ6 docs: add full gameplay mechanics reference"
+comments:
+  -
+    author: "INTEGRATOR"
+    body: "Verified: Added a detailed mechanics reference derived from implementation and SOW intent, and linked it from the root README for discoverability."
 events:
   -
     type: "verify"
@@ -27,9 +34,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Detailed mechanics documentation added and linked from README."
+  -
+    type: "status"
+    at: "2026-02-28T22:14:09.949Z"
+    author: "INTEGRATOR"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Added a detailed mechanics reference derived from implementation and SOW intent, and linked it from the root README for discoverability."
 doc_version: 2
-doc_updated_at: "2026-02-28T22:13:39.564Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T22:14:09.949Z"
+doc_updated_by: "INTEGRATOR"
 description: "Create a comprehensive English mechanics document in docs/ based on implemented runtime behavior and SOW design intent, and link it from root README."
 id_source: "generated"
 ---
