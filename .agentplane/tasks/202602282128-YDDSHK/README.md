@@ -1,7 +1,9 @@
 ---
 id: "202602282128-YDDSHK"
 title: "Restore manual page scrollbar while keeping history auto-scroll local"
-status: "TODO"
+result_summary: "Page scrollbar is available again; no automatic page scrolling from step navigation."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +20,13 @@ verification:
   updated_at: "2026-02-28T21:29:41.066Z"
   updated_by: "TESTER"
   note: "Manual page scrollbar restored; no automatic page scrolling in history navigation."
-commit: null
-comments: []
+commit:
+  hash: "94894a6a53088f567f019d871fdcdcec969db6a2"
+  message: "🚧 YDDSHK ui: restore manual full-page scrollbar"
+comments:
+  -
+    author: "INTEGRATOR"
+    body: "Verified: Re-enabled full-page vertical scrollbar for manual use while keeping navigation auto-focus scoped to the History panel only."
 events:
   -
     type: "verify"
@@ -27,9 +34,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Manual page scrollbar restored; no automatic page scrolling in history navigation."
+  -
+    type: "status"
+    at: "2026-02-28T21:30:11.003Z"
+    author: "INTEGRATOR"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Re-enabled full-page vertical scrollbar for manual use while keeping navigation auto-focus scoped to the History panel only."
 doc_version: 2
-doc_updated_at: "2026-02-28T21:29:41.067Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T21:30:11.003Z"
+doc_updated_by: "INTEGRATOR"
 description: "Bring back full-page vertical scrollbar for manual use. Keep step navigation auto-focus restricted to History list container only."
 id_source: "generated"
 ---
