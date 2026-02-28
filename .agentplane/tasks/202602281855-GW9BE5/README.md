@@ -1,7 +1,8 @@
 ---
 id: "202602281855-GW9BE5"
 title: "Sync protocol-carnival indicator with selected history snapshot"
-status: "DOING"
+result_summary: "Selecting a history snapshot now also applies its historical Protocol-Carnival indicator state."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T18:56:31.816Z"
   updated_by: "CODER"
   note: "Synchronized Protocol-Carnival indicator with selected history snapshots (including neutral baseline for Initial/Genesis); lint and tests pass."
-commit: null
+commit:
+  hash: "257a1ccb5c92e317cd5c04080f295738222c7fea"
+  message: "🚧 GW9BE5 code: sync axis indicator with history selection"
 comments:
   -
     author: "CODER"
     body: "Start: synchronizing Protocol-Carnival indicator and status labels with selected history snapshot."
+  -
+    author: "CODER"
+    body: "Verified: history navigation now updates Protocol-Carnival indicator and status labels to historical values for selected snapshots; lint and tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Synchronized Protocol-Carnival indicator with selected history snapshots (including neutral baseline for Initial/Genesis); lint and tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T18:57:26.602Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: history navigation now updates Protocol-Carnival indicator and status labels to historical values for selected snapshots; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T18:56:31.822Z"
+doc_updated_at: "2026-02-28T18:57:26.602Z"
 doc_updated_by: "CODER"
 description: "When user navigates history snapshots, update the Protocol-Carnival indicator and derived status labels to the historical state of that selected snapshot."
 id_source: "generated"
