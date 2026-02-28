@@ -183,10 +183,14 @@ const renderScene = () => {
   if (!state.sceneImageUrl) {
     elements.scene.classList.remove("has-image");
     elements.scene.style.setProperty("--scene-image-url", "none");
+    document.body.classList.remove("has-scene-background");
+    document.body.style.setProperty("--app-bg-image", "none");
     state.scenePanImageKey = null;
     return;
   }
 
+  document.body.classList.add("has-scene-background");
+  document.body.style.setProperty("--app-bg-image", `url(${JSON.stringify(state.sceneImageUrl)})`);
   elements.scene.classList.add("has-image");
   if (state.scenePanImageKey !== state.sceneImageUrl) {
     configureScenePanMotion(state.sceneImageUrl);

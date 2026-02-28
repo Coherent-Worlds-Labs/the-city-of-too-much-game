@@ -15,6 +15,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  position: relative;
   font-family: "Aptos", "Bahnschrift", "Trebuchet MS", sans-serif;
   color: var(--ink);
   background:
@@ -23,12 +24,33 @@ body {
     linear-gradient(130deg, #ece8de 0%, #f5f2eb 55%, #ece6db 100%);
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: var(--app-bg-image, none);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: grayscale(1) saturate(0.1) brightness(1.2) contrast(0.9);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 350ms ease;
+}
+
+body.has-scene-background::before {
+  opacity: 0.22;
+}
+
 .app {
   width: min(1240px, 100%);
   margin: 0 auto;
   padding: 20px;
   display: grid;
   gap: 14px;
+  position: relative;
+  z-index: 1;
 }
 
 .header {
@@ -114,7 +136,7 @@ h1 {
   --pan-scale-start: 1.08;
   --pan-scale-end: 1.14;
   --pan-duration: 22000ms;
-  min-height: 330px;
+  min-height: 380px;
   border-radius: 18px;
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
