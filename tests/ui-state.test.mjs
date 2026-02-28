@@ -1,6 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createUiState, drawHand, applyCardToUiState } from "../src/app/ui-state.mjs";
+import {
+  createUiState,
+  drawHand,
+  applyCardToUiState,
+  evaluateUiOutcome,
+  createTimelineEntry
+} from "../src/app/ui-state.mjs";
 import { loadDefaultWorldPack } from "../src/infra/world-pack-loader.mjs";
 
 test("drawHand returns deterministic card slices", () => {
@@ -28,4 +34,35 @@ test("applyCardToUiState updates turn and direction", () => {
   assert.equal(state.axis > 0.5, true);
   assert.equal(state.direction, "carnival");
   assert.equal(state.history.length, 1);
+});
+
+test("evaluateUiOutcome detects collapse and survival", () => {
+  const collapsed = evaluateUiOutcome({
+    axis: 0.04,
+    stability: "Low",
+    turn: 2
+  });
+  assert.equal(collapsed, "protocol-collapse");
+
+  const survived = evaluateUiOutcome({
+    axis: 0.52,
+    stability: "High",
+    turn: 12
+  });
+  assert.equal(survived, "survived");
+});
+
+test("createTimelineEntry captures card context", () => {
+  const entry = createTimelineEntry(
+    {
+      turn: 3,
+      axis: 0.63,
+      direction: "carnival",
+      mood: "Avian Influence Rising",
+      stability: "High"
+    },
+    { text: "Pigeons are issued official identification tokens." }
+  );
+  assert.equal(entry.turn, 3);
+  assert.equal(entry.cardText.includes("Pigeons"), true);
 });

@@ -1,10 +1,17 @@
-import { applyCardToUiState, createUiState, drawHand } from "../src/app/ui-state.mjs";
+import {
+  applyCardToUiState,
+  createTimelineEntry,
+  createUiState,
+  drawHand,
+  evaluateUiOutcome
+} from "../src/app/ui-state.mjs";
 
 const worldPackPath = "../worlds/the-city-of-too-much.en.json";
 const state = {
   worldPack: null,
   ui: null,
-  selectedCard: null
+  selectedCard: null,
+  outcome: "active"
 };
 
 const elements = {
@@ -19,10 +26,33 @@ const elements = {
   enactBtn: document.getElementById("enact-btn"),
   mood: document.getElementById("mood"),
   stability: document.getElementById("stability"),
-  turn: document.getElementById("turn")
+  turn: document.getElementById("turn"),
+  overlay: document.getElementById("outcome-overlay"),
+  outcomeTitle: document.getElementById("outcome-title"),
+  outcomeText: document.getElementById("outcome-text"),
+  restartBtn: document.getElementById("restart-btn")
 };
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const timelineStorageKey = "city-too-much.timeline";
+
+const persistTimeline = (entry) => {
+  try {
+    const current = JSON.parse(localStorage.getItem(timelineStorageKey) ?? "[]");
+    current.push(entry);
+    localStorage.setItem(timelineStorageKey, JSON.stringify(current));
+  } catch {
+    // Keep gameplay responsive even when storage is unavailable.
+  }
+};
+
+const clearTimeline = () => {
+  try {
+    localStorage.removeItem(timelineStorageKey);
+  } catch {
+    // no-op
+  }
+};
 
 const renderIndicator = () => {
   const axisPercent = state.ui.axis * 100;
@@ -102,6 +132,35 @@ const render = () => {
   renderCards();
 };
 
+const renderOutcomeOverlay = () => {
+  if (state.outcome === "active") {
+    elements.overlay.classList.add("hidden");
+    return;
+  }
+  const map = {
+    "protocol-collapse": {
+      title: "Protocol Collapse",
+      text: "The city became too rigid. Nothing unpredictable remains."
+    },
+    "carnival-collapse": {
+      title: "Carnival Collapse",
+      text: "Meaning dissolved into excess. The city can no longer continue."
+    },
+    "incoherence-collapse": {
+      title: "Incoherence Collapse",
+      text: "Contradictions overwhelmed coherence and the city fragmented."
+    },
+    survived: {
+      title: "The City Survives",
+      text: "Not perfect and not broken. The city remains alive."
+    }
+  };
+  const content = map[state.outcome];
+  elements.outcomeTitle.textContent = content.title;
+  elements.outcomeText.textContent = content.text;
+  elements.overlay.classList.remove("hidden");
+};
+
 const enactSelectedCard = async () => {
   if (!state.selectedCard) {
     return;
@@ -114,26 +173,45 @@ const enactSelectedCard = async () => {
   await wait(850);
 
   state.ui = applyCardToUiState(state.ui, state.selectedCard);
+  state.outcome = evaluateUiOutcome(state.ui);
+  persistTimeline(createTimelineEntry(state.ui, state.selectedCard));
   state.ui = drawHand(state.ui, state.worldPack, 3);
   state.selectedCard = null;
 
   elements.scene.classList.add("shift");
   render();
+  renderOutcomeOverlay();
   await wait(380);
   elements.scene.classList.remove("shift");
   elements.loadingStage.classList.add("hidden");
+  if (state.outcome !== "active") {
+    elements.enactBtn.disabled = true;
+  }
+};
+
+const restart = () => {
+  clearTimeline();
+  state.ui = drawHand(createUiState(state.worldPack), state.worldPack, 3);
+  state.selectedCard = null;
+  state.outcome = "active";
+  elements.enactBtn.disabled = true;
+  render();
+  renderOutcomeOverlay();
 };
 
 const init = async () => {
   const response = await fetch(worldPackPath);
   const worldPack = await response.json();
   state.worldPack = worldPack;
+  clearTimeline();
   state.ui = drawHand(createUiState(worldPack), worldPack, 3);
   render();
+  renderOutcomeOverlay();
 };
 
 elements.enactBtn.addEventListener("click", () => {
   void enactSelectedCard();
 });
+elements.restartBtn.addEventListener("click", restart);
 
 void init();

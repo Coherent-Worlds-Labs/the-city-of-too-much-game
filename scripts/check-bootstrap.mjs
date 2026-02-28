@@ -10,7 +10,8 @@ const requiredPaths = [
   "src/domain",
   "src/infra",
   "worlds/the-city-of-too-much.en.json",
-  "ui/index.html"
+  "ui/index.html",
+  "ui/timeline.html"
 ];
 
 let failed = false;

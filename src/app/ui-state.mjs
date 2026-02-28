@@ -81,3 +81,31 @@ export const applyCardToUiState = (state, card) => {
     history: [{ turn: state.turn + 1, card }, ...state.history]
   };
 };
+
+export const evaluateUiOutcome = (
+  state,
+  { epsilon = 0.12, targetTurnsForSurvival = 12, lowStabilityCutoff = 0.2 } = {}
+) => {
+  if (state.axis <= epsilon) {
+    return "protocol-collapse";
+  }
+  if (state.axis >= 1 - epsilon) {
+    return "carnival-collapse";
+  }
+  if (state.stability === "Low" && Math.abs(state.axis - 0.5) >= lowStabilityCutoff) {
+    return "incoherence-collapse";
+  }
+  if (state.turn >= targetTurnsForSurvival) {
+    return "survived";
+  }
+  return "active";
+};
+
+export const createTimelineEntry = (state, card) => ({
+  turn: state.turn,
+  axis: state.axis,
+  direction: state.direction,
+  mood: state.mood,
+  stability: state.stability,
+  cardText: card.text
+});
