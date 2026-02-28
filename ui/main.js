@@ -44,6 +44,13 @@ const elements = {
 const loadingStages = ["Interpreting the city...", "Rendering the new reality..."];
 const bootstrapStage = "Preparing the first city snapshot...";
 const activeGameStorageKey = "city-too-much.active-game";
+const pendingTurnStorageKey = "city-too-much.pending-turn";
+const pendingStageLabel = "Rendering the new reality...";
+const pendingTurnMaxAgeMs = 120_000;
+const pendingPollIntervalMs = 1_800;
+const pendingPollAttempts = 40;
+
+let pendingRecoveryActive = false;
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -114,6 +121,54 @@ const readPersistedGameId = () => {
   }
 };
 
+const persistPendingTurn = ({ gameId, expectedTurn, cardId }) => {
+  try {
+    localStorage.setItem(
+      pendingTurnStorageKey,
+      JSON.stringify({
+        gameId,
+        expectedTurn,
+        cardId,
+        startedAt: Date.now()
+      })
+    );
+  } catch {
+    // ignore local storage errors
+  }
+};
+
+const clearPendingTurn = () => {
+  try {
+    localStorage.removeItem(pendingTurnStorageKey);
+  } catch {
+    // ignore local storage errors
+  }
+};
+
+const readPendingTurn = () => {
+  try {
+    const raw = localStorage.getItem(pendingTurnStorageKey);
+    if (!raw) {
+      return null;
+    }
+    const parsed = JSON.parse(raw);
+    if (
+      !parsed ||
+      typeof parsed !== "object" ||
+      typeof parsed.gameId !== "string" ||
+      !Number.isInteger(parsed.expectedTurn) ||
+      !Number.isInteger(parsed.startedAt)
+    ) {
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+};
+
+const isPendingMarkerFresh = (marker) => Date.now() - marker.startedAt <= pendingTurnMaxAgeMs;
+
 const normalizeOutcome = (status) => {
   if (!status || status === "active") {
     return "active";
@@ -125,6 +180,17 @@ const normalizeOutcome = (status) => {
     return status;
   }
   return "active";
+};
+
+const showProcessingStage = (text) => {
+  state.isProcessing = true;
+  elements.loadingStage.classList.remove("hidden");
+  elements.loadingStage.textContent = text;
+};
+
+const hideProcessingStage = () => {
+  state.isProcessing = false;
+  elements.loadingStage.classList.add("hidden");
 };
 
 const renderIndicator = () => {
@@ -530,6 +596,67 @@ const applyLoadedGameState = (payload) => {
   persistGameId();
 };
 
+const startPendingRecoveryLoop = (marker) => {
+  if (pendingRecoveryActive) {
+    return;
+  }
+  pendingRecoveryActive = true;
+  void (async () => {
+    try {
+      for (let attempt = 0; attempt < pendingPollAttempts; attempt += 1) {
+        await wait(pendingPollIntervalMs);
+        const latestMarker = readPendingTurn();
+        if (!latestMarker || latestMarker.gameId !== state.gameId) {
+          break;
+        }
+        if (!isPendingMarkerFresh(latestMarker)) {
+          clearPendingTurn();
+          break;
+        }
+
+        try {
+          const loaded = await api(`/api/games/${state.gameId}/state`);
+          applyLoadedGameState(loaded);
+          if (state.turn > latestMarker.expectedTurn || state.outcome !== "active") {
+            clearPendingTurn();
+            hideProcessingStage();
+            render();
+            return;
+          }
+          showProcessingStage(pendingStageLabel);
+          render();
+        } catch {
+          // tolerate transient polling failures and retry
+        }
+      }
+    } finally {
+      pendingRecoveryActive = false;
+      clearPendingTurn();
+      hideProcessingStage();
+      render();
+    }
+  })();
+};
+
+const recoverPendingGenerationState = () => {
+  const marker = readPendingTurn();
+  if (!marker) {
+    return false;
+  }
+  if (!state.gameId || marker.gameId !== state.gameId || !isPendingMarkerFresh(marker)) {
+    clearPendingTurn();
+    return false;
+  }
+  if (state.turn > marker.expectedTurn || state.outcome !== "active") {
+    clearPendingTurn();
+    return false;
+  }
+
+  showProcessingStage(pendingStageLabel);
+  startPendingRecoveryLoop(marker);
+  return true;
+};
+
 const createGame = async () => {
   const created = await api("/api/games", {
     method: "POST",
@@ -551,10 +678,13 @@ const enactSelectedCard = async () => {
   if (!state.selectedCardId || !state.gameId || state.outcome !== "active") {
     return;
   }
-  state.isProcessing = true;
+  persistPendingTurn({
+    gameId: state.gameId,
+    expectedTurn: state.turn,
+    cardId: state.selectedCardId
+  });
+  showProcessingStage(loadingStages[0]);
   elements.enactBtn.disabled = true;
-  elements.loadingStage.classList.remove("hidden");
-  elements.loadingStage.textContent = loadingStages[0];
   render();
 
   try {
@@ -597,8 +727,8 @@ const enactSelectedCard = async () => {
     elements.loadingStage.textContent = `Request failed: ${error.message}`;
     await wait(1300);
   } finally {
-    state.isProcessing = false;
-    elements.loadingStage.classList.add("hidden");
+    clearPendingTurn();
+    hideProcessingStage();
     if (state.outcome === "active") {
       elements.enactBtn.disabled = !state.selectedCardId;
     }
@@ -607,25 +737,22 @@ const enactSelectedCard = async () => {
 };
 
 const restart = async () => {
-  state.isProcessing = true;
-  elements.loadingStage.classList.remove("hidden");
-  elements.loadingStage.textContent = bootstrapStage;
+  clearPendingTurn();
+  showProcessingStage(bootstrapStage);
   render();
   try {
     clearPersistedGameId();
     await createGame();
   } finally {
-    state.isProcessing = false;
-    elements.loadingStage.classList.add("hidden");
+    hideProcessingStage();
     render();
   }
 };
 
 const init = async () => {
-  state.isProcessing = true;
-  elements.loadingStage.classList.remove("hidden");
-  elements.loadingStage.textContent = bootstrapStage;
+  showProcessingStage(bootstrapStage);
   render();
+  let recoveredPending = false;
   try {
     const persistedGameId = readPersistedGameId();
     if (persistedGameId) {
@@ -633,19 +760,22 @@ const init = async () => {
     } else {
       await createGame();
     }
+    recoveredPending = recoverPendingGenerationState();
   } catch (error) {
     if (readPersistedGameId()) {
       clearPersistedGameId();
       elements.loadingStage.textContent = "Saved game is unavailable. Starting a new city...";
       await wait(700);
       await createGame();
+      recoveredPending = recoverPendingGenerationState();
     } else {
       elements.loadingStage.textContent = `Startup failed: ${error.message}`;
       await wait(1500);
     }
   } finally {
-    state.isProcessing = false;
-    elements.loadingStage.classList.add("hidden");
+    if (!recoveredPending) {
+      hideProcessingStage();
+    }
     render();
   }
 };
