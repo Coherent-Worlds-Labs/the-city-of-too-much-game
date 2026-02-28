@@ -1,7 +1,8 @@
 ---
 id: "202602281521-W6TW3D"
 title: "End states, timeline, and UX polish"
-status: "DOING"
+result_summary: "End-state overlays, timeline replay, and gameplay UX polish are implemented and verified."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on:
@@ -19,11 +20,16 @@ verification:
   updated_at: "2026-02-28T16:10:46.907Z"
   updated_by: "CODER"
   note: "End-state and timeline UX polish verified: collapse or survival overlays, restart flow, timeline view, and expanded UI state tests all pass."
-commit: null
+commit:
+  hash: "4a1e39cdca6fbb57d22bef0c0ab7b3b03052f996"
+  message: "🚧 W6TW3D ui: add end states and timeline replay"
 comments:
   -
     author: "CODER"
     body: "Start: implementing collapse and survival overlays, timeline replay view, restart controls, and final UI motion polish."
+  -
+    author: "CODER"
+    body: "Verified: Added protocol/carnival/survival outcomes, restart controls, timeline persistence and view, and expanded UI state tests with all checks passing."
 events:
   -
     type: "status"
@@ -38,8 +44,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "End-state and timeline UX polish verified: collapse or survival overlays, restart flow, timeline view, and expanded UI state tests all pass."
+  -
+    type: "status"
+    at: "2026-02-28T16:11:29.874Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added protocol/carnival/survival outcomes, restart controls, timeline persistence and view, and expanded UI state tests with all checks passing."
 doc_version: 2
-doc_updated_at: "2026-02-28T16:10:46.909Z"
+doc_updated_at: "2026-02-28T16:11:29.874Z"
 doc_updated_by: "CODER"
 description: "Implement protocol/carnival collapse screens, survival state, restart flow, timeline replay page, responsive behavior, and final UX polish aligned with product requirements."
 id_source: "generated"
