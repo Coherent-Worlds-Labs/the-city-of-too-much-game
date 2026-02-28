@@ -1,7 +1,8 @@
 ---
 id: "202602282038-98PSFD"
 title: "Auto-scroll History list to active step on arrow navigation"
-status: "DOING"
+result_summary: "History list keeps the selected step visible during arrow-based navigation."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T20:39:51.166Z"
   updated_by: "CODER"
   note: "Verified: Active History item is auto-scrolled into view during step navigation; lint and tests passed."
-commit: null
+commit:
+  hash: "362c5846e1f897111f0091356572d7612f8f2678"
+  message: "🚧 98PSFD ui: auto-scroll history to active step on arrow navigation"
 comments:
   -
     author: "CODER"
     body: "Start: Implementing auto-scroll to keep active History step visible during scene arrow navigation."
+  -
+    author: "CODER"
+    body: "Verified: Active History item now auto-scrolls into view when step selection changes via scene arrows; lint/tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: Active History item is auto-scrolled into view during step navigation; lint and tests passed."
+  -
+    type: "status"
+    at: "2026-02-28T20:40:39.040Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Active History item now auto-scrolls into view when step selection changes via scene arrows; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T20:40:01.072Z"
+doc_updated_at: "2026-02-28T20:40:39.040Z"
 doc_updated_by: "CODER"
 description: "Ensure active History entry is brought into view when changing steps via scene left/right arrows."
 id_source: "generated"
