@@ -1,8 +1,21 @@
 import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { basename, join, resolve } from "node:path";
 import { validateWorldPack } from "../domain/world-pack.mjs";
 
-export const DEFAULT_WORLD_PACK_PATH = "worlds/the-city-of-too-much.en.json";
+export const WORLD_PACKS_DIR = "worlds";
+export const DEFAULT_WORLD_PACK_FILE = "the-city-of-too-much.en.json";
+
+const normalizeWorldPackFile = (candidate) => {
+  if (typeof candidate !== "string" || candidate.trim().length === 0) {
+    return DEFAULT_WORLD_PACK_FILE;
+  }
+  return basename(candidate.trim());
+};
+
+export const resolveDefaultWorldPackPath = (worldPackFile = process.env.WORLD_PACK_FILE) =>
+  join(WORLD_PACKS_DIR, normalizeWorldPackFile(worldPackFile));
+
+export const DEFAULT_WORLD_PACK_PATH = resolveDefaultWorldPackPath();
 
 export const loadWorldPackFromPath = (pathToPack) => {
   const absolutePath = resolve(pathToPack);
@@ -19,4 +32,4 @@ export const loadWorldPackFromPath = (pathToPack) => {
   return parsed;
 };
 
-export const loadDefaultWorldPack = () => loadWorldPackFromPath(DEFAULT_WORLD_PACK_PATH);
+export const loadDefaultWorldPack = () => loadWorldPackFromPath(resolveDefaultWorldPackPath());

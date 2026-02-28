@@ -11,7 +11,9 @@
 2. Ensure writable local paths for DB and assets:
    - `DATABASE_URL`
    - `ASSETS_DIR`
-3. Cost-control image defaults:
+3. Select world-pack file name (loaded from `worlds/`):
+   - `WORLD_PACK_FILE` (default: `the-city-of-too-much.en.json`)
+4. Cost-control image defaults:
    - `IMAGE_OUTPUT_SIZE=672x288`
    - `IMAGE_QUALITY=low`
    - `IMAGE_ASPECT_RATIO=21:9`

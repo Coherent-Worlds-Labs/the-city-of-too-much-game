@@ -40,6 +40,7 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
 
 - Runtime target: Node.js 22+
 - Environment template: [`.env.example`](.env.example)
+  - Default world-pack file is configured via `WORLD_PACK_FILE` (resolved under `worlds/`).
 - Architecture scaffold: [`docs/bootstrap.md`](docs/bootstrap.md)
 - Mechanics reference: [`docs/mechanics.md`](docs/mechanics.md)
 - Mathematical model: [`docs/math-model.md`](docs/math-model.md)
