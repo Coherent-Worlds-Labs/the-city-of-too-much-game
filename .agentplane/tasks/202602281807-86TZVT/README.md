@@ -1,7 +1,9 @@
 ---
 id: "202602281807-86TZVT"
 title: "Fix motifs display and push image generation to ultra-cheap wide profile"
-status: "DOING"
+result_summary: "Motif rendering quality and ultra-cheap wide image defaults implemented and verified."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +20,16 @@ verification:
   updated_at: "2026-02-28T18:09:57.652Z"
   updated_by: "TESTER"
   note: "Motifs + image defaults + log truncation verified"
-commit: null
+commit:
+  hash: "7f5525fc8bb48b88f98b7b5ee712bb79dc0da219"
+  message: "✅ 86TZVT ui/runtime: fix motifs display and push image defaults wider+cheaper"
 comments:
   -
     author: "CODER"
     body: "Start: fixing motif rendering quality in UI and tuning image generation defaults to wider and cheaper profile."
+  -
+    author: "INTEGRATOR"
+    body: "Verified: active motifs now render concrete labels or explicit fallback text, image generation defaults are wider and cheaper, and debug logs truncate base64-heavy payloads."
 events:
   -
     type: "status"
@@ -37,9 +44,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Motifs + image defaults + log truncation verified"
+  -
+    type: "status"
+    at: "2026-02-28T18:10:31.184Z"
+    author: "INTEGRATOR"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: active motifs now render concrete labels or explicit fallback text, image generation defaults are wider and cheaper, and debug logs truncate base64-heavy payloads."
 doc_version: 2
-doc_updated_at: "2026-02-28T18:09:57.653Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T18:10:31.184Z"
+doc_updated_by: "INTEGRATOR"
 description: "Show concrete active motifs in UI without generic placeholders, reduce image output defaults further, and keep debug logs concise by truncating base64 payloads."
 id_source: "generated"
 ---
