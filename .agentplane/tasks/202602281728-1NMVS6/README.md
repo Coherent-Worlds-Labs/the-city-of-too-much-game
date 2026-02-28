@@ -1,7 +1,9 @@
 ---
 id: "202602281728-1NMVS6"
 title: "Enhanced OpenRouter debug payload logging with colored output"
-status: "DOING"
+result_summary: "Enhanced colored OpenRouter payload logging implemented and verified."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +20,16 @@ verification:
   updated_at: "2026-02-28T17:30:22.113Z"
   updated_by: "TESTER"
   note: "Colored payload debug logging added"
-commit: null
+commit:
+  hash: "123fbb9f542e2e3c0f1adb01647c2e20ee9b81b2"
+  message: "✅ 1NMVS6 debug: log full OpenRouter request/response payloads with colored output"
 comments:
   -
     author: "CODER"
     body: "Start: implementing full request/response debug payload logging with bright-white/gray color hierarchy for OpenRouter adapters."
+  -
+    author: "INTEGRATOR"
+    body: "Verified: OpenRouter debug logging now prints full request/response payloads with bright-white headline lines and gray expanded detail blocks for fast diagnosis."
 events:
   -
     type: "status"
@@ -37,9 +44,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Colored payload debug logging added"
+  -
+    type: "status"
+    at: "2026-02-28T17:30:44.324Z"
+    author: "INTEGRATOR"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: OpenRouter debug logging now prints full request/response payloads with bright-white headline lines and gray expanded detail blocks for fast diagnosis."
 doc_version: 2
-doc_updated_at: "2026-02-28T17:30:22.114Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T17:30:44.324Z"
+doc_updated_by: "INTEGRATOR"
 description: "Log outgoing and incoming OpenRouter payloads with bright white primary lines and gray expanded details for judge and image requests."
 id_source: "generated"
 ---
