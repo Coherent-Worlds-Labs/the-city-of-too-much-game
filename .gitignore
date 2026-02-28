@@ -10,3 +10,4 @@
 .agentplane/tasks.json
 AGENTS.md.bak-*
 .agentplane/agents/*.bak-*
+sow/

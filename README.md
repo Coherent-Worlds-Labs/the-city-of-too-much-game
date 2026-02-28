@@ -26,6 +26,11 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
 
 ---
 
+## Implementation Constraints
+
+- Repository-facing implementation artifacts must remain in English.
+- World-specific content (setting flavor, card texts, and related narrative strings) must be loaded from a replaceable world-pack file rather than hardcoded.
+
 ## License
 
 This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
