@@ -642,8 +642,29 @@ const applyLoadedGameState = (payload) => {
 };
 
 const refreshAvailableGames = async () => {
-  const listing = await api("/api/games");
-  state.availableGames = listing?.games ?? [];
+  try {
+    const listing = await api("/api/games");
+    state.availableGames = listing?.games ?? [];
+  } catch {
+    // Session catalog is optional for core gameplay resume.
+    // Keep UI functional even if listing endpoint is temporarily unavailable.
+    if (state.gameId) {
+      const fallbackStatus = state.outcome === "active" ? "active" : state.outcome;
+      state.availableGames = [
+        {
+          gameId: state.gameId,
+          worldId: "the-city-of-too-much",
+          status: fallbackStatus,
+          currentTurn: state.turn,
+          seedImageUrl: state.initialImageUrl ?? null,
+          updatedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString()
+        }
+      ];
+    } else {
+      state.availableGames = [];
+    }
+  }
 };
 
 const startPendingRecoveryLoop = (marker) => {
