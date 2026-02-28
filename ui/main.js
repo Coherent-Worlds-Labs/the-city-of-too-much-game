@@ -23,7 +23,9 @@ const state = {
 const elements = {
   title: document.getElementById("title"),
   axisDot: document.getElementById("axis-dot"),
+  sceneAxisDot: document.getElementById("scene-axis-dot"),
   scene: document.getElementById("scene"),
+  sceneFullscreenBtn: document.getElementById("scene-fullscreen-btn"),
   sceneStepCard: document.getElementById("scene-step-card"),
   scenePrevBtn: document.getElementById("scene-prev-btn"),
   sceneNextBtn: document.getElementById("scene-next-btn"),
@@ -286,7 +288,38 @@ const renderWorldSwitcher = () => {
 };
 
 const renderIndicator = () => {
-  elements.axisDot.style.left = `calc(${state.axis * 100}% - 9px)`;
+  const left = `calc(${state.axis * 100}% - 9px)`;
+  elements.axisDot.style.left = left;
+  if (elements.sceneAxisDot) {
+    elements.sceneAxisDot.style.left = left;
+  }
+};
+
+const isSceneFullscreen = () => document.fullscreenElement === elements.scene;
+
+const syncSceneFullscreenState = () => {
+  const fullscreen = isSceneFullscreen();
+  elements.scene.classList.toggle("is-fullscreen", fullscreen);
+  if (elements.sceneFullscreenBtn) {
+    elements.sceneFullscreenBtn.textContent = fullscreen ? "Exit Fullscreen" : "Fullscreen";
+    elements.sceneFullscreenBtn.setAttribute("aria-label", fullscreen ? "Exit fullscreen" : "Enter fullscreen");
+  }
+};
+
+const toggleSceneFullscreen = async () => {
+  try {
+    if (isSceneFullscreen()) {
+      if (document.exitFullscreen) {
+        await document.exitFullscreen();
+      }
+      return;
+    }
+    if (elements.scene.requestFullscreen) {
+      await elements.scene.requestFullscreen();
+    }
+  } catch {
+    syncSceneFullscreenState();
+  }
 };
 
 const randomRange = (min, max) => min + Math.random() * (max - min);
@@ -914,5 +947,10 @@ elements.scenePrevBtn.addEventListener("click", () => {
 elements.sceneNextBtn.addEventListener("click", () => {
   moveSelectedSceneEntry(1);
 });
+elements.sceneFullscreenBtn.addEventListener("click", () => {
+  void toggleSceneFullscreen();
+});
+document.addEventListener("fullscreenchange", syncSceneFullscreenState);
+syncSceneFullscreenState();
 
 void init();

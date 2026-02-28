@@ -219,13 +219,64 @@ h1 {
 .scene-eyebrow {
   position: absolute;
   top: 12px;
-  right: 14px;
+  left: 14px;
   margin: 0;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: 0.71rem;
   color: rgba(244, 242, 238, 0.92);
   text-shadow: 0 2px 8px rgba(21, 30, 33, 0.48);
+}
+
+.scene-fullscreen-toggle {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  z-index: 3;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 999px;
+  background: rgba(19, 29, 33, 0.5);
+  color: #f6f4ee;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 7px 11px;
+  cursor: pointer;
+}
+
+.scene-fullscreen-toggle:hover {
+  background: rgba(19, 29, 33, 0.7);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.scene-axis-overlay {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: none;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 999px;
+  background: rgba(16, 24, 27, 0.55);
+  color: #f6f3ec;
+  padding: 7px 12px;
+  font-size: 0.8rem;
+}
+
+.scene-axis-track {
+  position: relative;
+  width: min(42vw, 320px);
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #36586d 0%, #f3c08d 50%, #c95f38 100%);
+}
+
+.scene.is-fullscreen .scene-axis-overlay {
+  display: flex;
 }
 
 .scene-step-card {
@@ -243,6 +294,29 @@ h1 {
   font-size: 0.84rem;
   line-height: 1.2;
   z-index: 2;
+}
+
+.scene:fullscreen,
+.scene:-webkit-full-screen,
+.scene.is-fullscreen {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  min-height: 100vh;
+  border-radius: 0;
+  border: 0;
+}
+
+.scene:fullscreen .scene-overlay,
+.scene:-webkit-full-screen .scene-overlay,
+.scene.is-fullscreen .scene-overlay {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.scene:fullscreen .scene-axis-overlay,
+.scene:-webkit-full-screen .scene-axis-overlay {
+  display: flex;
 }
 
 .loading-stage {
@@ -650,5 +724,15 @@ h1 {
   .scene-step-card {
     max-width: calc(100% - 92px);
     font-size: 0.78rem;
+  }
+
+  .scene-axis-track {
+    width: min(52vw, 220px);
+  }
+
+  .scene-axis-overlay {
+    font-size: 0.72rem;
+    padding: 6px 9px;
+    gap: 7px;
   }
 }

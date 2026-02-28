@@ -28,8 +28,16 @@
       <section id="scene" class="scene">
         <div class="scene-overlay">
           <p class="scene-eyebrow">Live City Observatory</p>
+          <button id="scene-fullscreen-btn" class="scene-fullscreen-toggle" type="button" aria-label="Enter fullscreen">Fullscreen</button>
           <button id="scene-prev-btn" class="scene-nav scene-nav-prev" type="button" aria-label="Previous step">&larr;</button>
           <button id="scene-next-btn" class="scene-nav scene-nav-next" type="button" aria-label="Next step">&rarr;</button>
+          <div id="scene-axis-overlay" class="scene-axis-overlay" aria-label="Protocol-Carnival axis">
+            <span>Protocol</span>
+            <div class="scene-axis-track">
+              <div id="scene-axis-dot" class="axis-dot"></div>
+            </div>
+            <span>Carnival</span>
+          </div>
           <p id="scene-step-card" class="scene-step-card">Turn 0: Seed scene</p>
           <p id="loading-stage" class="loading-stage hidden"></p>
           <div class="motifs">
