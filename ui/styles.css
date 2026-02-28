@@ -102,6 +102,14 @@ h1 {
 }
 
 .scene {
+  --scene-image-url: none;
+  --pan-x-start: 50%;
+  --pan-y-start: 50%;
+  --pan-x-end: 66%;
+  --pan-y-end: 42%;
+  --pan-scale-start: 1.08;
+  --pan-scale-end: 1.14;
+  --pan-duration: 22000ms;
   min-height: 330px;
   border-radius: 18px;
   border: 1px solid var(--line);
@@ -114,6 +122,26 @@ h1 {
   transition: background 640ms ease, filter 500ms ease;
 }
 
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--scene-image-url);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: var(--pan-x-start) var(--pan-y-start);
+  transform: scale(var(--pan-scale-start));
+  transform-origin: center;
+  opacity: 0;
+  transition: opacity 320ms ease;
+  will-change: transform, background-position;
+}
+
+.scene.has-image::before {
+  opacity: 1;
+  animation: scene-pan-tilt var(--pan-duration) ease-in-out infinite alternate;
+}
+
 .scene.shift {
   filter: saturate(1.18) contrast(1.08);
 }
@@ -123,6 +151,8 @@ h1 {
   justify-content: space-between;
   min-height: inherit;
   padding: 22px;
+  position: relative;
+  z-index: 1;
 }
 
 .loading-stage {
@@ -156,6 +186,18 @@ h1 {
 @keyframes loading-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes scene-pan-tilt {
+  0% {
+    background-position: var(--pan-x-start) var(--pan-y-start);
+    transform: scale(var(--pan-scale-start));
+  }
+
+  100% {
+    background-position: var(--pan-x-end) var(--pan-y-end);
+    transform: scale(var(--pan-scale-end));
   }
 }
 

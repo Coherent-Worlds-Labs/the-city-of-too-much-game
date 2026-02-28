@@ -15,7 +15,8 @@ const state = {
   turn: 0,
   outcome: "active",
   isProcessing: false,
-  sceneImageUrl: null
+  sceneImageUrl: null,
+  scenePanImageKey: null
 };
 
 const elements = {
@@ -128,24 +129,66 @@ const renderIndicator = () => {
   elements.axisDot.style.left = `calc(${state.axis * 100}% - 9px)`;
 };
 
+const randomRange = (min, max) => min + Math.random() * (max - min);
+
+const pickPanPoint = (exclude = null) => {
+  for (let i = 0; i < 8; i += 1) {
+    const point = {
+      x: randomRange(18, 82),
+      y: randomRange(18, 82)
+    };
+    if (!exclude) {
+      return point;
+    }
+    const delta = Math.hypot(point.x - exclude.x, point.y - exclude.y);
+    if (delta >= 16) {
+      return point;
+    }
+  }
+  return {
+    x: exclude ? Math.max(12, Math.min(88, exclude.x + 18)) : 50,
+    y: exclude ? Math.max(12, Math.min(88, exclude.y - 14)) : 50
+  };
+};
+
+const configureScenePanMotion = (imageUrl) => {
+  const start = pickPanPoint();
+  const end = pickPanPoint(start);
+  const durationMs = Math.round(randomRange(18_000, 30_000));
+  const scaleStart = randomRange(1.08, 1.14);
+  const scaleEnd = scaleStart + randomRange(0.02, 0.06);
+
+  elements.scene.style.setProperty("--scene-image-url", `url(${JSON.stringify(imageUrl)})`);
+  elements.scene.style.setProperty("--pan-x-start", `${start.x.toFixed(2)}%`);
+  elements.scene.style.setProperty("--pan-y-start", `${start.y.toFixed(2)}%`);
+  elements.scene.style.setProperty("--pan-x-end", `${end.x.toFixed(2)}%`);
+  elements.scene.style.setProperty("--pan-y-end", `${end.y.toFixed(2)}%`);
+  elements.scene.style.setProperty("--pan-scale-start", scaleStart.toFixed(3));
+  elements.scene.style.setProperty("--pan-scale-end", scaleEnd.toFixed(3));
+  elements.scene.style.setProperty("--pan-duration", `${durationMs}ms`);
+};
+
 const renderScene = () => {
   const cool = Math.round(52 + (1 - state.axis) * 50);
   const warm = Math.round(85 + state.axis * 90);
-  if (state.sceneImageUrl) {
-    elements.scene.style.background = `
-      linear-gradient(170deg, rgba(21, 50, 57, 0.44), rgba(182, 81, 46, 0.22)),
-      url("${state.sceneImageUrl}"),
-      linear-gradient(120deg, rgb(${cool}, 94, 112) 0%, rgb(105, 133, 129) 52%, rgb(${warm}, 122, 82) 100%)
-    `;
-    elements.scene.style.backgroundSize = "cover, cover, cover";
-    elements.scene.style.backgroundPosition = "center, center, center";
-  } else {
-    elements.scene.style.background = `
-      linear-gradient(170deg, rgba(21, 50, 57, 0.44), rgba(182, 81, 46, 0.22)),
-      linear-gradient(120deg, rgb(${cool}, 94, 112) 0%, rgb(105, 133, 129) 52%, rgb(${warm}, 122, 82) 100%)
-    `;
-    elements.scene.style.backgroundSize = "cover, cover";
-    elements.scene.style.backgroundPosition = "center, center";
+  elements.scene.style.background = `
+    linear-gradient(170deg, rgba(21, 50, 57, 0.44), rgba(182, 81, 46, 0.22)),
+    linear-gradient(120deg, rgb(${cool}, 94, 112) 0%, rgb(105, 133, 129) 52%, rgb(${warm}, 122, 82) 100%)
+  `;
+  elements.scene.style.backgroundSize = "cover, cover";
+  elements.scene.style.backgroundPosition = "center, center";
+
+  if (!state.sceneImageUrl) {
+    elements.scene.classList.remove("has-image");
+    elements.scene.style.setProperty("--scene-image-url", "none");
+    state.scenePanImageKey = null;
+    return;
+  }
+
+  elements.scene.classList.add("has-image");
+  if (state.scenePanImageKey !== state.sceneImageUrl) {
+    configureScenePanMotion(state.sceneImageUrl);
+    state.scenePanImageKey = state.sceneImageUrl;
   }
 };
 
