@@ -1,7 +1,8 @@
 ---
 id: "202602281521-P29H9S"
 title: "Gameplay UI and interaction flow"
-status: "DOING"
+result_summary: "Gameplay UI shell and enact interaction flow are implemented and verified."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on:
@@ -19,11 +20,16 @@ verification:
   updated_at: "2026-02-28T16:05:46.193Z"
   updated_by: "CODER"
   note: "Gameplay UI shell verified: responsive layout, world-pack-driven hand/history flow, staged enact transitions, and passing UI state tests."
-commit: null
+commit:
+  hash: "7bfd76b67f2c80f7c1de274395203703e20b40d8"
+  message: "🚧 P29H9S ui: add gameplay shell and enact flow"
 comments:
   -
     author: "CODER"
     body: "Start: implementing main gameplay UI shell with world-pack-driven cards, staged enact flow, and responsive layout."
+  -
+    author: "CODER"
+    body: "Verified: Added responsive gameplay shell with world-pack-driven cards/history, staged enact transitions, state module, and passing UI tests."
 events:
   -
     type: "status"
@@ -38,8 +44,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Gameplay UI shell verified: responsive layout, world-pack-driven hand/history flow, staged enact transitions, and passing UI state tests."
+  -
+    type: "status"
+    at: "2026-02-28T16:06:17.208Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added responsive gameplay shell with world-pack-driven cards/history, staged enact transitions, state module, and passing UI tests."
 doc_version: 2
-doc_updated_at: "2026-02-28T16:05:46.194Z"
+doc_updated_at: "2026-02-28T16:06:17.208Z"
 doc_updated_by: "CODER"
 description: "Implement main gameplay interface: header status, city background scene, hand/history/status panels, enact interaction, staged loading states, and smooth state/image transitions."
 id_source: "generated"
