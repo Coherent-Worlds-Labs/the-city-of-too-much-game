@@ -58,6 +58,17 @@ export const createRuntimeApi = ({
   reliability,
   imagePromptMaxChars = 460
 }) => {
+  const axisLabels = {
+    left: worldPack?.ui?.axisLabels?.left ?? "Protocol",
+    right: worldPack?.ui?.axisLabels?.right ?? "Carnival"
+  };
+
+  const worldDescriptor = {
+    worldId: worldPack.worldId,
+    title: worldPack.metadata.title,
+    axisLabels
+  };
+
   const gameService = createGameService({
     store,
     worldPack,
@@ -92,10 +103,7 @@ export const createRuntimeApi = ({
         imagePrompt: seedScene.imagePrompt
       },
       timeline: gameService.getTimeline(updatedGame.game_id),
-      world: {
-        worldId: worldPack.worldId,
-        title: worldPack.metadata.title
-      }
+      world: worldDescriptor
     };
   };
 
@@ -117,10 +125,7 @@ export const createRuntimeApi = ({
               imagePrompt: timeline[0].imagePrompt
             }
           : null,
-      world: {
-        worldId: worldPack.worldId,
-        title: worldPack.metadata.title
-      }
+      world: worldDescriptor
     };
   };
 

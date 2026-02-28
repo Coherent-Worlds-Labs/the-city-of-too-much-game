@@ -19,6 +19,10 @@
   },
   "ui": {
     "headerTitle": "Город Избытка",
+    "axisLabels": {
+      "left": "Протокол",
+      "right": "Карнавал"
+    },
     "directionLabels": {
       "protocol": "Смещение к Протоколу",
       "balanced": "Напряженное равновесие",

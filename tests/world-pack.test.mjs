@@ -18,6 +18,14 @@ test("default world pack has unique card ids", () => {
   assert.equal(uniqueIds.size, 50);
 });
 
+test("default world pack defines axis labels", () => {
+  const worldPack = loadDefaultWorldPack();
+  assert.equal(typeof worldPack.ui?.axisLabels?.left, "string");
+  assert.equal(worldPack.ui.axisLabels.left.length > 0, true);
+  assert.equal(typeof worldPack.ui?.axisLabels?.right, "string");
+  assert.equal(worldPack.ui.axisLabels.right.length > 0, true);
+});
+
 test("default world pack contains no cyrillic card text", () => {
   const raw = readFileSync("worlds/the-city-of-too-much.en.json", "utf8");
   const parsed = JSON.parse(raw);

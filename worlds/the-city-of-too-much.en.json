@@ -19,6 +19,10 @@
   },
   "ui": {
     "headerTitle": "The City of Too Much",
+    "axisLabels": {
+      "left": "Protocol",
+      "right": "Carnival"
+    },
     "directionLabels": {
       "protocol": "Leaning toward Protocol",
       "balanced": "Tense Balance",

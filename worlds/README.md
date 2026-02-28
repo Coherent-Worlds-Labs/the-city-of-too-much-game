@@ -10,6 +10,7 @@ To swap to another world, replace the active pack path with a different JSON fil
 - `locale`: language code of world text.
 - `metadata`: title, summary, start state, and win/loss framing.
 - `ui`: world-facing labels and status phrases.
+  - `ui.axisLabels.left/right`: labels for the world-specific axis shown in header and scene overlay.
 - `prompt`: visual prompt anchors and constraints for image generation.
 - `motifs`: motif catalog used by semantic evaluation and rendering hints.
 - `cards`: full playable card deck text.

@@ -66,6 +66,7 @@ test("runtime api orchestrates createGame and playTurn", async () => {
     assert.equal(created.seedScene.imageUrl, "/assets/test-turn.png");
     assert.equal(created.timeline.length, 1);
     assert.equal(created.timeline[0].turnIndex, 0);
+    assert.deepEqual(created.world.axisLabels, { left: "Protocol", right: "Carnival" });
     const firstCard = created.hand[0];
 
     const played = await runtime.playTurn({
@@ -90,6 +91,7 @@ test("runtime api orchestrates createGame and playTurn", async () => {
     assert.equal(resumed.history.length, 1);
     assert.equal(resumed.timeline.length, 2);
     assert.equal(resumed.seedScene?.imageUrl, "/assets/test-turn.png");
+    assert.deepEqual(resumed.world.axisLabels, { left: "Protocol", right: "Carnival" });
 
     const listed = runtime.listGames();
     assert.equal(listed.length >= 1, true);

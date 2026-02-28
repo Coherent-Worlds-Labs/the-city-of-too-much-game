@@ -9,6 +9,10 @@ const state = {
   selectedViewType: "timeline",
   selectedTimelineIndex: -1,
   selectedCardId: null,
+  axisLabels: {
+    left: "Protocol",
+    right: "Carnival"
+  },
   axis: 0.5,
   direction: "balanced",
   mood: "Tense Balance",
@@ -22,7 +26,11 @@ const state = {
 
 const elements = {
   title: document.getElementById("title"),
+  axisLabelLeft: document.getElementById("axis-label-left"),
+  axisLabelRight: document.getElementById("axis-label-right"),
   axisDot: document.getElementById("axis-dot"),
+  sceneAxisLabelLeft: document.getElementById("scene-axis-label-left"),
+  sceneAxisLabelRight: document.getElementById("scene-axis-label-right"),
   sceneAxisDot: document.getElementById("scene-axis-dot"),
   scene: document.getElementById("scene"),
   sceneFullscreenBtn: document.getElementById("scene-fullscreen-btn"),
@@ -292,6 +300,19 @@ const renderIndicator = () => {
   elements.axisDot.style.left = left;
   if (elements.sceneAxisDot) {
     elements.sceneAxisDot.style.left = left;
+  }
+};
+
+const renderAxisLabels = () => {
+  const left = state.axisLabels?.left ?? "Protocol";
+  const right = state.axisLabels?.right ?? "Carnival";
+  elements.axisLabelLeft.textContent = left;
+  elements.axisLabelRight.textContent = right;
+  if (elements.sceneAxisLabelLeft) {
+    elements.sceneAxisLabelLeft.textContent = left;
+  }
+  if (elements.sceneAxisLabelRight) {
+    elements.sceneAxisLabelRight.textContent = right;
   }
 };
 
@@ -642,6 +663,7 @@ const renderOutcomeOverlay = () => {
 
 const render = () => {
   elements.title.textContent = state.worldTitle;
+  renderAxisLabels();
   renderIndicator();
   renderScene();
   renderSceneStepOverlay();
@@ -671,6 +693,10 @@ const applyLoadedGameState = (payload) => {
 
   state.gameId = game.game_id;
   state.worldTitle = payload?.world?.title ?? state.worldTitle;
+  state.axisLabels = {
+    left: payload?.world?.axisLabels?.left ?? "Protocol",
+    right: payload?.world?.axisLabels?.right ?? "Carnival"
+  };
   state.turn = game.current_turn;
   state.hand = payload?.hand ?? [];
   state.history = payload?.history ?? [];

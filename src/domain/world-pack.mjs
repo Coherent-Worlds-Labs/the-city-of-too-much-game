@@ -83,6 +83,22 @@ export const validateWorldPack = (candidate) => {
     }
   }
 
+  const ui = candidate.ui;
+  if (!ui || typeof ui !== "object") {
+    errors.push("ui must be an object.");
+  } else if ("axisLabels" in ui) {
+    if (!ui.axisLabels || typeof ui.axisLabels !== "object") {
+      errors.push("ui.axisLabels must be an object.");
+    } else {
+      if (!hasText(ui.axisLabels.left)) {
+        errors.push("ui.axisLabels.left must be a non-empty string.");
+      }
+      if (!hasText(ui.axisLabels.right)) {
+        errors.push("ui.axisLabels.right must be a non-empty string.");
+      }
+    }
+  }
+
   return {
     ok: errors.length === 0,
     errors
