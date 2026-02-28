@@ -5,8 +5,8 @@ This document defines the initial project layout created in task `202602281520-R
 ## Goals
 
 - Provide deterministic directories for frontend, API, domain, and infrastructure code.
-- Keep bootstrap steps offline-safe and reproducible.
-- Prepare scripts used by later tasks and CI.
+- Keep runtime setup reproducible.
+- Prepare scripts used by verification and packaging.
 
 ## Topology
 
@@ -18,7 +18,7 @@ This document defines the initial project layout created in task `202602281520-R
 - `tests`: bootstrap and regression tests.
 - `worlds`: replaceable world-pack files containing world-specific content.
 - `db/migrations`: SQL migrations for persistence schema.
-- `ui`: static gameplay shell prototype.
+- `ui`: gameplay shell and timeline views.
 
 ## Toolchain Scripts
 
@@ -26,7 +26,7 @@ This document defines the initial project layout created in task `202602281520-R
 - `npm run lint`: runs baseline lint checks.
 - `npm run typecheck`: TypeScript strict check (requires dependencies installed).
 - `npm run test`: node native test runner.
-- `npm run build`: creates a placeholder build artifact in `dist/`.
+- `npm run build`: assembles runnable runtime package in `dist/`.
 
 ## Environment
 

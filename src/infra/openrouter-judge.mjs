@@ -65,11 +65,10 @@ export const createOpenRouterJudge = ({
   fetchFn = fetch,
   timeoutMs = 30_000
 }) => {
-  if (!apiKey || !apiKey.trim()) {
-    throw new Error("apiKey is required.");
-  }
-
   const evaluateTurn = async (turnProposal, worldPack) => {
+    if (!apiKey || !apiKey.trim()) {
+      throw new Error("OPENROUTER_API_KEY is required for judge evaluation.");
+    }
     const messages = buildJudgeMessages(worldPack, turnProposal);
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);

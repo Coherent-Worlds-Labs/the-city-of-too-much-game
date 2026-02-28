@@ -10,20 +10,22 @@ This document captures the current stage-ready status of **The City of Too Much*
 - Image pipeline with local asset persistence (`src/infra/image-pipeline.mjs`).
 - SQLite persistence with migrations (`db/migrations/`, `src/infra/sqlite-store.mjs`).
 - Game lifecycle service layer (`src/api/game-service.mjs`).
-- Gameplay UI shell and timeline prototype (`ui/`).
+- Gameplay UI shell and timeline views (`ui/`).
 - Reliability safeguards (`src/infra/reliability.mjs`).
+- Node HTTP runtime server with game lifecycle endpoints (`src/server.mjs`).
 
 ## Readiness Status
 
 - `code`: implemented and covered by automated tests.
 - `verification`: full suite executed and passing.
 - `documentation`: setup/runbook/verification matrix available.
+- `runtime`: local start and API smoke checks validated.
 
 ## Known Limitations
 
 - `node:sqlite` is currently experimental in Node and emits runtime warnings.
-- UI is delivered as a static prototype; production web framework integration is a next phase.
-- External model calls are adapter-ready but were verified with mocked responses in this run.
+- Runtime server is Node HTTP based; framework migration remains optional.
+- Live model-provider integration requires valid OpenRouter credentials in environment.
 
 ## Next Deployment-Oriented Steps
 

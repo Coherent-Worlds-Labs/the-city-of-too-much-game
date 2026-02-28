@@ -1,16 +1,15 @@
-import {
-  applyCardToUiState,
-  createTimelineEntry,
-  createUiState,
-  drawHand,
-  evaluateUiOutcome
-} from "../src/app/ui-state.mjs";
-
-const worldPackPath = "../worlds/the-city-of-too-much.en.json";
 const state = {
-  worldPack: null,
-  ui: null,
-  selectedCard: null,
+  gameId: null,
+  worldTitle: "The City of Too Much",
+  hand: [],
+  history: [],
+  timeline: [],
+  selectedCardId: null,
+  axis: 0.5,
+  direction: "balanced",
+  mood: "Tense Balance",
+  stability: "High",
+  turn: 0,
   outcome: "active"
 };
 
@@ -33,36 +32,68 @@ const elements = {
   restartBtn: document.getElementById("restart-btn")
 };
 
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const timelineStorageKey = "city-too-much.timeline";
+const loadingStages = ["Interpreting the city...", "Rendering the new reality..."];
+const activeGameStorageKey = "city-too-much.active-game";
 
-const persistTimeline = (entry) => {
-  try {
-    const current = JSON.parse(localStorage.getItem(timelineStorageKey) ?? "[]");
-    current.push(entry);
-    localStorage.setItem(timelineStorageKey, JSON.stringify(current));
-  } catch {
-    // Keep gameplay responsive even when storage is unavailable.
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const api = async (path, init = {}) => {
+  const response = await fetch(path, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...(init.headers ?? {})
+    }
+  });
+  const payload = await response.json();
+  if (!response.ok) {
+    throw new Error(payload.error ?? `Request failed: ${response.status}`);
   }
+  return payload;
 };
 
-const clearTimeline = () => {
+const toDirection = (value) => {
+  if (value <= 0.4) {
+    return "protocol";
+  }
+  if (value >= 0.6) {
+    return "carnival";
+  }
+  return "balanced";
+};
+
+const detectOutcome = (absurdity, coherence, turn) => {
+  const epsilon = 0.12;
+  if (coherence < 0.35) {
+    return "incoherence-collapse";
+  }
+  if (absurdity <= epsilon) {
+    return "protocol-collapse";
+  }
+  if (absurdity >= 1 - epsilon) {
+    return "carnival-collapse";
+  }
+  if (turn >= 12) {
+    return "survived";
+  }
+  return "active";
+};
+
+const persistGameId = () => {
   try {
-    localStorage.removeItem(timelineStorageKey);
+    localStorage.setItem(activeGameStorageKey, state.gameId ?? "");
   } catch {
-    // no-op
+    // ignore local storage errors
   }
 };
 
 const renderIndicator = () => {
-  const axisPercent = state.ui.axis * 100;
-  elements.axisDot.style.left = `calc(${axisPercent}% - 9px)`;
+  elements.axisDot.style.left = `calc(${state.axis * 100}% - 9px)`;
 };
 
 const renderScene = () => {
-  const axis = state.ui.axis;
-  const cool = Math.round(52 + (1 - axis) * 50);
-  const warm = Math.round(85 + axis * 90);
+  const cool = Math.round(52 + (1 - state.axis) * 50);
+  const warm = Math.round(85 + state.axis * 90);
   elements.scene.style.background = `
     linear-gradient(170deg, rgba(21, 50, 57, 0.44), rgba(182, 81, 46, 0.22)),
     linear-gradient(120deg, rgb(${cool}, 94, 112) 0%, rgb(105, 133, 129) 52%, rgb(${warm}, 122, 82) 100%)
@@ -70,66 +101,52 @@ const renderScene = () => {
 };
 
 const renderMotifs = () => {
-  const motifs = state.ui.emergingThemes.length > 0 ? state.ui.emergingThemes : ["balance"];
-  elements.motifList.innerHTML = motifs
-    .map((item) => `<li>${item.replaceAll("-", " ")}</li>`)
+  const latest = state.history[0]?.judgeResult?.new_state?.active_motifs ?? [];
+  const items = latest.slice(0, 3).map((item) => item.name?.replaceAll("_", " ") ?? "motif");
+  elements.motifList.innerHTML = (items.length > 0 ? items : ["balance"])
+    .map((item) => `<li>${item}</li>`)
     .join("");
 };
 
 const renderStatus = () => {
   elements.subtitle.textContent =
-    state.ui.direction === "protocol"
+    state.direction === "protocol"
       ? "Leaning toward Protocol"
-      : state.ui.direction === "carnival"
+      : state.direction === "carnival"
         ? "Growing Carnival"
         : "Tense Balance";
-  elements.mood.textContent = state.ui.mood;
-  elements.stability.textContent = state.ui.stability;
-  elements.turn.textContent = String(state.ui.turn);
+  elements.mood.textContent = state.mood;
+  elements.stability.textContent = state.stability;
+  elements.turn.textContent = String(state.turn);
 };
 
 const renderHistory = () => {
-  elements.historyList.innerHTML = state.ui.history
+  elements.historyList.innerHTML = state.history
     .slice(0, 10)
     .map(
       (entry) =>
-        `<li><strong>Turn ${entry.turn}</strong><br>${entry.card.text}</li>`
+        `<li><strong>Turn ${entry.turnIndex}</strong><br>${entry.card.text}</li>`
     )
     .join("");
 };
 
-const cardElement = (card) => {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "card";
-  if (state.selectedCard?.id === card.id) {
-    button.classList.add("selected");
-  }
-
-  button.innerHTML = `<small>${card.group}</small>${card.text}`;
-  button.addEventListener("click", () => {
-    state.selectedCard = card;
-    elements.enactBtn.disabled = false;
-    renderCards();
-  });
-  return button;
-};
-
 const renderCards = () => {
   elements.cardGrid.innerHTML = "";
-  state.ui.activeHand.forEach((card) => {
-    elements.cardGrid.append(cardElement(card));
+  state.hand.forEach((card) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "card";
+    if (state.selectedCardId === card.id) {
+      button.classList.add("selected");
+    }
+    button.innerHTML = `<small>${card.group}</small>${card.text}`;
+    button.addEventListener("click", () => {
+      state.selectedCardId = card.id;
+      elements.enactBtn.disabled = false;
+      renderCards();
+    });
+    elements.cardGrid.append(button);
   });
-};
-
-const render = () => {
-  elements.title.textContent = state.ui.title;
-  renderIndicator();
-  renderScene();
-  renderMotifs();
-  renderStatus();
-  renderHistory();
-  renderCards();
 };
 
 const renderOutcomeOverlay = () => {
@@ -161,57 +178,104 @@ const renderOutcomeOverlay = () => {
   elements.overlay.classList.remove("hidden");
 };
 
+const render = () => {
+  elements.title.textContent = state.worldTitle;
+  renderIndicator();
+  renderScene();
+  renderMotifs();
+  renderStatus();
+  renderHistory();
+  renderCards();
+  renderOutcomeOverlay();
+};
+
+const hydrateFromTurn = (turn) => {
+  const newState = turn?.judge_json?.new_state ?? turn?.judgeResult?.new_state;
+  if (!newState) {
+    return;
+  }
+  state.axis = newState.absurdity_index;
+  state.direction = toDirection(state.axis);
+  state.mood = state.direction === "protocol" ? "Formalizing" : state.direction === "carnival" ? "Escalating Excess" : "Tense Balance";
+  state.stability = newState.coherence_level >= 0.5 ? "High" : "Low";
+};
+
+const createGame = async () => {
+  const created = await api("/api/games", {
+    method: "POST",
+    body: JSON.stringify({})
+  });
+  state.gameId = created.game.game_id;
+  state.worldTitle = created.world.title;
+  state.turn = created.game.current_turn;
+  state.hand = created.hand;
+  state.history = [];
+  state.timeline = [];
+  state.selectedCardId = null;
+  state.axis = 0.5;
+  state.direction = "balanced";
+  state.mood = "Tense Balance";
+  state.stability = "High";
+  state.outcome = "active";
+  elements.enactBtn.disabled = true;
+  persistGameId();
+  render();
+};
+
 const enactSelectedCard = async () => {
-  if (!state.selectedCard) {
+  if (!state.selectedCardId || !state.gameId || state.outcome !== "active") {
     return;
   }
   elements.enactBtn.disabled = true;
   elements.loadingStage.classList.remove("hidden");
-  elements.loadingStage.textContent = state.worldPack.ui.loadingStages[0];
-  await wait(700);
-  elements.loadingStage.textContent = state.worldPack.ui.loadingStages[1];
-  await wait(850);
+  elements.loadingStage.textContent = loadingStages[0];
+  await wait(500);
+  elements.loadingStage.textContent = loadingStages[1];
 
-  state.ui = applyCardToUiState(state.ui, state.selectedCard);
-  state.outcome = evaluateUiOutcome(state.ui);
-  persistTimeline(createTimelineEntry(state.ui, state.selectedCard));
-  state.ui = drawHand(state.ui, state.worldPack, 3);
-  state.selectedCard = null;
+  const played = await api("/api/turn", {
+    method: "POST",
+    body: JSON.stringify({
+      gameId: state.gameId,
+      cardId: state.selectedCardId,
+      expectedTurn: state.turn
+    })
+  });
+
+  state.turn = played.game.current_turn;
+  state.hand = played.hand;
+  state.timeline = played.timeline;
+  state.history = await api(`/api/games/${state.gameId}/history`).then((payload) => payload.history);
+  hydrateFromTurn(played.turn);
+  state.outcome = detectOutcome(
+    played.turn.judge_json.new_state.absurdity_index,
+    played.turn.judge_json.new_state.coherence_level,
+    state.turn
+  );
+  state.selectedCardId = null;
 
   elements.scene.classList.add("shift");
   render();
-  renderOutcomeOverlay();
-  await wait(380);
+  await wait(350);
   elements.scene.classList.remove("shift");
   elements.loadingStage.classList.add("hidden");
-  if (state.outcome !== "active") {
+  if (state.outcome === "active") {
     elements.enactBtn.disabled = true;
   }
 };
 
-const restart = () => {
-  clearTimeline();
-  state.ui = drawHand(createUiState(state.worldPack), state.worldPack, 3);
-  state.selectedCard = null;
-  state.outcome = "active";
-  elements.enactBtn.disabled = true;
-  render();
-  renderOutcomeOverlay();
+const restart = async () => {
+  await createGame();
 };
 
 const init = async () => {
-  const response = await fetch(worldPackPath);
-  const worldPack = await response.json();
-  state.worldPack = worldPack;
-  clearTimeline();
-  state.ui = drawHand(createUiState(worldPack), worldPack, 3);
-  render();
-  renderOutcomeOverlay();
+  await createGame();
 };
 
 elements.enactBtn.addEventListener("click", () => {
   void enactSelectedCard();
 });
-elements.restartBtn.addEventListener("click", restart);
+elements.restartBtn.addEventListener("click", () => {
+  void restart();
+});
 
 void init();

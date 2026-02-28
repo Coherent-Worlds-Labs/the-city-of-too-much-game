@@ -38,10 +38,6 @@ export const createImagePipeline = ({
   publicAssetsBaseUrl = "/assets",
   fetchFn = fetch
 }) => {
-  if (!apiKey || !apiKey.trim()) {
-    throw new Error("apiKey is required.");
-  }
-
   const renderTurnImage = async ({
     worldPack,
     gameId,
@@ -50,6 +46,9 @@ export const createImagePipeline = ({
     previousImageHint = null,
     seed = null
   }) => {
+    if (!apiKey || !apiKey.trim()) {
+      throw new Error("OPENROUTER_API_KEY is required for image generation.");
+    }
     const finalPrompt = buildContinuityPrompt({
       basePrompt: imagePrompt,
       worldPack,

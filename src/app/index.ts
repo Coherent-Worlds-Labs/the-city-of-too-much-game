@@ -1,1 +1,1 @@
-export const appShellVersion = "bootstrap-v1";
+export const appShellVersion = "runtime-v1";

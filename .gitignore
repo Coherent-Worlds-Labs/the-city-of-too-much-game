@@ -14,3 +14,4 @@ sow/
 dist/
 node_modules/
 storage/images/
+data/

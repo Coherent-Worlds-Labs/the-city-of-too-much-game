@@ -22,9 +22,26 @@ node scripts/lint.mjs
 node --test
 ```
 
+## Runtime Start
+
+```bash
+npm run start
+```
+
+This starts the Node HTTP runtime and API on `APP_PORT` (default `3000`).
+
+### Core API Endpoints
+
+- `POST /api/games`
+- `POST /api/turn`
+- `GET /api/games/:id/history`
+- `GET /api/games/:id/timeline`
+- `GET /api/health`
+
 ## Manual UI Smoke
 
-1. Open `ui/index.html` in a local static server context.
+1. Start runtime with `npm run start`.
+2. Open `http://localhost:3000/`.
 2. Confirm:
    - header and axis indicator render
    - card hand displays world-pack cards

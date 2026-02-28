@@ -11,7 +11,11 @@ const requiredPaths = [
   "src/infra",
   "worlds/the-city-of-too-much.en.json",
   "ui/index.html",
-  "ui/timeline.html"
+  "ui/timeline.html",
+  "ui/main.js",
+  "ui/timeline.js",
+  "src/server.mjs",
+  "src/api/runtime-api.mjs"
 ];
 
 let failed = false;
@@ -24,7 +28,7 @@ for (const relPath of requiredPaths) {
 }
 
 const pkg = JSON.parse(readFileSync(resolve("package.json"), "utf8"));
-for (const scriptName of ["lint", "typecheck", "test", "build"]) {
+for (const scriptName of ["lint", "typecheck", "test", "build", "start"]) {
   if (!pkg.scripts || !pkg.scripts[scriptName]) {
     console.error(`[missing script] ${scriptName}`);
     failed = true;

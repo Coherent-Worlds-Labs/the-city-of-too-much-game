@@ -1,18 +1,9 @@
-const timelineStorageKey = "city-too-much.timeline";
 const timelineList = document.getElementById("timeline-list");
+const activeGameStorageKey = "city-too-much.active-game";
 
-const readTimeline = () => {
-  try {
-    return JSON.parse(localStorage.getItem(timelineStorageKey) ?? "[]");
-  } catch {
-    return [];
-  }
-};
-
-const render = () => {
-  const entries = readTimeline();
+const renderEntries = (entries) => {
   if (entries.length === 0) {
-    timelineList.innerHTML = "<p>No turns recorded yet. Play the game to build a timeline.</p>";
+    timelineList.innerHTML = "<p>No turns recorded yet.</p>";
     return;
   }
 
@@ -20,13 +11,29 @@ const render = () => {
     .map(
       (entry) => `
       <article class="timeline-item">
-        <p><strong>Turn ${entry.turn}</strong></p>
+        <p><strong>Turn ${entry.turnIndex}</strong></p>
         <p>${entry.cardText}</p>
-        <p>Mood: ${entry.mood} | Stability: ${entry.stability}</p>
+        <p>Image: <code>${entry.imageUrl}</code></p>
       </article>
     `
     )
     .join("");
 };
 
-render();
+const init = async () => {
+  const gameId = localStorage.getItem(activeGameStorageKey);
+  if (!gameId) {
+    renderEntries([]);
+    return;
+  }
+
+  const response = await fetch(`/api/games/${gameId}/timeline`);
+  if (!response.ok) {
+    renderEntries([]);
+    return;
+  }
+  const payload = await response.json();
+  renderEntries(payload.timeline ?? []);
+};
+
+void init();

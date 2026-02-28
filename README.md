@@ -41,8 +41,8 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
 - Verification matrix: [`docs/verification-matrix.md`](docs/verification-matrix.md)
 - World-pack contract: [`worlds/README.md`](worlds/README.md)
 - Default world-pack: [`worlds/the-city-of-too-much.en.json`](worlds/the-city-of-too-much.en.json)
-- Gameplay shell prototype: [`ui/index.html`](ui/index.html)
-- Timeline prototype: [`ui/timeline.html`](ui/timeline.html)
+- Gameplay shell: [`ui/index.html`](ui/index.html)
+- Timeline view: [`ui/timeline.html`](ui/timeline.html)
 - Core scripts:
   - `npm run check:bootstrap`
   - `npm run lint`
