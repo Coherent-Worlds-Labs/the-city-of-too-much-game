@@ -1,7 +1,8 @@
 ---
 id: "202602282325-N4363C"
 title: "Restore motifs block position to bottom-right in scene"
-status: "TODO"
+result_summary: "Active Motifs is restored to the right-bottom corner."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T23:26:50.608Z"
   updated_by: "CODER"
   note: "Verified: Active Motifs is back in bottom-right in scene; no regressions in lint/tests."
-commit: null
-comments: []
+commit:
+  hash: "353fed82092227ec73521ff64fe368d9d99e6a74"
+  message: "🚧 N4363C ui: restore active motifs to bottom-right corner"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: Active Motifs position restored to bottom-right in scene after loading-stage centering change; lint/tests pass."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: Active Motifs is back in bottom-right in scene; no regressions in lint/tests."
+  -
+    type: "status"
+    at: "2026-02-28T23:27:16.282Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Active Motifs position restored to bottom-right in scene after loading-stage centering change; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T23:26:50.609Z"
+doc_updated_at: "2026-02-28T23:27:16.282Z"
 doc_updated_by: "CODER"
 description: "Fix regression where Active Motifs moved to the left after loading-stage centering; pin motifs block back to the bottom-right corner of the scene."
 id_source: "generated"
