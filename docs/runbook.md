@@ -63,6 +63,7 @@ OPENROUTER_DEBUG=true
   - confirm `OPENROUTER_API_KEY` is set in `.env` and restart runtime;
   - set `OPENROUTER_DEBUG=true` and verify server logs include
     `[openrouter:judge] request ...` and `[openrouter:image] request ...`;
+  - image generation is routed via OpenRouter `chat/completions` multimodal API.
   - ensure requests target the correct local port (avoid stale process on `3000`).
 - `rate limit exceeded for playTurn`:
   - increase limiter settings or back off rapid retries.

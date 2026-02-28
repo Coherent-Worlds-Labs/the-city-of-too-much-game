@@ -1,7 +1,24 @@
 import { saveImageBase64 } from "./image-storage.mjs";
 import { logDebugDetails, logDebugHeadline } from "./debug-log.mjs";
 
+const extractBase64FromDataUrl = (value) => {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const marker = "base64,";
+  const markerIndex = value.indexOf(marker);
+  if (markerIndex < 0) {
+    return null;
+  }
+  return value.slice(markerIndex + marker.length);
+};
+
 const extractImageBase64 = (payload) => {
+  const messageImageUrl = payload?.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+  const fromDataUrl = extractBase64FromDataUrl(messageImageUrl);
+  if (fromDataUrl) {
+    return fromDataUrl;
+  }
   if (payload?.data?.[0]?.b64_json) {
     return payload.data[0].b64_json;
   }
@@ -58,8 +75,16 @@ export const createImagePipeline = ({
     });
     const requestBody = {
       model,
-      prompt: finalPrompt,
-      size: "1024x1024",
+      messages: [
+        {
+          role: "user",
+          content: finalPrompt
+        }
+      ],
+      modalities: ["image", "text"],
+      image_config: {
+        aspect_ratio: "1:1"
+      },
       seed: seed ?? undefined
     };
 
@@ -68,7 +93,7 @@ export const createImagePipeline = ({
       logDebugDetails("request payload", requestBody);
     }
 
-    const response = await fetchFn(`${baseUrl}/images/generations`, {
+    const response = await fetchFn(`${baseUrl}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

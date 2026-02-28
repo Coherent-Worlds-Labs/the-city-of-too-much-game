@@ -24,13 +24,29 @@ test("createImagePipeline stores rendered image and returns URL", async () => {
   const tempDir = mkdtempSync(join(tmpdir(), "city-too-much-img-"));
   const fakePngBase64 = Buffer.from("fake-png-bytes").toString("base64");
 
-  const fetchFn = async () => ({
-    ok: true,
-    status: 200,
-    json: async () => ({
-      data: [{ b64_json: fakePngBase64 }]
-    })
-  });
+  const calls = [];
+  const fetchFn = async (url, init) => {
+    calls.push({ url, init });
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        choices: [
+          {
+            message: {
+              images: [
+                {
+                  image_url: {
+                    url: `data:image/png;base64,${fakePngBase64}`
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      })
+    };
+  };
 
   try {
     const pipeline = createImagePipeline({
@@ -51,6 +67,8 @@ test("createImagePipeline stores rendered image and returns URL", async () => {
     assert.equal(result.imageUrl.endsWith("game-01-turn-003.png"), true);
     const bytes = readFileSync(result.imagePath);
     assert.equal(bytes.length > 0, true);
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].url.endsWith("/chat/completions"), true);
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
