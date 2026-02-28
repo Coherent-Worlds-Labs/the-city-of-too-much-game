@@ -1,7 +1,8 @@
 ---
 id: "202602282339-CQE8HR"
 title: "Move axis labels to world-pack configuration"
-status: "TODO"
+result_summary: "Axis labels are configurable per world pack and fully wired into UI."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T23:42:34.988Z"
   updated_by: "CODER"
   note: "Verified: axis labels are loaded from world pack via runtime world payload and rendered in header and scene overlay with fallback defaults; lint and tests pass."
-commit: null
-comments: []
+commit:
+  hash: "929a51d5adf4b86901f08aeeaac42a1c04f9761a"
+  message: "🚧 CQE8HR code: source axis labels from world-pack configuration"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: axis labels are now world-pack driven (ui.axisLabels), exposed via runtime world payload, and rendered in both header and scene overlay with fallback defaults; lint and tests pass."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: axis labels are loaded from world pack via runtime world payload and rendered in header and scene overlay with fallback defaults; lint and tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T23:43:21.021Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: axis labels are now world-pack driven (ui.axisLabels), exposed via runtime world payload, and rendered in both header and scene overlay with fallback defaults; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T23:42:34.989Z"
+doc_updated_at: "2026-02-28T23:43:21.021Z"
 doc_updated_by: "CODER"
 description: "Add axis label fields to world packs and wire UI labels (header and scene overlay) to world-provided values via runtime API state payload."
 id_source: "generated"
