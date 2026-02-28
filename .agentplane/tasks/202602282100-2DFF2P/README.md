@@ -1,7 +1,8 @@
 ---
 id: "202602282100-2DFF2P"
 title: "Keep Genesis only and add completed-world session switching"
-status: "DOING"
+result_summary: "Genesis is the only initial snapshot and finished worlds are directly reopenable from the UI."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T21:04:46.314Z"
   updated_by: "CODER"
   note: "Verified: History now starts with Genesis only (no Initial state duplicate), and World Sessions picker allows reopening completed worlds; lint/tests pass."
-commit: null
+commit:
+  hash: "a59452082d2b81dd36cc01aee7c6c03ae84b6aec"
+  message: "🚧 2DFF2P ui/api: keep genesis only and add completed-world switching"
 comments:
   -
     author: "CODER"
     body: "Start: Implementing Genesis-only History and session picker for switching to completed worlds."
+  -
+    author: "CODER"
+    body: "Verified: History now uses Genesis-only turn-0 entry and UI can switch to completed worlds via session picker backed by GET /api/games; lint/tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: History now starts with Genesis only (no Initial state duplicate), and World Sessions picker allows reopening completed worlds; lint/tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T21:05:16.274Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: History now uses Genesis-only turn-0 entry and UI can switch to completed worlds via session picker backed by GET /api/games; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T21:04:46.316Z"
+doc_updated_at: "2026-02-28T21:05:16.274Z"
 doc_updated_by: "CODER"
 description: "Remove duplicate Initial state entry from History and add UI/API support to open previously finished worlds from a session list."
 id_source: "generated"
