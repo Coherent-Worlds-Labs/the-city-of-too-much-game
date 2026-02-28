@@ -76,10 +76,19 @@ test("runtime api orchestrates createGame and playTurn", async () => {
 
     assert.equal(played.game.current_turn, 1);
     assert.equal(played.turn.card_id, firstCard.id);
-    assert.equal(played.timeline.length, 1);
+    assert.equal(played.timeline.length, 2);
+    assert.equal(played.timeline[0].turnIndex, 0);
+    assert.equal(played.timeline[1].turnIndex, 1);
     assert.equal(imageCalls.length, 2);
     assert.equal(imageCalls[0].turnIndex, 0);
     assert.equal(imageCalls[1].turnIndex, 1);
+
+    const resumed = runtime.getGameState(created.game.game_id);
+    assert.equal(resumed.game.game_id, created.game.game_id);
+    assert.equal(resumed.hand.length, 3);
+    assert.equal(resumed.history.length, 1);
+    assert.equal(resumed.timeline.length, 2);
+    assert.equal(resumed.seedScene?.imageUrl, "/assets/test-turn.png");
   } finally {
     store.close();
     rmSync(tempDir, { recursive: true, force: true });

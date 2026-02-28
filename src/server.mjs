@@ -118,7 +118,7 @@ const server = createServer(async (req, res) => {
       sendJson(res, 200, {
         status: "ok",
         service: "the-city-of-too-much-game",
-        endpoints: ["/api/games", "/api/turn", "/api/games/:id/history", "/api/games/:id/timeline"]
+        endpoints: ["/api/games", "/api/turn", "/api/games/:id/state", "/api/games/:id/history", "/api/games/:id/timeline"]
       });
       return;
     }
@@ -137,6 +137,12 @@ const server = createServer(async (req, res) => {
     if (req.method === "GET" && pathname.startsWith("/api/games/") && pathname.endsWith("/history")) {
       const gameId = pathname.split("/")[3];
       sendJson(res, 200, { history: runtimeApi.getHistory(gameId) });
+      return;
+    }
+
+    if (req.method === "GET" && pathname.startsWith("/api/games/") && pathname.endsWith("/state")) {
+      const gameId = pathname.split("/")[3];
+      sendJson(res, 200, runtimeApi.getGameState(gameId));
       return;
     }
 

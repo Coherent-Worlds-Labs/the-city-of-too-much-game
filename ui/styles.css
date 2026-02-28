@@ -75,6 +75,13 @@ h1 {
   text-decoration: none;
 }
 
+.restart-link {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
 .axis-track {
   position: relative;
   width: 280px;
@@ -197,10 +204,39 @@ h1 {
 }
 
 .history li {
+  margin: 0;
+}
+
+.history-entry {
+  width: 100%;
+  text-align: left;
   border: 1px solid #d8d0c6;
   border-left: 4px solid var(--accent-cool);
   border-radius: 10px;
   padding: 8px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+}
+
+.history-entry span {
+  color: #585048;
+}
+
+.history-entry.is-active {
+  border-color: var(--accent-warm);
+  border-left-color: var(--accent-warm);
+  box-shadow: 0 6px 14px rgba(182, 81, 46, 0.16);
+}
+
+.history-empty {
+  border: 1px dashed #d8d0c6;
+  border-radius: 10px;
+  padding: 8px;
+  color: #6f675d;
   font-size: 0.9rem;
 }
 

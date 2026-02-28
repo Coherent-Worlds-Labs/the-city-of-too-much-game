@@ -38,6 +38,11 @@ export const createGameService = ({
     };
   };
 
+  const getGame = (gameId) => store.getGame(gameId);
+
+  const setSeedScene = ({ gameId, imageUrl, imagePrompt }) =>
+    store.setSeedScene({ gameId, imageUrl, imagePrompt });
+
   const playTurn = ({
     gameId,
     card,
@@ -141,16 +146,31 @@ export const createGameService = ({
   };
 
   const getTimeline = (gameId) => {
-    return store.getTurns(gameId).map((turn) => ({
+    const game = store.getGame(gameId);
+    const timeline = [];
+    if (game?.seed_image_url) {
+      timeline.push({
+        turnIndex: 0,
+        imageUrl: game.seed_image_url,
+        imagePrompt: game.seed_image_prompt ?? "",
+        cardText: "Seed scene"
+      });
+    }
+    return [
+      ...timeline,
+      ...store.getTurns(gameId).map((turn) => ({
       turnIndex: turn.turn_index,
       imageUrl: turn.image_url,
       imagePrompt: turn.image_prompt,
       cardText: turn.card_text
-    }));
+      }))
+    ];
   };
 
   return {
     createGame,
+    getGame,
+    setSeedScene,
     playTurn,
     getHistory,
     getTimeline

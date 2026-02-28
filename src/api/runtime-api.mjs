@@ -48,22 +48,45 @@ export const createRuntimeApi = ({
       previousImageHint: null,
       seed: created.game.seed ?? seed ?? null
     });
+    const updatedGame = gameService.setSeedScene({
+      gameId: created.game.game_id,
+      imageUrl: seedScene.imageUrl,
+      imagePrompt: seedScene.imagePrompt
+    });
 
     return {
-      game: created.game,
-      hand: handForTurn(created.game.current_turn),
+      game: updatedGame,
+      hand: handForTurn(updatedGame.current_turn),
       seedScene: {
         imageUrl: seedScene.imageUrl,
         imagePrompt: seedScene.imagePrompt
       },
-      timeline: [
-        {
-          turnIndex: 0,
-          imageUrl: seedScene.imageUrl,
-          imagePrompt: seedScene.imagePrompt,
-          cardText: "Seed scene"
-        }
-      ],
+      timeline: gameService.getTimeline(updatedGame.game_id),
+      world: {
+        worldId: worldPack.worldId,
+        title: worldPack.metadata.title
+      }
+    };
+  };
+
+  const getGameState = (gameId) => {
+    const game = gameService.getGame(gameId);
+    if (!game) {
+      throw new Error(`game not found: ${gameId}`);
+    }
+    const timeline = gameService.getTimeline(gameId);
+    return {
+      game,
+      hand: handForTurn(game.current_turn),
+      history: gameService.getHistory(gameId),
+      timeline,
+      seedScene:
+        timeline.length > 0 && timeline[0].turnIndex === 0
+          ? {
+              imageUrl: timeline[0].imageUrl,
+              imagePrompt: timeline[0].imagePrompt
+            }
+          : null,
       world: {
         worldId: worldPack.worldId,
         title: worldPack.metadata.title
@@ -125,6 +148,7 @@ export const createRuntimeApi = ({
 
   return {
     createGame,
+    getGameState,
     playTurn,
     getHistory,
     getTimeline

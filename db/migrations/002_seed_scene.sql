@@ -1,0 +1,2 @@
+-- Seed scene columns are ensured at runtime in sqlite-store.mjs for compatibility
+-- with SQLite variants that do not support ALTER TABLE ... ADD COLUMN IF NOT EXISTS.

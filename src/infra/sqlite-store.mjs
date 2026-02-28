@@ -12,6 +12,14 @@ const listMigrationFiles = (dir) =>
     .filter((file) => extname(file) === ".sql")
     .sort((a, b) => a.localeCompare(b));
 
+const ensureGameColumn = (db, columnName, columnType) => {
+  const rows = db.prepare("PRAGMA table_info(games);").all();
+  const hasColumn = rows.some((row) => row.name === columnName);
+  if (!hasColumn) {
+    db.exec(`ALTER TABLE games ADD COLUMN ${columnName} ${columnType};`);
+  }
+};
+
 export const createSqliteStore = ({
   dbPath = "data/the-city-of-too-much.db",
   migrationsDir = "db/migrations"
@@ -27,6 +35,9 @@ export const createSqliteStore = ({
     const sql = readFileSync(join(resolve(migrationsDir), file), "utf8");
     db.exec(sql);
   }
+
+  ensureGameColumn(db, "seed_image_url", "TEXT");
+  ensureGameColumn(db, "seed_image_prompt", "TEXT");
 
   const insertGameStmt = db.prepare(`
     INSERT INTO games (game_id, world_id, seed, status, current_turn, created_at, updated_at)
@@ -45,8 +56,14 @@ export const createSqliteStore = ({
   `);
 
   const selectGameStmt = db.prepare(`
-    SELECT game_id, world_id, seed, status, current_turn, created_at, updated_at
+    SELECT game_id, world_id, seed, status, current_turn, seed_image_url, seed_image_prompt, created_at, updated_at
       FROM games
+      WHERE game_id = ?
+  `);
+
+  const setSeedSceneStmt = db.prepare(`
+    UPDATE games
+      SET seed_image_url = ?, seed_image_prompt = ?, updated_at = ?
       WHERE game_id = ?
   `);
 
@@ -109,12 +126,18 @@ export const createSqliteStore = ({
     };
   };
 
+  const setSeedScene = ({ gameId, imageUrl, imagePrompt }) => {
+    setSeedSceneStmt.run(imageUrl, imagePrompt, nowIso(), gameId);
+    return getGame(gameId);
+  };
+
   const close = () => db.close();
 
   return {
     createGame,
     getGame,
     getTurns,
+    setSeedScene,
     appendTurn,
     close
   };

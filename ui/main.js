@@ -4,6 +4,7 @@ const state = {
   hand: [],
   history: [],
   timeline: [],
+  timelineCursor: -1,
   selectedCardId: null,
   axis: 0.5,
   direction: "balanced",
@@ -31,7 +32,8 @@ const elements = {
   overlay: document.getElementById("outcome-overlay"),
   outcomeTitle: document.getElementById("outcome-title"),
   outcomeText: document.getElementById("outcome-text"),
-  restartBtn: document.getElementById("restart-btn")
+  restartBtn: document.getElementById("restart-btn"),
+  headerRestartBtn: document.getElementById("header-restart-btn")
 };
 
 const loadingStages = ["Interpreting the city...", "Rendering the new reality..."];
@@ -90,6 +92,36 @@ const persistGameId = () => {
   }
 };
 
+const clearPersistedGameId = () => {
+  try {
+    localStorage.removeItem(activeGameStorageKey);
+  } catch {
+    // ignore local storage errors
+  }
+};
+
+const readPersistedGameId = () => {
+  try {
+    const saved = localStorage.getItem(activeGameStorageKey);
+    return saved && saved.trim() ? saved.trim() : null;
+  } catch {
+    return null;
+  }
+};
+
+const normalizeOutcome = (status) => {
+  if (!status || status === "active") {
+    return "active";
+  }
+  if (status === "survived") {
+    return "survived";
+  }
+  if (status === "protocol-collapse" || status === "carnival-collapse" || status === "incoherence-collapse") {
+    return status;
+  }
+  return "active";
+};
+
 const renderIndicator = () => {
   elements.axisDot.style.left = `calc(${state.axis * 100}% - 9px)`;
 };
@@ -116,8 +148,13 @@ const renderScene = () => {
 };
 
 const renderMotifs = () => {
-  const latest = state.history[0]?.judgeResult?.new_state?.active_motifs ?? [];
-  const items = latest
+  const selectedTurnIndex = state.timeline[state.timelineCursor]?.turnIndex ?? null;
+  const sourceTurn =
+    selectedTurnIndex && selectedTurnIndex > 0
+      ? state.history.find((entry) => entry.turnIndex === selectedTurnIndex) ?? null
+      : state.history.at(-1) ?? null;
+  const motifs = sourceTurn?.judgeResult?.new_state?.active_motifs ?? [];
+  const items = motifs
     .slice(0, 6)
     .map((item) => {
       if (typeof item === "string") {
@@ -155,13 +192,33 @@ const renderStatus = () => {
 };
 
 const renderHistory = () => {
-  elements.historyList.innerHTML = state.history
-    .slice(0, 10)
-    .map(
-      (entry) =>
-        `<li><strong>Turn ${entry.turnIndex}</strong><br>${entry.card.text}</li>`
-    )
+  if (state.timeline.length === 0) {
+    elements.historyList.innerHTML = "<li class=\"history-empty\">No snapshots yet.</li>";
+    return;
+  }
+  elements.historyList.innerHTML = state.timeline
+    .map((entry, index) => {
+      const title = entry.turnIndex === 0 ? "Genesis" : `Turn ${entry.turnIndex}`;
+      const text = entry.cardText ?? (entry.turnIndex === 0 ? "Seed scene" : "Scene update");
+      const active = state.timelineCursor === index ? "is-active" : "";
+      return `<li><button type="button" class="history-entry ${active}" data-index="${index}"><strong>${title}</strong><span>${text}</span></button></li>`;
+    })
     .join("");
+  elements.historyList.querySelectorAll("button[data-index]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.index);
+      if (!Number.isInteger(index)) {
+        return;
+      }
+      const entry = state.timeline[index];
+      if (!entry) {
+        return;
+      }
+      state.timelineCursor = index;
+      state.sceneImageUrl = entry.imageUrl ?? null;
+      render();
+    });
+  });
 };
 
 const renderCards = () => {
@@ -255,28 +312,57 @@ const hydrateFromTurn = (turn) => {
   state.stability = newState.coherence_level >= 0.5 ? "High" : "Low";
 };
 
+const applyLoadedGameState = (payload) => {
+  const game = payload?.game ?? null;
+  if (!game) {
+    throw new Error("invalid game payload: missing game");
+  }
+
+  state.gameId = game.game_id;
+  state.worldTitle = payload?.world?.title ?? state.worldTitle;
+  state.turn = game.current_turn;
+  state.hand = payload?.hand ?? [];
+  state.history = payload?.history ?? [];
+  state.timeline = payload?.timeline ?? [];
+  state.selectedCardId = null;
+  state.outcome = normalizeOutcome(game.status);
+
+  if (state.history.length > 0) {
+    hydrateFromTurn(state.history.at(-1));
+  } else {
+    state.axis = 0.5;
+    state.direction = "balanced";
+    state.mood = "Tense Balance";
+    state.stability = "High";
+  }
+
+  if (state.timeline.length > 0) {
+    state.timelineCursor = state.timeline.length - 1;
+    state.sceneImageUrl = state.timeline[state.timelineCursor].imageUrl ?? null;
+  } else {
+    state.timelineCursor = -1;
+    state.sceneImageUrl = payload?.seedScene?.imageUrl ?? null;
+  }
+
+  elements.enactBtn.disabled = true;
+  persistGameId();
+};
+
 const createGame = async () => {
   const created = await api("/api/games", {
     method: "POST",
     body: JSON.stringify({})
   });
-  state.gameId = created.game.game_id;
-  state.worldTitle = created.world.title;
-  state.turn = created.game.current_turn;
-  state.hand = created.hand;
-  state.history = [];
-  state.timeline = created.timeline ?? [];
-  state.sceneImageUrl = created.seedScene?.imageUrl ?? null;
-  state.selectedCardId = null;
-  state.axis = 0.5;
-  state.direction = "balanced";
-  state.mood = "Tense Balance";
-  state.stability = "High";
-  state.outcome = "active";
+  applyLoadedGameState({
+    ...created,
+    history: []
+  });
   state.isProcessing = false;
-  elements.enactBtn.disabled = true;
-  persistGameId();
-  render();
+};
+
+const resumeGame = async (gameId) => {
+  const loaded = await api(`/api/games/${gameId}/state`);
+  applyLoadedGameState(loaded);
 };
 
 const enactSelectedCard = async () => {
@@ -305,6 +391,7 @@ const enactSelectedCard = async () => {
     state.turn = played.game.current_turn;
     state.hand = played.hand;
     state.timeline = played.timeline;
+    state.timelineCursor = state.timeline.length - 1;
     state.sceneImageUrl = played.timeline.at(-1)?.imageUrl ?? state.sceneImageUrl;
     state.history = await api(`/api/games/${state.gameId}/history`).then((payload) => payload.history);
     hydrateFromTurn(played.turn);
@@ -333,7 +420,18 @@ const enactSelectedCard = async () => {
 };
 
 const restart = async () => {
-  await createGame();
+  state.isProcessing = true;
+  elements.loadingStage.classList.remove("hidden");
+  elements.loadingStage.textContent = bootstrapStage;
+  render();
+  try {
+    clearPersistedGameId();
+    await createGame();
+  } finally {
+    state.isProcessing = false;
+    elements.loadingStage.classList.add("hidden");
+    render();
+  }
 };
 
 const init = async () => {
@@ -342,10 +440,22 @@ const init = async () => {
   elements.loadingStage.textContent = bootstrapStage;
   render();
   try {
-    await createGame();
+    const persistedGameId = readPersistedGameId();
+    if (persistedGameId) {
+      await resumeGame(persistedGameId);
+    } else {
+      await createGame();
+    }
   } catch (error) {
-    elements.loadingStage.textContent = `Startup failed: ${error.message}`;
-    await wait(1500);
+    if (readPersistedGameId()) {
+      clearPersistedGameId();
+      elements.loadingStage.textContent = "Saved game is unavailable. Starting a new city...";
+      await wait(700);
+      await createGame();
+    } else {
+      elements.loadingStage.textContent = `Startup failed: ${error.message}`;
+      await wait(1500);
+    }
   } finally {
     state.isProcessing = false;
     elements.loadingStage.classList.add("hidden");
@@ -357,6 +467,9 @@ elements.enactBtn.addEventListener("click", () => {
   void enactSelectedCard();
 });
 elements.restartBtn.addEventListener("click", () => {
+  void restart();
+});
+elements.headerRestartBtn.addEventListener("click", () => {
   void restart();
 });
 
