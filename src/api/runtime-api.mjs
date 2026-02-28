@@ -24,6 +24,32 @@ const buildSeedScenePrompt = (worldPack) =>
     "Avoid extreme protocol or carnival drift in this initial frame."
   ].join(" ");
 
+const normalizePromptText = (value, maxChars) =>
+  String(value ?? "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, maxChars);
+
+const buildHistoryContext = (history, maxTurns = 6) => {
+  const turns = Array.isArray(history) ? history.slice(-maxTurns) : [];
+  if (turns.length === 0) {
+    return null;
+  }
+  return turns
+    .map((turn) => {
+      const turnLabel = Number.isInteger(turn?.turnIndex) ? `T${turn.turnIndex}` : "T?";
+      const cardText = normalizePromptText(turn?.card?.text ?? "unknown card", 64);
+      const newState = turn?.judgeResult?.new_state ?? {};
+      const direction = normalizePromptText(newState?.dominant_direction ?? "balanced", 24);
+      const absurdity =
+        Number.isFinite(newState?.absurdity_index) ? Number(newState.absurdity_index).toFixed(2) : "n/a";
+      const coherence =
+        Number.isFinite(newState?.coherence_level) ? Number(newState.coherence_level).toFixed(2) : "n/a";
+      return `${turnLabel}:${cardText} -> ${direction} (a=${absurdity}, c=${coherence})`;
+    })
+    .join(" | ");
+};
+
 export const createRuntimeApi = ({
   store,
   worldPack,
@@ -40,10 +66,7 @@ export const createRuntimeApi = ({
   const handForTurn = createHandProvider(worldPack);
 
   const compactImagePrompt = (value) =>
-    String(value ?? "")
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, imagePromptMaxChars);
+    normalizePromptText(value, imagePromptMaxChars);
 
   const createGame = async ({ seed = null } = {}) => {
     const created = gameService.createGame({ seed });
@@ -120,11 +143,9 @@ export const createRuntimeApi = ({
 
     const judgeEval = await judge.evaluateTurn(turnProposal, worldPack);
     const previousTimeline = gameService.getTimeline(gameId);
-    const previousHint =
-      previousTimeline.length > 0
-        ? `previous image url ${previousTimeline.at(-1).imageUrl}`
-        : null;
+    const previousHint = previousTimeline.length > 0 ? "same framing and camera family as previous frame" : null;
     const previousImageUrl = previousTimeline.length > 0 ? previousTimeline.at(-1).imageUrl : null;
+    const historyContext = buildHistoryContext(history);
 
     const image = await imagePipeline.renderTurnImage({
       worldPack,
@@ -132,6 +153,7 @@ export const createRuntimeApi = ({
       turnIndex: history.length + 1,
       imagePrompt: compactImagePrompt(judgeEval.judgeResult.image_prompt),
       previousImageHint: previousHint,
+      historyContext,
       previousImageUrl,
       absurdityIndex: judgeEval.judgeResult?.new_state?.absurdity_index ?? null,
       dominantDirection: judgeEval.judgeResult?.new_state?.dominant_direction ?? "balanced"

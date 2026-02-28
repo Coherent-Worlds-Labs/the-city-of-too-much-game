@@ -15,8 +15,24 @@ test("buildContinuityPrompt injects compact anchors and constraints", () => {
   });
 
   assert.equal(prompt.includes("Anchors:"), true);
+  assert.equal(prompt.includes("Evolution trail:"), true);
   assert.equal(prompt.includes("Avoid:"), true);
   assert.equal(prompt.includes("town hall clock tower unchanged"), true);
+});
+
+test("buildContinuityPrompt carries multi-turn history context as cumulative trail", () => {
+  const worldPack = loadDefaultWorldPack();
+  const prompt = buildContinuityPrompt({
+    basePrompt: "Photorealistic city square.",
+    worldPack,
+    previousImageHint: "same framing and camera family as previous frame",
+    historyContext:
+      "T1:paperwork desks appear -> protocol (a=0.35, c=0.82) | T2:street parade expands -> carnival (a=0.66, c=0.77)"
+  });
+
+  assert.equal(prompt.includes("Evolution trail:"), true);
+  assert.equal(prompt.includes("T1:paperwork desks appear"), true);
+  assert.equal(prompt.includes("Treat this as cumulative context"), true);
 });
 
 test("buildContinuityPrompt emphasizes strict realism for protocol direction", () => {

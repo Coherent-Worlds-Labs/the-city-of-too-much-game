@@ -102,6 +102,7 @@ export const buildContinuityPrompt = ({
   basePrompt,
   worldPack,
   previousImageHint,
+  historyContext = null,
   absurdityIndex = null,
   dominantDirection = "balanced"
 }) => {
@@ -114,12 +115,16 @@ export const buildContinuityPrompt = ({
   const previousClause = previousImageHint
     ? `Match previous frame: ${normalizeCompactText(previousImageHint, 120)}.`
     : "Keep continuity with prior city state.";
+  const historyClause = historyContext
+    ? `Evolution trail: ${normalizeCompactText(historyContext, 260)}. Treat this as cumulative context and preserve visible motif layering from earlier turns.`
+    : "Evolution trail: no prior turns; establish stable baseline motifs only.";
 
   return [
     normalizeCompactText(basePrompt, 460),
     `Anchors: ${anchors}.`,
     `Style: ${style}.`,
     previousClause,
+    historyClause,
     `Continuity: ${continuity}.`,
     axisDirective,
     `Avoid: ${negative}.`
@@ -237,6 +242,7 @@ export const createImagePipeline = ({
     turnIndex,
     imagePrompt,
     previousImageHint = null,
+    historyContext = null,
     previousImageUrl = null,
     absurdityIndex = null,
     dominantDirection = "balanced",
@@ -249,6 +255,7 @@ export const createImagePipeline = ({
       basePrompt: imagePrompt,
       worldPack,
       previousImageHint,
+      historyContext,
       absurdityIndex,
       dominantDirection
     });
