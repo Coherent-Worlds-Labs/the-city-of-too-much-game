@@ -1,9 +1,21 @@
 import crypto from "node:crypto";
 import { createSession, applyTurnResult } from "../domain/game-engine.mjs";
+import {
+  computeTurnFingerprint,
+  enforceHistoryLimit
+} from "../infra/reliability.mjs";
 
 const makeGameId = () => `game-${crypto.randomUUID()}`;
 
-export const createGameService = ({ store, worldPack }) => {
+export const createGameService = ({
+  store,
+  worldPack,
+  reliability = {
+    rateLimiter: null,
+    dedupeCache: null,
+    maxHistoryEntries: 120
+  }
+}) => {
   if (!store) {
     throw new Error("store is required.");
   }
@@ -31,8 +43,16 @@ export const createGameService = ({ store, worldPack }) => {
     card,
     judgeResult,
     imagePrompt,
-    imageUrl
+    imageUrl,
+    expectedTurn = null
   }) => {
+    if (reliability.rateLimiter) {
+      const rate = reliability.rateLimiter.check(gameId);
+      if (!rate.allowed) {
+        throw new Error("rate limit exceeded for playTurn");
+      }
+    }
+
     const game = store.getGame(gameId);
     if (!game) {
       throw new Error(`game not found: ${gameId}`);
@@ -42,6 +62,25 @@ export const createGameService = ({ store, worldPack }) => {
     }
 
     const turns = store.getTurns(gameId);
+    const expectedTurnIndex = expectedTurn ?? game.current_turn;
+    const dedupeFingerprint = computeTurnFingerprint({
+      gameId,
+      historyTexts: [`turn:${expectedTurnIndex}`],
+      cardText: card.text
+    });
+
+    if (reliability.dedupeCache) {
+      const cached = reliability.dedupeCache.get(dedupeFingerprint);
+      if (cached) {
+        return cached;
+      }
+    }
+    if (expectedTurnIndex !== game.current_turn) {
+      throw new Error(`stale turn request: expected ${expectedTurnIndex}, current ${game.current_turn}`);
+    }
+
+    enforceHistoryLimit(turns, reliability.maxHistoryEntries ?? 120);
+
     const session = {
       worldId: game.world_id,
       turnIndex: game.current_turn,
@@ -75,11 +114,17 @@ export const createGameService = ({ store, worldPack }) => {
       nextStatus: applied.session.status
     });
 
-    return {
+    const result = {
       game: persisted.game,
       turn: persisted.turn,
       session: applied.session
     };
+
+    if (reliability.dedupeCache) {
+      reliability.dedupeCache.set(dedupeFingerprint, result);
+    }
+
+    return result;
   };
 
   const getHistory = (gameId) => {

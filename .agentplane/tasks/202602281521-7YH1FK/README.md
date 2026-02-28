@@ -1,7 +1,7 @@
 ---
 id: "202602281521-7YH1FK"
 title: "System reliability, safeguards, and cost controls"
-status: "TODO"
+status: "DOING"
 priority: "med"
 owner: "CODER"
 depends_on:
@@ -10,49 +10,59 @@ tags:
   - "code"
 verify: []
 plan_approval:
-  state: "pending"
-  updated_at: null
-  updated_by: null
-  note: null
+  state: "approved"
+  updated_at: "2026-02-28T16:12:55.424Z"
+  updated_by: "ORCHESTRATOR"
+  note: "Approved reliability and safeguard implementation scope."
 verification:
-  state: "pending"
-  updated_at: null
-  updated_by: null
-  note: null
+  state: "ok"
+  updated_at: "2026-02-28T16:15:48.660Z"
+  updated_by: "CODER"
+  note: "Reliability safeguards verified: in-memory rate limiting, dedupe fingerprint cache, stale-turn protection, retry-ready utility helpers, and passing reliability tests."
 commit: null
-comments: []
-events: []
+comments:
+  -
+    author: "CODER"
+    body: "Start: implementing reliability safeguards including rate limiting, dedupe, retry utility, and history guard integration."
+events:
+  -
+    type: "status"
+    at: "2026-02-28T16:12:55.463Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DOING"
+    note: "Start: implementing reliability safeguards including rate limiting, dedupe, retry utility, and history guard integration."
+  -
+    type: "verify"
+    at: "2026-02-28T16:15:48.660Z"
+    author: "CODER"
+    state: "ok"
+    note: "Reliability safeguards verified: in-memory rate limiting, dedupe fingerprint cache, stale-turn protection, retry-ready utility helpers, and passing reliability tests."
 doc_version: 2
-doc_updated_at: "2026-02-28T15:21:35.908Z"
+doc_updated_at: "2026-02-28T16:15:48.661Z"
 doc_updated_by: "CODER"
 description: "Add rate limiting, deduplication by input hash, timeout/retry policy, error surfaces, and guardrails for long histories and budget-sensitive operations."
 id_source: "generated"
 ---
 ## Summary
 
+Implement reliability safeguards including rate limiting, deduplication, retry utilities, and history guardrails for cost-aware and stable turn processing.
 
 ## Scope
 
+In scope: rate limiter utility, turn fingerprint dedupe, retry helper, history-size guard, and service-level integration/tests. Out of scope: distributed production infra controls.
 
 ## Plan
 
+1. Add reliability utility module: in-memory rate limiter, deterministic fingerprint helper, retry wrapper, and history-size guard.
 
 ## Risks
 
+- Risk: in-memory rate limiter and cache are process-local and reset on restart.
 
 ## Verify Steps
 
-### Scope
-- Primary tag: `code`
-
-### Checks
-- Add explicit checks/commands for this task before approval.
-
-### Evidence / Commands
-- Record executed commands and key outputs.
-
-### Pass criteria
-- Steps are reproducible and produce expected results.
+1. Run `node --test` and confirm reliability tests pass.
 
 ## Verification
 
@@ -61,6 +71,24 @@ id_source: "generated"
 ### Results
 
 <!-- BEGIN VERIFICATION RESULTS -->
+#### 2026-02-28T16:15:48.660Z — VERIFY — ok
+
+By: CODER
+
+Note: Reliability safeguards verified: in-memory rate limiting, dedupe fingerprint cache, stale-turn protection, retry-ready utility helpers, and passing reliability tests.
+
+VerifyStepsRef: doc_version=2, doc_updated_at=2026-02-28T16:15:36.914Z, excerpt_hash=sha256:690195bea4b877dfd359dbc9e908018c2db3acf1527c65161f7966009075b4a8
+
 <!-- END VERIFICATION RESULTS -->
 
 ## Rollback Plan
+
+1. Revert reliability commit(s).
+
+## Context
+
+Core game flow is complete. This task hardens runtime behavior by preventing accidental duplicate processing, controlling request burst rates, and adding reusable retry/error utilities.
+
+## Notes
+
+### Approvals / Overrides
