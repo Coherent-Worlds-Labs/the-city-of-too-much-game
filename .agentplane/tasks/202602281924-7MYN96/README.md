@@ -1,7 +1,8 @@
 ---
 id: "202602281924-7MYN96"
 title: "Constrain History panel height with vertical scroll"
-status: "DOING"
+result_summary: "History panel no longer expands indefinitely and now scrolls vertically."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T19:25:43.672Z"
   updated_by: "CODER"
   note: "Verified: History panel now has bounded height and vertical scrolling; lint and tests pass."
-commit: null
+commit:
+  hash: "b83c48f7d4c7dd7c613588785991d7bc7ee73100"
+  message: "🚧 7MYN96 ui: make history panel vertically scrollable"
 comments:
   -
     author: "CODER"
     body: "Start: Implementing bounded History panel height with vertical scroll while preserving responsive behavior."
+  -
+    author: "CODER"
+    body: "Verified: Bounded History panel height with internal vertical scrolling implemented in UI styles; lint and tests passed."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: History panel now has bounded height and vertical scrolling; lint and tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T19:26:02.828Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Bounded History panel height with internal vertical scrolling implemented in UI styles; lint and tests passed."
 doc_version: 2
-doc_updated_at: "2026-02-28T19:25:43.673Z"
+doc_updated_at: "2026-02-28T19:26:02.828Z"
 doc_updated_by: "CODER"
 description: "Prevent History panel from growing indefinitely by introducing bounded height and vertical scrolling for entries."
 id_source: "generated"
