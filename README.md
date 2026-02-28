@@ -1,4 +1,4 @@
-![The-City-of-Too-Much Header](docs/assets/header.png)
+![The-City-of-Too-Much Header](docs/assets/the-city-of-too-much-logo.png)
 
 
 # The City of Too Much
