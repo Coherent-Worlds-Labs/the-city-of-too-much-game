@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "worldId": "the-city-of-too-much",
+  "locale": "en",
+  "metadata": {
+    "title": "The City of Too Much",
+    "subtitle": "A city balancing between Protocol and Carnival",
+    "summary": "Manage a living city that drifts between rigid order and absurd excess. Keep tension alive without collapsing into sterility or disintegration.",
+    "startState": {
+      "direction": "balanced",
+      "stability": "tense",
+      "tone": "neutral"
+    },
+    "victoryCondition": "Sustain interpretable tension for the required number of turns.",
+    "collapseConditions": [
+      "Protocol collapse: the city becomes sterile, over-regulated, and unable to evolve.",
+      "Carnival collapse: coherence dissolves under excess, contradiction, and semantic overload."
+    ]
+  },
+  "ui": {
+    "headerTitle": "The City of Too Much",
+    "axisLabels": {
+      "left": "Protocol",
+      "right": "Carnival"
+    },
+    "directionLabels": {
+      "protocol": "Leaning toward Protocol",
+      "balanced": "Tense Balance",
+      "carnival": "Growing Carnival"
+    },
+    "statusLabels": {
+      "mood": "City Mood",
+      "stability": "Structural Stability",
+      "emergingThemes": "Emerging Themes"
+    },
+    "actionLabels": {
+      "enact": "Enact",
+      "restart": "Restart",
+      "timeline": "View Evolution Timeline"
+    },
+    "loadingStages": [
+      "Interpreting the city...",
+      "Rendering the new reality..."
+    ]
+  },
+  "prompt": {
+    "persistentAnchors": [
+      "same European city square",
+      "same town hall with clock tower",
+      "cobblestone ground",
+      "central fountain",
+      "cafes around the square"
+    ],
+    "style": [
+      "photorealistic",
+      "documentary photography",
+      "35mm lens",
+      "natural daylight",
+      "realistic shadows"
+    ],
+    "continuityRules": [
+      "same city environment each turn",
+      "gradual evolution only",
+      "motif accumulation must be visible"
+    ],
+    "negativeConstraints": [
+      "no cartoon style",
+      "no fantasy style",
+      "no CGI look",
+      "no watermark",
+      "no broken text artifacts"
+    ]
+  },
+  "motifs": [
+    {
+      "id": "regulation-language",
+      "name": "Regulation Language",
+      "direction": "protocol",
+      "description": "Formal rules and official restrictions become everyday speech."
+    },
+    {
+      "id": "avian-governance",
+      "name": "Avian Governance",
+      "direction": "carnival",
+      "description": "Birds gain civic agency and shape municipal life."
+    },
+    {
+      "id": "symmetry-obsession",
+      "name": "Symmetry Obsession",
+      "direction": "protocol",
+      "description": "Geometry, uniformity, and controlled structure dominate the city."
+    },
+    {
+      "id": "managed-spontaneity",
+      "name": "Managed Spontaneity",
+      "direction": "mixed",
+      "description": "Spontaneity is institutionalized, creating paradoxical tension."
+    },
+    {
+      "id": "civic-absurdity",
+      "name": "Civic Absurdity",
+      "direction": "carnival",
+      "description": "Official systems absorb absurd acts and normalize contradiction."
+    }
+  ],
+  "cards": [
+    { "id": "c01", "group": "institutional", "text": "A regulation of public behavior in the central square is introduced." },
+    { "id": "c02", "group": "institutional", "text": "A Department of Common Sense Oversight is created." },
+    { "id": "c03", "group": "institutional", "text": "An annual Day of Excess is officially established." },
+    { "id": "c04", "group": "institutional", "text": "The municipality approves an official list of acceptable jokes." },
+    { "id": "c05", "group": "institutional", "text": "City hall adopts a standard smile width for public servants." },
+    { "id": "c06", "group": "institutional", "text": "A public hotline for complaints about excess is opened." },
+    { "id": "c07", "group": "institutional", "text": "The city council approves an experimental Week of Illogic." },
+    { "id": "c08", "group": "institutional", "text": "A code of rational speech is drafted and announced." },
+    { "id": "c09", "group": "institutional", "text": "A Chief Coordinator of Surprises is appointed." },
+    { "id": "c10", "group": "institutional", "text": "A facade symmetry law passes with full support." },
+    { "id": "c11", "group": "fauna", "text": "Pigeons receive the right to attend council meetings." },
+    { "id": "c12", "group": "fauna", "text": "Pigeons are issued official identification tokens." },
+    { "id": "c13", "group": "fauna", "text": "A tax on excessive bird feeding is enacted." },
+    { "id": "c14", "group": "fauna", "text": "Pigeons begin occupying public transport stops." },
+    { "id": "c15", "group": "fauna", "text": "An Inspector of Pigeon Discipline is assigned." },
+    { "id": "c16", "group": "fauna", "text": "Park signs with recommendations for sparrows appear overnight." },
+    { "id": "c17", "group": "fauna", "text": "Rumors spread about an informal Winged Committee." },
+    { "id": "c18", "group": "fauna", "text": "Birds begin ignoring traffic signs in broad daylight." },
+    { "id": "c19", "group": "culture", "text": "A Museum of Logic opens to the public." },
+    { "id": "c20", "group": "culture", "text": "A Festival of Spontaneous Ideas is launched citywide." },
+    { "id": "c21", "group": "culture", "text": "A mandatory pause before applause is introduced." },
+    { "id": "c22", "group": "culture", "text": "Residents start changing routes in perfect sync without explanation." },
+    { "id": "c23", "group": "culture", "text": "A contest for the most rational storefront sign is announced." },
+    { "id": "c24", "group": "culture", "text": "Facades receive new slogans about moderation in all things." },
+    { "id": "c25", "group": "culture", "text": "The square is temporarily renamed Center of Restraint." },
+    { "id": "c26", "group": "culture", "text": "A stage for weekly debates on order is installed." },
+    { "id": "c27", "group": "culture", "text": "Identical umbrellas suddenly appear throughout the city." },
+    { "id": "c28", "group": "culture", "text": "Street musicians perform only within a strict schedule of silence." },
+    { "id": "c29", "group": "infrastructure", "text": "Road markings become perfectly symmetrical." },
+    { "id": "c30", "group": "infrastructure", "text": "Streets are temporarily renumbered by degree of logicality." },
+    { "id": "c31", "group": "infrastructure", "text": "Traffic lights begin changing without visible cause." },
+    { "id": "c32", "group": "infrastructure", "text": "The city park is resectioned into strict geometric zones." },
+    { "id": "c33", "group": "infrastructure", "text": "Loudspeakers broadcast daily instructions on moderation." },
+    { "id": "c34", "group": "infrastructure", "text": "An Avenue of Paradoxes is officially opened." },
+    { "id": "c35", "group": "infrastructure", "text": "Extra city hall steps are added for the sake of balance." },
+    { "id": "c36", "group": "infrastructure", "text": "Signposts to non-existent districts begin appearing." },
+    { "id": "c37", "group": "infrastructure", "text": "The central fountain starts operating on a rigid timetable." },
+    { "id": "c38", "group": "infrastructure", "text": "Symbol-less flags appear on residential rooftops." },
+    { "id": "c39", "group": "economy", "text": "A fee for excessive seriousness is introduced." },
+    { "id": "c40", "group": "economy", "text": "Shops are required to use identical price tags." },
+    { "id": "c41", "group": "economy", "text": "Sale of overly bright scarves is prohibited." },
+    { "id": "c42", "group": "economy", "text": "Bakeries begin producing bread in strict square form." },
+    { "id": "c43", "group": "economy", "text": "A market for ridiculous inventions opens downtown." },
+    { "id": "c44", "group": "economy", "text": "Taxis begin traveling only in perfectly straight lines." },
+    { "id": "c45", "group": "economy", "text": "A license for improvisation becomes mandatory." },
+    { "id": "c46", "group": "economy", "text": "Citizens are advised to schedule spontaneity in advance." },
+    { "id": "c47", "group": "fracture", "text": "Citizens begin reporting identical dreams across districts." },
+    { "id": "c48", "group": "fracture", "text": "The city forgets why one old holiday ever existed." },
+    { "id": "c49", "group": "fracture", "text": "A temporary inscription reading Too Much appears in the main square." },
+    { "id": "c50", "group": "fracture", "text": "No one can recall who proposed the first regulation." }
+  ]
+}
