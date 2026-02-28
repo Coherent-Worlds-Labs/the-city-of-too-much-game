@@ -19,6 +19,34 @@ test("buildContinuityPrompt injects compact anchors and constraints", () => {
   assert.equal(prompt.includes("town hall clock tower unchanged"), true);
 });
 
+test("buildContinuityPrompt emphasizes strict realism for protocol direction", () => {
+  const worldPack = loadDefaultWorldPack();
+  const prompt = buildContinuityPrompt({
+    basePrompt: "Photorealistic city square.",
+    worldPack,
+    previousImageHint: null,
+    absurdityIndex: 0.12,
+    dominantDirection: "protocol"
+  });
+
+  assert.equal(prompt.includes("strict civic order and realism"), true);
+  assert.equal(prompt.includes("Avoid whimsical distortions or festive chaos"), true);
+});
+
+test("buildContinuityPrompt emphasizes exaggerated chaos for carnival direction", () => {
+  const worldPack = loadDefaultWorldPack();
+  const prompt = buildContinuityPrompt({
+    basePrompt: "Photorealistic city square.",
+    worldPack,
+    previousImageHint: null,
+    absurdityIndex: 0.86,
+    dominantDirection: "carnival"
+  });
+
+  assert.equal(prompt.includes("exaggerate civic excess and chaotic spectacle"), true);
+  assert.equal(prompt.includes("surreal civic rituals"), true);
+});
+
 test("createImagePipeline stores rendered image and returns URL", async () => {
   const worldPack = loadDefaultWorldPack();
   const tempDir = mkdtempSync(join(tmpdir(), "city-too-much-img-"));

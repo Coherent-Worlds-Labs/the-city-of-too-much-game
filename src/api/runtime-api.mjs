@@ -132,7 +132,9 @@ export const createRuntimeApi = ({
       turnIndex: history.length + 1,
       imagePrompt: compactImagePrompt(judgeEval.judgeResult.image_prompt),
       previousImageHint: previousHint,
-      previousImageUrl
+      previousImageUrl,
+      absurdityIndex: judgeEval.judgeResult?.new_state?.absurdity_index ?? null,
+      dominantDirection: judgeEval.judgeResult?.new_state?.dominant_direction ?? "balanced"
     });
 
     const played = gameService.playTurn({

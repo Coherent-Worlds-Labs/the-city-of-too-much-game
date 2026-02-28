@@ -58,11 +58,58 @@ const joinLimited = (items, maxItems = 3, maxLength = 220) =>
     .join(", ")
     .slice(0, maxLength);
 
-export const buildContinuityPrompt = ({ basePrompt, worldPack, previousImageHint }) => {
+const clamp01 = (value) => {
+  if (!Number.isFinite(value)) {
+    return null;
+  }
+  return Math.min(1, Math.max(0, value));
+};
+
+const normalizeDirection = (value) => {
+  const normalized = String(value ?? "")
+    .trim()
+    .toLowerCase();
+  if (normalized === "protocol" || normalized === "carnival" || normalized === "balanced") {
+    return normalized;
+  }
+  return "balanced";
+};
+
+const buildAxisDirective = ({ absurdityIndex = null, dominantDirection = "balanced" }) => {
+  const direction = normalizeDirection(dominantDirection);
+  const absurdity = clamp01(absurdityIndex);
+  const extremeProtocol = absurdity !== null && absurdity <= 0.28;
+  const extremeCarnival = absurdity !== null && absurdity >= 0.72;
+
+  if (direction === "protocol" || extremeProtocol) {
+    const intensity = extremeProtocol
+      ? "strongly reinforce strict civic order and realism"
+      : "lean toward stronger civic order and realism";
+    return `Axis directive: ${intensity}; emphasize clean geometry, disciplined spacing, orderly behavior, documentary plausibility, and restrained visual language. Avoid whimsical distortions or festive chaos.`;
+  }
+
+  if (direction === "carnival" || extremeCarnival) {
+    const intensity = extremeCarnival
+      ? "strongly exaggerate civic excess and chaotic spectacle"
+      : "lean toward exaggerated civic excess and lively disorder";
+    return `Axis directive: ${intensity}; emphasize dense crowds, theatrical contrasts, improbable juxtapositions, surreal civic rituals, and flamboyant visual overstatement while staying photorealistic and continuous. Avoid sterile symmetry and over-regulation.`;
+  }
+
+  return "Axis directive: keep tension between order and excess; maintain grounded realism with subtle contradictions and no abrupt stylization jumps.";
+};
+
+export const buildContinuityPrompt = ({
+  basePrompt,
+  worldPack,
+  previousImageHint,
+  absurdityIndex = null,
+  dominantDirection = "balanced"
+}) => {
   const anchors = joinLimited(worldPack.prompt.persistentAnchors, 3, 180);
   const style = joinLimited(worldPack.prompt.style, 2, 140);
   const continuity = joinLimited(worldPack.prompt.continuityRules, 2, 140);
   const negative = joinLimited(worldPack.prompt.negativeConstraints, 2, 140);
+  const axisDirective = buildAxisDirective({ absurdityIndex, dominantDirection });
 
   const previousClause = previousImageHint
     ? `Match previous frame: ${normalizeCompactText(previousImageHint, 120)}.`
@@ -74,6 +121,7 @@ export const buildContinuityPrompt = ({ basePrompt, worldPack, previousImageHint
     `Style: ${style}.`,
     previousClause,
     `Continuity: ${continuity}.`,
+    axisDirective,
     `Avoid: ${negative}.`
   ].join(" ");
 };
@@ -190,6 +238,8 @@ export const createImagePipeline = ({
     imagePrompt,
     previousImageHint = null,
     previousImageUrl = null,
+    absurdityIndex = null,
+    dominantDirection = "balanced",
     seed = null
   }) => {
     if (!apiKey || !apiKey.trim()) {
@@ -198,7 +248,9 @@ export const createImagePipeline = ({
     const finalPrompt = buildContinuityPrompt({
       basePrompt: imagePrompt,
       worldPack,
-      previousImageHint
+      previousImageHint,
+      absurdityIndex,
+      dominantDirection
     });
     const previousImageDataUrl =
       imageToImageEnabled && turnIndex > 0 ? toLocalAssetDataUrl(previousImageUrl) : null;
