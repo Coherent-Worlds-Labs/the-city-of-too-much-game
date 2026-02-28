@@ -320,13 +320,14 @@ const renderSceneStepOverlay = () => {
   const selectedIndex = selected ? entries.findIndex((entry) => entry.key === selected.key) : -1;
 
   if (!selected) {
-    elements.sceneStepCard.textContent = "Applied card: n/a";
+    elements.sceneStepCard.textContent = "Turn 0: n/a";
     elements.scenePrevBtn.disabled = true;
     elements.sceneNextBtn.disabled = true;
     return;
   }
 
-  elements.sceneStepCard.textContent = `Applied card: ${selected.cardText}`;
+  const turnIndex = Number.isInteger(selected.turnIndex) ? selected.turnIndex : 0;
+  elements.sceneStepCard.textContent = `Turn ${turnIndex}: ${selected.cardText}`;
   elements.scenePrevBtn.disabled = selectedIndex <= 0;
   elements.sceneNextBtn.disabled = selectedIndex < 0 || selectedIndex >= entries.length - 1;
 };
