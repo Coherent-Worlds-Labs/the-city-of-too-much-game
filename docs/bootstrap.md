@@ -17,6 +17,7 @@ This document defines the initial project layout created in task `202602281520-R
 - `scripts`: repository-level quality/build helper scripts.
 - `tests`: bootstrap and regression tests.
 - `worlds`: replaceable world-pack files containing world-specific content.
+- `db/migrations`: SQL migrations for persistence schema.
 
 ## Toolchain Scripts
 
