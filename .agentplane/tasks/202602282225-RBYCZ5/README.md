@@ -1,7 +1,9 @@
 ---
 id: "202602282225-RBYCZ5"
 title: "Normalize math delimiters in math-model article"
-status: "TODO"
+result_summary: "docs/math-model.md now consistently uses $...$ and ...."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "DOCS"
 depends_on: []
@@ -18,8 +20,13 @@ verification:
   updated_at: "2026-02-28T22:29:27.190Z"
   updated_by: "TESTER"
   note: "Math delimiters normalized to requested $/ style."
-commit: null
-comments: []
+commit:
+  hash: "6149672c2bdb7806e3d66d8b6aa7280ede1c0f7b"
+  message: "🚧 RBYCZ5 docs: normalize math delimiters to dollar style"
+comments:
+  -
+    author: "INTEGRATOR"
+    body: "Verified: Replaced legacy LaTeX delimiters in math-model documentation with markdown dollar-style delimiters for both inline and block formulas."
 events:
   -
     type: "verify"
@@ -27,9 +34,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Math delimiters normalized to requested $/ style."
+  -
+    type: "status"
+    at: "2026-02-28T22:30:07.987Z"
+    author: "INTEGRATOR"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Replaced legacy LaTeX delimiters in math-model documentation with markdown dollar-style delimiters for both inline and block formulas."
 doc_version: 2
-doc_updated_at: "2026-02-28T22:29:27.196Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T22:30:07.987Z"
+doc_updated_by: "INTEGRATOR"
 description: "Replace LaTeX delimiters in docs/math-model.md to use $...$ for inline formulas and ... for display formulas."
 id_source: "generated"
 ---
