@@ -350,6 +350,20 @@ const applyVisualStateForSelectedTurn = (turnIndex) => {
 };
 
 const renderHistory = () => {
+  const ensureActiveHistoryEntryVisible = () => {
+    const active = elements.historyList.querySelector(".history-entry.is-active");
+    if (!(active instanceof HTMLElement)) {
+      return;
+    }
+    const listTop = elements.historyList.scrollTop;
+    const listBottom = listTop + elements.historyList.clientHeight;
+    const entryTop = active.offsetTop;
+    const entryBottom = entryTop + active.offsetHeight;
+    if (entryTop < listTop || entryBottom > listBottom) {
+      active.scrollIntoView({ block: "nearest", inline: "nearest" });
+    }
+  };
+
   const entries = getSceneEntries().map((entry) => ({
     ...entry,
     active:
@@ -382,6 +396,7 @@ const renderHistory = () => {
       render();
     });
   });
+  ensureActiveHistoryEntryVisible();
 };
 
 const renderCards = () => {
