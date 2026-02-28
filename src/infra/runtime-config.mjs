@@ -10,6 +10,14 @@ const parseDatabasePath = (databaseUrl) => {
   return resolve(databaseUrl);
 };
 
+const parseOptionalInt = (value) => {
+  if (value === undefined || value === null || String(value).trim() === "") {
+    return null;
+  }
+  const parsed = Number.parseInt(String(value), 10);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
 export const readRuntimeConfig = () => ({
   nodeEnv: process.env.NODE_ENV ?? "development",
   appPort: Number.parseInt(process.env.APP_PORT ?? "3000", 10),
@@ -30,7 +38,7 @@ export const readRuntimeConfig = () => ({
       .split(",")
       .map((item) => item.trim())
       .filter((item) => item.length > 0),
-  imageMaxCompletionTokens: Number.parseInt(process.env.IMAGE_MAX_COMPLETION_TOKENS ?? "48", 10),
+  imageMaxCompletionTokens: parseOptionalInt(process.env.IMAGE_MAX_COMPLETION_TOKENS),
   imageReasoningEffort: process.env.IMAGE_REASONING_EFFORT ?? "low",
   imagePromptMaxChars: Number.parseInt(process.env.IMAGE_PROMPT_MAX_CHARS ?? "460", 10),
   maxHistoryEntries: Number.parseInt(process.env.MAX_HISTORY_ENTRIES ?? "120", 10),

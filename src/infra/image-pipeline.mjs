@@ -28,6 +28,20 @@ const extractImageBase64 = (payload) => {
   throw new Error("Image provider response does not contain base64 image data.");
 };
 
+const hasImagePayload = (payload) => {
+  const messageImageUrl = payload?.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+  if (extractBase64FromDataUrl(messageImageUrl)) {
+    return true;
+  }
+  if (payload?.data?.[0]?.b64_json) {
+    return true;
+  }
+  if (payload?.images?.[0]?.b64_json) {
+    return true;
+  }
+  return false;
+};
+
 const normalizeCompactText = (value, maxLength) =>
   String(value ?? "")
     .replace(/\s+/g, " ")
@@ -70,7 +84,7 @@ export const createImagePipeline = ({
   outputSize = "672x288",
   quality = "low",
   modalities = ["image"],
-  maxCompletionTokens = 48,
+  maxCompletionTokens = null,
   reasoningEffort = "low",
   assetsDir = "storage/images",
   publicAssetsBaseUrl = "/assets",
@@ -89,6 +103,37 @@ export const createImagePipeline = ({
     return response;
   };
 
+  const buildPrimaryBody = ({ prompt, seed }) => {
+    const body = {
+      model,
+      messages: [{ role: "user", content: prompt }],
+      modalities,
+      size: outputSize,
+      image_config: {
+        aspect_ratio: aspectRatio,
+        quality
+      },
+      seed: seed ?? undefined
+    };
+    if (Number.isInteger(maxCompletionTokens) && maxCompletionTokens > 0) {
+      body.max_tokens = maxCompletionTokens;
+    }
+    if (typeof reasoningEffort === "string" && reasoningEffort.trim().length > 0) {
+      body.reasoning = { effort: reasoningEffort.trim() };
+    }
+    return body;
+  };
+
+  const buildRelaxedFallbackBody = (requestBody) => {
+    const body = {
+      ...requestBody,
+      modalities: ["image", "text"]
+    };
+    delete body.max_tokens;
+    delete body.reasoning;
+    return body;
+  };
+
   const renderTurnImage = async ({
     worldPack,
     gameId,
@@ -105,26 +150,7 @@ export const createImagePipeline = ({
       worldPack,
       previousImageHint
     });
-    const requestBody = {
-      model,
-      messages: [
-        {
-          role: "user",
-          content: finalPrompt
-        }
-      ],
-      modalities,
-      size: outputSize,
-      image_config: {
-        aspect_ratio: aspectRatio,
-        quality
-      },
-      max_tokens: maxCompletionTokens,
-      reasoning: {
-        effort: reasoningEffort
-      },
-      seed: seed ?? undefined
-    };
+    const requestBody = buildPrimaryBody({ prompt: finalPrompt, seed });
 
     if (debug) {
       logDebugHeadline("openrouter:image", `request model=${model}`);
@@ -134,12 +160,7 @@ export const createImagePipeline = ({
     let response = await requestImage(requestBody);
 
     if (!response.ok && (response.status === 400 || response.status === 422)) {
-      const fallbackBody = {
-        ...requestBody,
-        modalities: ["image", "text"]
-      };
-      delete fallbackBody.max_tokens;
-      delete fallbackBody.reasoning;
+      const fallbackBody = buildRelaxedFallbackBody(requestBody);
       response = await requestImage(fallbackBody);
       if (debug) {
         logDebugHeadline("openrouter:image", "fallback request applied due to provider validation error");
@@ -156,10 +177,24 @@ export const createImagePipeline = ({
       throw new Error(`Image generation failed (${response.status}): ${text}`);
     }
 
-    const payload = await response.json();
+    let payload = await response.json();
     if (debug) {
       logDebugHeadline("openrouter:image", `response status=${response.status}`);
       logDebugDetails("response payload", payload);
+    }
+    if (!hasImagePayload(payload)) {
+      const fallbackBody = buildRelaxedFallbackBody(requestBody);
+      const fallbackResponse = await requestImage(fallbackBody);
+      if (!fallbackResponse.ok) {
+        const text = await fallbackResponse.text();
+        throw new Error(`Image fallback failed (${fallbackResponse.status}): ${text}`);
+      }
+      payload = await fallbackResponse.json();
+      if (debug) {
+        logDebugHeadline("openrouter:image", "fallback request applied due to empty image payload");
+        logDebugDetails("fallback payload", fallbackBody);
+        logDebugDetails("fallback response payload", payload);
+      }
     }
     const b64 = extractImageBase64(payload);
     const saved = saveImageBase64({

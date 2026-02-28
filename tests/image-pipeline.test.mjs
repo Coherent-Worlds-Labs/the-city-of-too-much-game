@@ -74,8 +74,82 @@ test("createImagePipeline stores rendered image and returns URL", async () => {
     assert.equal(body.size, "672x288");
     assert.equal(body.image_config.quality, "low");
     assert.deepEqual(body.modalities, ["image"]);
-    assert.equal(body.max_tokens, 48);
+    assert.equal(body.max_tokens, undefined);
     assert.equal(body.reasoning.effort, "low");
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("createImagePipeline retries with relaxed payload when first 200 has no image", async () => {
+  const worldPack = loadDefaultWorldPack();
+  const tempDir = mkdtempSync(join(tmpdir(), "city-too-much-img-fallback-"));
+  const fakePngBase64 = Buffer.from("fake-png-bytes").toString("base64");
+  const calls = [];
+
+  const fetchFn = async (_url, init) => {
+    calls.push(JSON.parse(init.body));
+    if (calls.length === 1) {
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({
+          choices: [
+            {
+              finish_reason: "length",
+              message: {
+                role: "assistant",
+                content: ""
+              }
+            }
+          ]
+        })
+      };
+    }
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        choices: [
+          {
+            message: {
+              images: [
+                {
+                  image_url: {
+                    url: `data:image/png;base64,${fakePngBase64}`
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      })
+    };
+  };
+
+  try {
+    const pipeline = createImagePipeline({
+      apiKey: "test-key",
+      fetchFn,
+      assetsDir: tempDir,
+      publicAssetsBaseUrl: "/assets",
+      maxCompletionTokens: 64
+    });
+
+    const result = await pipeline.renderTurnImage({
+      worldPack,
+      gameId: "game-02",
+      turnIndex: 1,
+      imagePrompt: "Photorealistic city square."
+    });
+
+    assert.equal(result.imageUrl.endsWith("game-02-turn-001.png"), true);
+    assert.equal(calls.length, 2);
+    assert.deepEqual(calls[0].modalities, ["image"]);
+    assert.equal(calls[0].max_tokens, 64);
+    assert.deepEqual(calls[1].modalities, ["image", "text"]);
+    assert.equal(calls[1].max_tokens, undefined);
+    assert.equal(calls[1].reasoning, undefined);
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }
