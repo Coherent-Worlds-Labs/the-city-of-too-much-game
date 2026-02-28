@@ -494,12 +494,18 @@ const renderHistory = () => {
     if (!(active instanceof HTMLElement)) {
       return;
     }
-    const listTop = elements.historyList.scrollTop;
-    const listBottom = listTop + elements.historyList.clientHeight;
+    const container = elements.historyList;
+    const listTop = container.scrollTop;
+    const listBottom = listTop + container.clientHeight;
     const entryTop = active.offsetTop;
     const entryBottom = entryTop + active.offsetHeight;
-    if (entryTop < listTop || entryBottom > listBottom) {
-      active.scrollIntoView({ block: "nearest", inline: "nearest" });
+    const viewportPadding = 8;
+    if (entryTop - viewportPadding < listTop) {
+      container.scrollTop = Math.max(entryTop - viewportPadding, 0);
+      return;
+    }
+    if (entryBottom + viewportPadding > listBottom) {
+      container.scrollTop = entryBottom + viewportPadding - container.clientHeight;
     }
   };
 
