@@ -447,10 +447,16 @@ const ensureActiveHistoryEntryVisible = () => {
   if (!(active instanceof HTMLElement)) {
     return;
   }
-  const container = elements.historyList;
+  const panel = elements.historyList.closest(".panel.history");
+  const container =
+    elements.historyList.scrollHeight > elements.historyList.clientHeight
+      ? elements.historyList
+      : panel instanceof HTMLElement && panel.scrollHeight > panel.clientHeight
+      ? panel
+      : elements.historyList;
   const listTop = container.scrollTop;
   const listBottom = listTop + container.clientHeight;
-  const entryTop = active.offsetTop;
+  const entryTop = active.offsetTop - (container === elements.historyList ? 0 : elements.historyList.offsetTop);
   const entryBottom = entryTop + active.offsetHeight;
   const viewportPadding = 8;
   if (entryTop - viewportPadding < listTop) {
