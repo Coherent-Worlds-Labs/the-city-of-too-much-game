@@ -18,6 +18,8 @@ export const readRuntimeConfig = () => ({
   publicAssetsBaseUrl: process.env.PUBLIC_ASSETS_BASE_URL ?? "/assets",
   openRouterApiKey: process.env.OPENROUTER_API_KEY ?? "",
   openRouterBaseUrl: process.env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1",
+  openRouterDebug:
+    ["1", "true", "yes", "on"].includes((process.env.OPENROUTER_DEBUG ?? "").toLowerCase()),
   judgeModel: process.env.JUDGE_MODEL ?? "openai/gpt-5-mini",
   imageModel: process.env.IMAGE_MODEL ?? "openai/gpt-5-image",
   maxHistoryEntries: Number.parseInt(process.env.MAX_HISTORY_ENTRIES ?? "120", 10),

@@ -12,6 +12,14 @@ import {
 import { readRuntimeConfig } from "./infra/runtime-config.mjs";
 import { createRuntimeApi } from "./api/runtime-api.mjs";
 
+if (typeof process.loadEnvFile === "function") {
+  try {
+    process.loadEnvFile(".env");
+  } catch {
+    // .env is optional; runtime may rely on process environment instead.
+  }
+}
+
 const config = readRuntimeConfig();
 
 const worldPack = loadDefaultWorldPack();
@@ -24,14 +32,16 @@ const runtimeApi = createRuntimeApi({
   judge: createOpenRouterJudge({
     apiKey: config.openRouterApiKey,
     baseUrl: config.openRouterBaseUrl,
-    model: config.judgeModel
+    model: config.judgeModel,
+    debug: config.openRouterDebug
   }),
   imagePipeline: createImagePipeline({
     apiKey: config.openRouterApiKey,
     baseUrl: config.openRouterBaseUrl,
     model: config.imageModel,
     assetsDir: config.assetsDir,
-    publicAssetsBaseUrl: "/assets"
+    publicAssetsBaseUrl: "/assets",
+    debug: config.openRouterDebug
   }),
   reliability: {
     rateLimiter: createInMemoryRateLimiter({

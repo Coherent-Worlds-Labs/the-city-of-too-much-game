@@ -36,7 +36,8 @@ export const createImagePipeline = ({
   model = "openai/gpt-5-image",
   assetsDir = "storage/images",
   publicAssetsBaseUrl = "/assets",
-  fetchFn = fetch
+  fetchFn = fetch,
+  debug = false
 }) => {
   const renderTurnImage = async ({
     worldPack,
@@ -55,6 +56,10 @@ export const createImagePipeline = ({
       previousImageHint
     });
 
+    if (debug) {
+      console.log(`[openrouter:image] request model=${model}`);
+    }
+
     const response = await fetchFn(`${baseUrl}/images/generations`, {
       method: "POST",
       headers: {
@@ -72,6 +77,9 @@ export const createImagePipeline = ({
     if (!response.ok) {
       const text = await response.text();
       throw new Error(`Image generation failed (${response.status}): ${text}`);
+    }
+    if (debug) {
+      console.log(`[openrouter:image] response status=${response.status}`);
     }
 
     const payload = await response.json();

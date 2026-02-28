@@ -119,6 +119,9 @@ h1 {
 }
 
 .loading-stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   align-self: flex-start;
   margin: 0;
   padding: 9px 12px;
@@ -128,9 +131,25 @@ h1 {
   color: #f8f8f8;
 }
 
+.loading-stage::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.36);
+  border-top-color: #ffffff;
+  animation: loading-spin 0.75s linear infinite;
+}
+
 .hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+@keyframes loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .motifs {

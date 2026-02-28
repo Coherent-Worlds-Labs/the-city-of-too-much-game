@@ -10,7 +10,8 @@ const state = {
   mood: "Tense Balance",
   stability: "High",
   turn: 0,
-  outcome: "active"
+  outcome: "active",
+  isProcessing: false
 };
 
 const elements = {
@@ -139,6 +140,9 @@ const renderCards = () => {
     if (state.selectedCardId === card.id) {
       button.classList.add("selected");
     }
+    if (state.isProcessing || state.outcome !== "active") {
+      button.disabled = true;
+    }
     button.innerHTML = `<small>${card.group}</small>${card.text}`;
     button.addEventListener("click", () => {
       state.selectedCardId = card.id;
@@ -217,6 +221,7 @@ const createGame = async () => {
   state.mood = "Tense Balance";
   state.stability = "High";
   state.outcome = "active";
+  state.isProcessing = false;
   elements.enactBtn.disabled = true;
   persistGameId();
   render();
@@ -226,40 +231,51 @@ const enactSelectedCard = async () => {
   if (!state.selectedCardId || !state.gameId || state.outcome !== "active") {
     return;
   }
+  state.isProcessing = true;
   elements.enactBtn.disabled = true;
   elements.loadingStage.classList.remove("hidden");
   elements.loadingStage.textContent = loadingStages[0];
-  await wait(500);
-  elements.loadingStage.textContent = loadingStages[1];
-
-  const played = await api("/api/turn", {
-    method: "POST",
-    body: JSON.stringify({
-      gameId: state.gameId,
-      cardId: state.selectedCardId,
-      expectedTurn: state.turn
-    })
-  });
-
-  state.turn = played.game.current_turn;
-  state.hand = played.hand;
-  state.timeline = played.timeline;
-  state.history = await api(`/api/games/${state.gameId}/history`).then((payload) => payload.history);
-  hydrateFromTurn(played.turn);
-  state.outcome = detectOutcome(
-    played.turn.judge_json.new_state.absurdity_index,
-    played.turn.judge_json.new_state.coherence_level,
-    state.turn
-  );
-  state.selectedCardId = null;
-
-  elements.scene.classList.add("shift");
   render();
-  await wait(350);
-  elements.scene.classList.remove("shift");
-  elements.loadingStage.classList.add("hidden");
-  if (state.outcome === "active") {
-    elements.enactBtn.disabled = true;
+
+  try {
+    await wait(500);
+    elements.loadingStage.textContent = loadingStages[1];
+
+    const played = await api("/api/turn", {
+      method: "POST",
+      body: JSON.stringify({
+        gameId: state.gameId,
+        cardId: state.selectedCardId,
+        expectedTurn: state.turn
+      })
+    });
+
+    state.turn = played.game.current_turn;
+    state.hand = played.hand;
+    state.timeline = played.timeline;
+    state.history = await api(`/api/games/${state.gameId}/history`).then((payload) => payload.history);
+    hydrateFromTurn(played.turn);
+    state.outcome = detectOutcome(
+      played.turn.judge_json.new_state.absurdity_index,
+      played.turn.judge_json.new_state.coherence_level,
+      state.turn
+    );
+    state.selectedCardId = null;
+
+    elements.scene.classList.add("shift");
+    render();
+    await wait(350);
+    elements.scene.classList.remove("shift");
+  } catch (error) {
+    elements.loadingStage.textContent = `Request failed: ${error.message}`;
+    await wait(1300);
+  } finally {
+    state.isProcessing = false;
+    elements.loadingStage.classList.add("hidden");
+    if (state.outcome === "active") {
+      elements.enactBtn.disabled = !state.selectedCardId;
+    }
+    render();
   }
 };
 

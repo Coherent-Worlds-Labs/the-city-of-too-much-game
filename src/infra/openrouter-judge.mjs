@@ -63,7 +63,8 @@ export const createOpenRouterJudge = ({
   baseUrl = "https://openrouter.ai/api/v1",
   model = "openai/gpt-5-mini",
   fetchFn = fetch,
-  timeoutMs = 30_000
+  timeoutMs = 30_000,
+  debug = false
 }) => {
   const evaluateTurn = async (turnProposal, worldPack) => {
     if (!apiKey || !apiKey.trim()) {
@@ -75,6 +76,9 @@ export const createOpenRouterJudge = ({
 
     let response;
     try {
+      if (debug) {
+        console.log(`[openrouter:judge] request model=${model}`);
+      }
       response = await fetchFn(`${baseUrl}/chat/completions`, {
         method: "POST",
         headers: {
@@ -97,12 +101,20 @@ export const createOpenRouterJudge = ({
       const text = await response.text();
       throw new Error(`Judge request failed (${response.status}): ${text}`);
     }
+    if (debug) {
+      console.log(`[openrouter:judge] response status=${response.status}`);
+    }
 
     const payload = await response.json();
     const content = payload?.choices?.[0]?.message?.content;
     const judgeResult = parseJudgeJson(content);
     const validation = validateJudgeResult(judgeResult);
     if (!validation.ok) {
+      if (debug) {
+        console.warn(
+          `[openrouter:judge] validation_failed errors=${validation.errors.join(" | ")}`
+        );
+      }
       throw new JudgeValidationError("Judge response failed contract validation.", validation.errors);
     }
 

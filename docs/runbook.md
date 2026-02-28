@@ -30,6 +30,12 @@ npm run start
 
 This starts the Node HTTP runtime and API on `APP_PORT` (default `3000`).
 
+To trace outbound OpenRouter requests in server logs, set:
+
+```bash
+OPENROUTER_DEBUG=true
+```
+
 ### Core API Endpoints
 
 - `POST /api/games`
@@ -52,6 +58,11 @@ This starts the Node HTTP runtime and API on `APP_PORT` (default `3000`).
 
 ## Troubleshooting
 
+- No activity in OpenRouter dashboard:
+  - confirm `OPENROUTER_API_KEY` is set in `.env` and restart runtime;
+  - set `OPENROUTER_DEBUG=true` and verify server logs include
+    `[openrouter:judge] request ...` and `[openrouter:image] request ...`;
+  - ensure requests target the correct local port (avoid stale process on `3000`).
 - `rate limit exceeded for playTurn`:
   - increase limiter settings or back off rapid retries.
 - `stale turn request`:
