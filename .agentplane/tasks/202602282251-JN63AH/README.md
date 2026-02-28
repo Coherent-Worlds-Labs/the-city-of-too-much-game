@@ -1,7 +1,8 @@
 ---
 id: "202602282251-JN63AH"
 title: "Fix History click selection causing scroll jump to list end"
-status: "TODO"
+result_summary: "History click autoscroll no longer jumps to end and keeps selected step visible."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T22:52:35.797Z"
   updated_by: "CODER"
   note: "Verified: clicking early History entries no longer causes list jump to the end; selected entry remains visible and overlay-arrow navigation still autoscrolls within History panel only."
-commit: null
-comments: []
+commit:
+  hash: "123a6d7d46a37baa127138a0927f96751784027c"
+  message: "🚧 JN63AH ui: fix history click autoscroll jumping to list end"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: History click selection now keeps the chosen entry visible without jumping to list end; panel-local auto-scroll behavior for overlay arrows remains intact; lint and tests passed."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: clicking early History entries no longer causes list jump to the end; selected entry remains visible and overlay-arrow navigation still autoscrolls within History panel only."
+  -
+    type: "status"
+    at: "2026-02-28T22:53:08.192Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: History click selection now keeps the chosen entry visible without jumping to list end; panel-local auto-scroll behavior for overlay arrows remains intact; lint and tests passed."
 doc_version: 2
-doc_updated_at: "2026-02-28T22:52:35.812Z"
+doc_updated_at: "2026-02-28T22:53:08.192Z"
 doc_updated_by: "CODER"
 description: "Clicking an early History step should keep that selected item visible; it must not auto-jump History scroll to the end or hide selected item."
 id_source: "generated"
