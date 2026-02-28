@@ -1,7 +1,8 @@
 ---
 id: "202602281521-V00JGE"
 title: "Game API and persistence"
-status: "DOING"
+result_summary: "Game lifecycle persistence services are implemented with transactional turn storage."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on:
@@ -19,11 +20,16 @@ verification:
   updated_at: "2026-02-28T16:00:30.674Z"
   updated_by: "CODER"
   note: "Game API and persistence verified: SQLite migrations, transactional turn writes, and read flows for history/timeline pass integration tests."
-commit: null
+commit:
+  hash: "bc889ad9f8f2b417243c0dfe81d8797287eb1a3e"
+  message: "🚧 V00JGE api: add sqlite persistence and game service"
 comments:
   -
     author: "CODER"
     body: "Start: implementing SQLite migrations, store adapter, and game lifecycle service methods with transactional turn persistence."
+  -
+    author: "CODER"
+    body: "Verified: Added SQLite migration schema, store adapter with transaction-safe turn writes, and game service methods for create game, play turn, history, and timeline with passing integration tests."
 events:
   -
     type: "status"
@@ -38,8 +44,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Game API and persistence verified: SQLite migrations, transactional turn writes, and read flows for history/timeline pass integration tests."
+  -
+    type: "status"
+    at: "2026-02-28T16:01:03.447Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added SQLite migration schema, store adapter with transaction-safe turn writes, and game service methods for create game, play turn, history, and timeline with passing integration tests."
 doc_version: 2
-doc_updated_at: "2026-02-28T16:00:30.676Z"
+doc_updated_at: "2026-02-28T16:01:03.447Z"
 doc_updated_by: "CODER"
 description: "Build game lifecycle APIs (new game, play turn, read history, timeline), persistence schema/migrations for games and turns, and transaction-safe turn writes with judge/image artifacts."
 id_source: "generated"
