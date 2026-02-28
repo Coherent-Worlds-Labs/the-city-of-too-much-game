@@ -1,4 +1,5 @@
 import { saveImageBase64 } from "./image-storage.mjs";
+import { logDebugDetails, logDebugHeadline } from "./debug-log.mjs";
 
 const extractImageBase64 = (payload) => {
   if (payload?.data?.[0]?.b64_json) {
@@ -55,9 +56,16 @@ export const createImagePipeline = ({
       worldPack,
       previousImageHint
     });
+    const requestBody = {
+      model,
+      prompt: finalPrompt,
+      size: "1024x1024",
+      seed: seed ?? undefined
+    };
 
     if (debug) {
-      console.log(`[openrouter:image] request model=${model}`);
+      logDebugHeadline("openrouter:image", `request model=${model}`);
+      logDebugDetails("request payload", requestBody);
     }
 
     const response = await fetchFn(`${baseUrl}/images/generations`, {
@@ -66,23 +74,23 @@ export const createImagePipeline = ({
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`
       },
-      body: JSON.stringify({
-        model,
-        prompt: finalPrompt,
-        size: "1024x1024",
-        seed: seed ?? undefined
-      })
+      body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) {
       const text = await response.text();
+      if (debug) {
+        logDebugHeadline("openrouter:image", `response status=${response.status}`);
+        logDebugDetails("response body", text);
+      }
       throw new Error(`Image generation failed (${response.status}): ${text}`);
-    }
-    if (debug) {
-      console.log(`[openrouter:image] response status=${response.status}`);
     }
 
     const payload = await response.json();
+    if (debug) {
+      logDebugHeadline("openrouter:image", `response status=${response.status}`);
+      logDebugDetails("response payload", payload);
+    }
     const b64 = extractImageBase64(payload);
     const saved = saveImageBase64({
       baseDir: assetsDir,

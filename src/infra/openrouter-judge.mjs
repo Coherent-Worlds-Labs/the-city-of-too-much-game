@@ -1,5 +1,6 @@
 import { validateJudgeResult } from "../domain/game-engine.mjs";
 import { buildJudgeMessages } from "../domain/judge-prompt.mjs";
+import { logDebugDetails, logDebugHeadline } from "./debug-log.mjs";
 
 export class JudgeResponseParseError extends Error {
   constructor(message, details = null) {
@@ -75,9 +76,16 @@ export const createOpenRouterJudge = ({
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
     let response;
+    const requestBody = {
+      model,
+      temperature: 0.2,
+      response_format: { type: "json_object" },
+      messages
+    };
     try {
       if (debug) {
-        console.log(`[openrouter:judge] request model=${model}`);
+        logDebugHeadline("openrouter:judge", `request model=${model}`);
+        logDebugDetails("request payload", requestBody);
       }
       response = await fetchFn(`${baseUrl}/chat/completions`, {
         method: "POST",
@@ -85,12 +93,7 @@ export const createOpenRouterJudge = ({
           "Content-Type": "application/json",
           Authorization: `Bearer ${apiKey}`
         },
-        body: JSON.stringify({
-          model,
-          temperature: 0.2,
-          response_format: { type: "json_object" },
-          messages
-        }),
+        body: JSON.stringify(requestBody),
         signal: controller.signal
       });
     } finally {
@@ -99,21 +102,28 @@ export const createOpenRouterJudge = ({
 
     if (!response.ok) {
       const text = await response.text();
+      if (debug) {
+        logDebugHeadline("openrouter:judge", `response status=${response.status}`);
+        logDebugDetails("response body", text);
+      }
       throw new Error(`Judge request failed (${response.status}): ${text}`);
-    }
-    if (debug) {
-      console.log(`[openrouter:judge] response status=${response.status}`);
     }
 
     const payload = await response.json();
+    if (debug) {
+      logDebugHeadline("openrouter:judge", `response status=${response.status}`);
+      logDebugDetails("response payload", payload);
+    }
     const content = payload?.choices?.[0]?.message?.content;
     const judgeResult = parseJudgeJson(content);
     const validation = validateJudgeResult(judgeResult);
     if (!validation.ok) {
       if (debug) {
-        console.warn(
-          `[openrouter:judge] validation_failed errors=${validation.errors.join(" | ")}`
+        logDebugHeadline(
+          "openrouter:judge",
+          `validation_failed errors=${validation.errors.join(" | ")}`
         );
+        logDebugDetails("parsed judge result", judgeResult);
       }
       throw new JudgeValidationError("Judge response failed contract validation.", validation.errors);
     }
