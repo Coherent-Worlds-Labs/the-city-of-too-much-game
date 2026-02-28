@@ -1,7 +1,8 @@
 ---
 id: "202602281914-XPSQCV"
 title: "Slim header and move observatory label onto scene overlay"
-status: "DOING"
+result_summary: "Header is slimmer with title-only left side and observatory label over scene top-right."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T19:15:52.594Z"
   updated_by: "CODER"
   note: "Slimmed top header, removed Growing Carnival subtitle, relocated Live City Observatory to scene top-right overlay, and kept title font style unchanged; lint/tests pass."
-commit: null
+commit:
+  hash: "33efbfe72d23fb19285b98582efaf7fe51a5ab71"
+  message: "🚧 XPSQCV ui: slim header and relocate observatory label"
 comments:
   -
     author: "CODER"
     body: "Start: slimming top header, removing Growing Carnival subtitle, and moving Live City Observatory onto scene top-right overlay."
+  -
+    author: "CODER"
+    body: "Verified: top panel is now slimmer, Growing Carnival subtitle removed, Live City Observatory moved to scene top-right overlay, and left header keeps only title with same font styling; lint/tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Slimmed top header, removed Growing Carnival subtitle, relocated Live City Observatory to scene top-right overlay, and kept title font style unchanged; lint/tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T19:16:37.966Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: top panel is now slimmer, Growing Carnival subtitle removed, Live City Observatory moved to scene top-right overlay, and left header keeps only title with same font styling; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T19:15:52.596Z"
+doc_updated_at: "2026-02-28T19:16:37.966Z"
 doc_updated_by: "CODER"
 description: "Make top header shorter, remove subtitle status text from header, keep only title on the left, and place Live City Observatory at the top-right over the scene image."
 id_source: "generated"
