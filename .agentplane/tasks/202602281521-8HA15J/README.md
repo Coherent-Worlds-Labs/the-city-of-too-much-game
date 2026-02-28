@@ -1,7 +1,8 @@
 ---
 id: "202602281521-8HA15J"
 title: "Core game domain and turn engine"
-status: "DOING"
+result_summary: "Core history-based turn engine contract is implemented and verified for downstream integrations."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on:
@@ -19,11 +20,16 @@ verification:
   updated_at: "2026-02-28T15:47:08.182Z"
   updated_by: "CODER"
   note: "Core domain engine verified: deterministic history-based turn proposal and result application implemented with threshold-based collapse/survival evaluator and passing automated tests."
-commit: null
+commit:
+  hash: "f76bc645ac7b3060d1a385bae90e570f5d23e0ce"
+  message: "🚧 8HA15J domain: add core turn engine contracts"
 comments:
   -
     author: "CODER"
     body: "Start: implementing deterministic history-based turn engine contracts and collapse or survival evaluation logic."
+  -
+    author: "CODER"
+    body: "Verified: Added deterministic turn proposal/application engine, strict judge result validation, configurable collapse or survival evaluator, and passing domain tests."
 events:
   -
     type: "status"
@@ -38,8 +44,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Core domain engine verified: deterministic history-based turn proposal and result application implemented with threshold-based collapse/survival evaluator and passing automated tests."
+  -
+    type: "status"
+    at: "2026-02-28T15:47:35.702Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added deterministic turn proposal/application engine, strict judge result validation, configurable collapse or survival evaluator, and passing domain tests."
 doc_version: 2
-doc_updated_at: "2026-02-28T15:47:08.183Z"
+doc_updated_at: "2026-02-28T15:47:35.702Z"
 doc_updated_by: "CODER"
 description: "Implement history-only world state model, turn protocol, semantic transition contracts, collapse/survival evaluation, and deterministic server-side orchestration boundaries for judge/image calls."
 id_source: "generated"
