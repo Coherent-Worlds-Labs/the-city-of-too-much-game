@@ -36,6 +36,9 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
 - Runtime target: Node.js 22+
 - Environment template: [`.env.example`](.env.example)
 - Architecture scaffold: [`docs/bootstrap.md`](docs/bootstrap.md)
+- Stage-ready overview: [`docs/stage-ready.md`](docs/stage-ready.md)
+- Runbook: [`docs/runbook.md`](docs/runbook.md)
+- Verification matrix: [`docs/verification-matrix.md`](docs/verification-matrix.md)
 - World-pack contract: [`worlds/README.md`](worlds/README.md)
 - Default world-pack: [`worlds/the-city-of-too-much.en.json`](worlds/the-city-of-too-much.en.json)
 - Gameplay shell prototype: [`ui/index.html`](ui/index.html)
