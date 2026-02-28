@@ -1,7 +1,8 @@
 ---
 id: "202602281521-E23WMY"
 title: "Image generation and continuity pipeline"
-status: "DOING"
+result_summary: "Image generation and continuity pipeline is implemented with local asset persistence."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on:
@@ -19,11 +20,16 @@ verification:
   updated_at: "2026-02-28T15:54:11.620Z"
   updated_by: "CODER"
   note: "Image pipeline verified: continuity prompt enrichment, OpenRouter-compatible image adapter, local storage persistence, and passing mocked tests without live network usage."
-commit: null
+commit:
+  hash: "9e40be406ef539370f4637de3853f325b9612055"
+  message: "🚧 E23WMY image: add continuity pipeline and storage"
 comments:
   -
     author: "CODER"
     body: "Start: implementing image generation pipeline with continuity prompt controls, storage adapter, and mocked integration tests."
+  -
+    author: "CODER"
+    body: "Verified: Added continuity prompt enrichment, OpenRouter-compatible image adapter, deterministic local storage writer, and passing mocked pipeline tests."
 events:
   -
     type: "status"
@@ -38,8 +44,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Image pipeline verified: continuity prompt enrichment, OpenRouter-compatible image adapter, local storage persistence, and passing mocked tests without live network usage."
+  -
+    type: "status"
+    at: "2026-02-28T15:54:39.880Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added continuity prompt enrichment, OpenRouter-compatible image adapter, deterministic local storage writer, and passing mocked pipeline tests."
 doc_version: 2
-doc_updated_at: "2026-02-28T15:54:11.621Z"
+doc_updated_at: "2026-02-28T15:54:39.880Z"
 doc_updated_by: "CODER"
 description: "Implement image generation pipeline from judge image_prompt with continuity controls (anchors/seed/reference where available), asset storage, URL delivery, and fallback behavior."
 id_source: "generated"
