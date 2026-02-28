@@ -38,6 +38,7 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
 - Architecture scaffold: [`docs/bootstrap.md`](docs/bootstrap.md)
 - World-pack contract: [`worlds/README.md`](worlds/README.md)
 - Default world-pack: [`worlds/the-city-of-too-much.en.json`](worlds/the-city-of-too-much.en.json)
+- Gameplay shell prototype: [`ui/index.html`](ui/index.html)
 - Core scripts:
   - `npm run check:bootstrap`
   - `npm run lint`

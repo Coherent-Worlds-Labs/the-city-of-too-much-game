@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The City of Too Much - Gameplay Shell</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div>
+          <p class="eyebrow">Live City Observatory</p>
+          <h1 id="title">The City of Too Much</h1>
+          <p id="subtitle">Tense Balance</p>
+        </div>
+        <div class="axis">
+          <span>Protocol</span>
+          <div class="axis-track">
+            <div id="axis-dot" class="axis-dot"></div>
+          </div>
+          <span>Carnival</span>
+        </div>
+      </header>
+
+      <section id="scene" class="scene">
+        <div class="scene-overlay">
+          <p id="loading-stage" class="loading-stage hidden"></p>
+          <div class="motifs">
+            <h2>Active Motifs</h2>
+            <ul id="motif-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="board">
+        <aside class="panel history">
+          <h3>History</h3>
+          <ul id="history-list"></ul>
+        </aside>
+
+        <main class="panel hand">
+          <h3>City Initiatives</h3>
+          <div id="card-grid" class="card-grid"></div>
+          <button id="enact-btn" class="enact" disabled>Enact</button>
+        </main>
+
+        <aside class="panel status">
+          <h3>Status</h3>
+          <dl>
+            <dt>City Mood</dt>
+            <dd id="mood">Tense Balance</dd>
+            <dt>Structural Stability</dt>
+            <dd id="stability">High</dd>
+            <dt>Turn</dt>
+            <dd id="turn">0</dd>
+          </dl>
+        </aside>
+      </section>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

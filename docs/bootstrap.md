@@ -18,6 +18,7 @@ This document defines the initial project layout created in task `202602281520-R
 - `tests`: bootstrap and regression tests.
 - `worlds`: replaceable world-pack files containing world-specific content.
 - `db/migrations`: SQL migrations for persistence schema.
+- `ui`: static gameplay shell prototype.
 
 ## Toolchain Scripts
 
