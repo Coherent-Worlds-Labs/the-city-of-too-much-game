@@ -1,7 +1,8 @@
 ---
 id: "202602281520-P28BNG"
 title: "World-pack externalization for replaceable worlds"
-status: "DOING"
+result_summary: "World-specific content is now externalized in a replaceable English world-pack contract."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on:
@@ -19,11 +20,16 @@ verification:
   updated_at: "2026-02-28T15:43:01.177Z"
   updated_by: "CODER"
   note: "World-pack externalization verified: default English pack created with 50 cards, validator and loader modules added, and automated checks/tests passed."
-commit: null
+commit:
+  hash: "a2e550dd6282fbcfa19a7d6ca4177ebdaa879a93"
+  message: "🚧 P28BNG world: externalize replaceable world-pack"
 comments:
   -
     author: "CODER"
     body: "Start: externalizing all world-specific content into a versioned world-pack with loader validation and English-only tracked world text."
+  -
+    author: "CODER"
+    body: "Verified: Added versioned world-pack schema implementation, default English pack with 50 cards, loader/validator modules, updated bootstrap docs/checks, and passing automated tests."
 events:
   -
     type: "status"
@@ -38,8 +44,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "World-pack externalization verified: default English pack created with 50 cards, validator and loader modules added, and automated checks/tests passed."
+  -
+    type: "status"
+    at: "2026-02-28T15:43:35.798Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added versioned world-pack schema implementation, default English pack with 50 cards, loader/validator modules, updated bootstrap docs/checks, and passing automated tests."
 doc_version: 2
-doc_updated_at: "2026-02-28T15:43:01.179Z"
+doc_updated_at: "2026-02-28T15:43:35.798Z"
 doc_updated_by: "CODER"
 description: "Design and implement a dedicated external world-pack file contract containing all world-specific content (setting metadata, card texts, motifs, prompt anchors, UX labels). Engine and UI must load world data from this file so a new world can be swapped quickly without code edits."
 id_source: "generated"
