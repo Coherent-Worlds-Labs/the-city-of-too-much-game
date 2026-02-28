@@ -1,7 +1,8 @@
 ---
 id: "202602282031-ZX1S76"
 title: "Add direction-aware image prompt escalation for Protocol vs Carnival"
-status: "DOING"
+result_summary: "Image prompt now intentionally diverges toward Protocol realism vs Carnival chaos based on game state."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T20:33:19.157Z"
   updated_by: "CODER"
   note: "Verified: Prompt now explicitly escalates toward strict realism on Protocol and chaotic exaggeration on Carnival, using new_state axis values; lint/tests pass."
-commit: null
+commit:
+  hash: "c360fe0074b2fbae6d839b2b7c18f8d7337df147"
+  message: "🚧 ZX1S76 prompt: escalate protocol realism and carnival exaggeration"
 comments:
   -
     author: "CODER"
     body: "Start: Implementing protocol-vs-carnival prompt escalation using absurdity and direction state with test coverage."
+  -
+    author: "CODER"
+    body: "Verified: Direction-aware axis directive now amplifies strict realism for Protocol and chaotic exaggeration for Carnival using absurdity signal; lint/tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: Prompt now explicitly escalates toward strict realism on Protocol and chaotic exaggeration on Carnival, using new_state axis values; lint/tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T20:33:46.302Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Direction-aware axis directive now amplifies strict realism for Protocol and chaotic exaggeration for Carnival using absurdity signal; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T20:33:19.159Z"
+doc_updated_at: "2026-02-28T20:33:46.302Z"
 doc_updated_by: "CODER"
 description: "Tune image continuity prompt so high Protocol emphasizes strict realism/order, while high Carnival emphasizes chaotic exaggeration, scaled by absurdity index."
 id_source: "generated"
