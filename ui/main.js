@@ -456,8 +456,10 @@ const ensureActiveHistoryEntryVisible = () => {
       : elements.historyList;
   const listTop = container.scrollTop;
   const listBottom = listTop + container.clientHeight;
-  const entryTop = active.offsetTop - (container === elements.historyList ? 0 : elements.historyList.offsetTop);
-  const entryBottom = entryTop + active.offsetHeight;
+  const containerRect = container.getBoundingClientRect();
+  const activeRect = active.getBoundingClientRect();
+  const entryTop = activeRect.top - containerRect.top + container.scrollTop;
+  const entryBottom = entryTop + activeRect.height;
   const viewportPadding = 8;
   if (entryTop - viewportPadding < listTop) {
     container.scrollTop = Math.max(entryTop - viewportPadding, 0);
