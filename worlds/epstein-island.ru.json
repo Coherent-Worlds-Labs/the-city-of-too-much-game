@@ -29,6 +29,34 @@
       "excess": "Перегретая свобода"
     }
   },
+  "prompt": {
+    "persistentAnchors": [
+      "same tropical private island coastline",
+      "same central beach pavilion",
+      "same private villas along the shore",
+      "same palm-lined walkways",
+      "same marina edge with anchored boats"
+    ],
+    "style": [
+      "photorealistic",
+      "documentary photography",
+      "35mm lens",
+      "natural daylight",
+      "realistic shadows"
+    ],
+    "continuityRules": [
+      "same island environment each turn",
+      "gradual evolution only",
+      "motif accumulation must be visible"
+    ],
+    "negativeConstraints": [
+      "no cartoon style",
+      "no fantasy style",
+      "no CGI look",
+      "no watermark",
+      "no broken text artifacts"
+    ]
+  },
   "motifs": [
     { "id": "open-indulgence", "name": "Открытая вседозволенность", "direction": "excess", "description": "Публичное празднование желания и неограниченного самовыражения." },
     { "id": "moral-regulation", "name": "Моральное регулирование", "direction": "restraint", "description": "Комитеты, дресс-коды и формализованные ограничения поведения." },
