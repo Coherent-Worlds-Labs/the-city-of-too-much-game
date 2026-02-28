@@ -19,4 +19,6 @@ To swap to another world, replace the active pack path with a different JSON fil
 
 - Default pack: `worlds/the-city-of-too-much.en.json`
 - Russian variant: `worlds/the-city-of-too-much.ru.json`
+- Epstein Island pack: `worlds/epstein-island.en.json`
+- Epstein Island Russian variant: `worlds/epstein-island.ru.json`
 - Loader module: `src/infra/world-pack-loader.mjs`
