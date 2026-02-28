@@ -15,6 +15,15 @@ const createHandProvider = (worldPack) => {
   };
 };
 
+const buildSeedScenePrompt = (worldPack) =>
+  [
+    `Initial seed scene for ${worldPack.metadata.title}.`,
+    "Show the city before any player-enacted card, in tense balance.",
+    "Photorealistic civic documentary composition with natural light.",
+    `Use setting anchors: ${worldPack.prompt.persistentAnchors.join(", ")}.`,
+    "Avoid extreme protocol or carnival drift in this initial frame."
+  ].join(" ");
+
 export const createRuntimeApi = ({
   store,
   worldPack,
@@ -29,11 +38,32 @@ export const createRuntimeApi = ({
   });
   const handForTurn = createHandProvider(worldPack);
 
-  const createGame = ({ seed = null } = {}) => {
+  const createGame = async ({ seed = null } = {}) => {
     const created = gameService.createGame({ seed });
+    const seedScene = await imagePipeline.renderTurnImage({
+      worldPack,
+      gameId: created.game.game_id,
+      turnIndex: 0,
+      imagePrompt: buildSeedScenePrompt(worldPack),
+      previousImageHint: null,
+      seed: created.game.seed ?? seed ?? null
+    });
+
     return {
       game: created.game,
       hand: handForTurn(created.game.current_turn),
+      seedScene: {
+        imageUrl: seedScene.imageUrl,
+        imagePrompt: seedScene.imagePrompt
+      },
+      timeline: [
+        {
+          turnIndex: 0,
+          imageUrl: seedScene.imageUrl,
+          imagePrompt: seedScene.imagePrompt,
+          cardText: "Seed scene"
+        }
+      ],
       world: {
         worldId: worldPack.worldId,
         title: worldPack.metadata.title

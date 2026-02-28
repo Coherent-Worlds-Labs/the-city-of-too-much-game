@@ -106,7 +106,7 @@ const server = createServer(async (req, res) => {
 
     if (req.method === "POST" && pathname === "/api/games") {
       const body = await readBody(req);
-      const created = runtimeApi.createGame({ seed: body.seed ?? null });
+      const created = await runtimeApi.createGame({ seed: body.seed ?? null });
       sendJson(res, 201, created);
       return;
     }

@@ -11,7 +11,8 @@ const state = {
   stability: "High",
   turn: 0,
   outcome: "active",
-  isProcessing: false
+  isProcessing: false,
+  sceneImageUrl: null
 };
 
 const elements = {
@@ -95,10 +96,22 @@ const renderIndicator = () => {
 const renderScene = () => {
   const cool = Math.round(52 + (1 - state.axis) * 50);
   const warm = Math.round(85 + state.axis * 90);
-  elements.scene.style.background = `
-    linear-gradient(170deg, rgba(21, 50, 57, 0.44), rgba(182, 81, 46, 0.22)),
-    linear-gradient(120deg, rgb(${cool}, 94, 112) 0%, rgb(105, 133, 129) 52%, rgb(${warm}, 122, 82) 100%)
-  `;
+  if (state.sceneImageUrl) {
+    elements.scene.style.background = `
+      linear-gradient(170deg, rgba(21, 50, 57, 0.44), rgba(182, 81, 46, 0.22)),
+      url("${state.sceneImageUrl}"),
+      linear-gradient(120deg, rgb(${cool}, 94, 112) 0%, rgb(105, 133, 129) 52%, rgb(${warm}, 122, 82) 100%)
+    `;
+    elements.scene.style.backgroundSize = "cover, cover, cover";
+    elements.scene.style.backgroundPosition = "center, center, center";
+  } else {
+    elements.scene.style.background = `
+      linear-gradient(170deg, rgba(21, 50, 57, 0.44), rgba(182, 81, 46, 0.22)),
+      linear-gradient(120deg, rgb(${cool}, 94, 112) 0%, rgb(105, 133, 129) 52%, rgb(${warm}, 122, 82) 100%)
+    `;
+    elements.scene.style.backgroundSize = "cover, cover";
+    elements.scene.style.backgroundPosition = "center, center";
+  }
 };
 
 const renderMotifs = () => {
@@ -214,7 +227,8 @@ const createGame = async () => {
   state.turn = created.game.current_turn;
   state.hand = created.hand;
   state.history = [];
-  state.timeline = [];
+  state.timeline = created.timeline ?? [];
+  state.sceneImageUrl = created.seedScene?.imageUrl ?? null;
   state.selectedCardId = null;
   state.axis = 0.5;
   state.direction = "balanced";
@@ -253,6 +267,7 @@ const enactSelectedCard = async () => {
     state.turn = played.game.current_turn;
     state.hand = played.hand;
     state.timeline = played.timeline;
+    state.sceneImageUrl = played.timeline.at(-1)?.imageUrl ?? state.sceneImageUrl;
     state.history = await api(`/api/games/${state.gameId}/history`).then((payload) => payload.history);
     hydrateFromTurn(played.turn);
     state.outcome = detectOutcome(

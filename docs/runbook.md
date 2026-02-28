@@ -49,6 +49,7 @@ OPENROUTER_DEBUG=true
 1. Start runtime with `npm run start`.
 2. Open `http://localhost:3000/`.
 2. Confirm:
+   - initial seed scene is generated at game start (before first card enact)
    - header and axis indicator render
    - card hand displays world-pack cards
    - enact flow shows two loading stages

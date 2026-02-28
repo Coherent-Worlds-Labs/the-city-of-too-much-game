@@ -35,6 +35,7 @@ test("runtime api orchestrates createGame and playTurn", async () => {
   const store = createSqliteStore({ dbPath: join(tempDir, "runtime.db") });
   const worldPack = loadDefaultWorldPack();
 
+  const imageCalls = [];
   try {
     const runtime = createRuntimeApi({
       store,
@@ -43,12 +44,15 @@ test("runtime api orchestrates createGame and playTurn", async () => {
         evaluateTurn: async () => ({ judgeResult })
       },
       imagePipeline: {
-        renderTurnImage: async () => ({
+        renderTurnImage: async (payload) => {
+          imageCalls.push(payload);
+          return {
           imagePrompt: "rendered prompt",
           imageUrl: "/assets/test-turn.png",
           imagePath: "/tmp/fake.png",
           raw: {}
-        })
+          };
+        }
       },
       reliability: {
         rateLimiter: createInMemoryRateLimiter({ maxRequests: 5, windowMs: 10_000 }),
@@ -57,8 +61,11 @@ test("runtime api orchestrates createGame and playTurn", async () => {
       }
     });
 
-    const created = runtime.createGame();
+    const created = await runtime.createGame();
     assert.equal(created.hand.length, 3);
+    assert.equal(created.seedScene.imageUrl, "/assets/test-turn.png");
+    assert.equal(created.timeline.length, 1);
+    assert.equal(created.timeline[0].turnIndex, 0);
     const firstCard = created.hand[0];
 
     const played = await runtime.playTurn({
@@ -70,6 +77,9 @@ test("runtime api orchestrates createGame and playTurn", async () => {
     assert.equal(played.game.current_turn, 1);
     assert.equal(played.turn.card_id, firstCard.id);
     assert.equal(played.timeline.length, 1);
+    assert.equal(imageCalls.length, 2);
+    assert.equal(imageCalls[0].turnIndex, 0);
+    assert.equal(imageCalls[1].turnIndex, 1);
   } finally {
     store.close();
     rmSync(tempDir, { recursive: true, force: true });
