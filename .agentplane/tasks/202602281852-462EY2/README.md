@@ -1,7 +1,8 @@
 ---
 id: "202602281852-462EY2"
 title: "Move restart control into protocol-carnival row as red action button"
-status: "DOING"
+result_summary: "Restart is now a red right-aligned button in the Protocol-Carnival indicator row."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T18:53:43.180Z"
   updated_by: "CODER"
   note: "Adjusted header layout so Restart is a red right-aligned button in the Protocol-Carnival row; lint and full tests pass."
-commit: null
+commit:
+  hash: "e3d2da131ce7c7d751c438a3896f9c653d683578"
+  message: "🚧 462EY2 ui: make restart red button in axis row"
 comments:
   -
     author: "CODER"
     body: "Start: moving Restart into the Protocol-Carnival indicator row and styling it as a red action button."
+  -
+    author: "CODER"
+    body: "Verified: moved Restart into same row as Protocol-Carnival indicator and styled it as a red right-aligned action button; lint and tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Adjusted header layout so Restart is a red right-aligned button in the Protocol-Carnival row; lint and full tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T18:54:27.635Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: moved Restart into same row as Protocol-Carnival indicator and styled it as a red right-aligned action button; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T18:53:43.182Z"
+doc_updated_at: "2026-02-28T18:54:27.635Z"
 doc_updated_by: "CODER"
 description: "Update header layout so Restart is shown as a red button on the right side of the same row as the Protocol-Carnival axis indicator."
 id_source: "generated"
