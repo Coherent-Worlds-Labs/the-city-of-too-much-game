@@ -1,7 +1,8 @@
 ---
 id: "202602282351-7FD0D2"
 title: "Add Russian variant for epstein-island world pack"
-status: "TODO"
+result_summary: "Russian epstein-island world-pack variant is available."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T23:53:35.592Z"
   updated_by: "CODER"
   note: "Verified: Russian variant for epstein-island added as schema-compatible world pack; lint and tests pass."
-commit: null
-comments: []
+commit:
+  hash: "366c5b807407fb73f692b507447899d02bccf847"
+  message: "🚧 7FD0D2 data: add russian epstein-island world-pack variant"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: added worlds/epstein-island.ru.json as Russian localized variant with schema compatibility preserved; updated worlds README; lint/tests pass."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: Russian variant for epstein-island added as schema-compatible world pack; lint and tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T23:54:02.106Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: added worlds/epstein-island.ru.json as Russian localized variant with schema compatibility preserved; updated worlds README; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T23:53:35.594Z"
+doc_updated_at: "2026-02-28T23:54:02.106Z"
 doc_updated_by: "CODER"
 description: "Create worlds/epstein-island.ru.json as a Russian localized variant of worlds/epstein-island.en.json while preserving schema, worldId, card IDs, and group keys."
 id_source: "generated"
