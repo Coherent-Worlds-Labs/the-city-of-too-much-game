@@ -1,7 +1,8 @@
 ---
 id: "202602281823-2EC78D"
 title: "Add initial state snapshot entry to History panel"
-status: "DOING"
+result_summary: "History now includes Initial state preview in addition to Genesis and turns."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T18:24:41.729Z"
   updated_by: "CODER"
   note: "Implemented Initial state snapshot entry in left History panel, kept Genesis and turn playback intact, and validated with lint and full node test suite."
-commit: null
+commit:
+  hash: "8618478ff11ee886bc3c64fc61050cd10fb2be43"
+  message: "🚧 2EC78D code: add initial state history snapshot playback"
 comments:
   -
     author: "CODER"
     body: "Start: adding a dedicated Initial state history entry with clickable image preview while preserving existing genesis and turn playback behavior."
+  -
+    author: "CODER"
+    body: "Verified: added an explicit Initial state snapshot in History with clickable image preview while preserving Genesis and turn timeline navigation; lint and tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Implemented Initial state snapshot entry in left History panel, kept Genesis and turn playback intact, and validated with lint and full node test suite."
+  -
+    type: "status"
+    at: "2026-02-28T18:25:19.979Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: added an explicit Initial state snapshot in History with clickable image preview while preserving Genesis and turn timeline navigation; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T18:24:41.731Z"
+doc_updated_at: "2026-02-28T18:25:19.979Z"
 doc_updated_by: "CODER"
 description: "Add a dedicated Initial state item in the left History panel so users can click and view the initial world image in addition to Genesis and turn snapshots."
 id_source: "generated"
