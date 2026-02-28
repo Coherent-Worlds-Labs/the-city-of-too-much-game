@@ -1,7 +1,8 @@
 ---
 id: "202602281930-6K6B7M"
 title: "Restore carnival subtitle and equalize bottom panel heights"
-status: "DOING"
+result_summary: "Header subtitle restored and bottom dashboard panels now share equal height."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T19:32:13.545Z"
   updated_by: "CODER"
   note: "Verified: Header includes carnival subtitle and bottom dashboard panels are equal height on desktop with internal scrolling; lint/tests pass."
-commit: null
+commit:
+  hash: "f24c719a170376b1ed20fee7b1324c8aad124b26"
+  message: "🚧 6K6B7M ui: restore carnival subtitle and equalize bottom panels"
 comments:
   -
     author: "CODER"
     body: "Start: Restoring carnival subtitle under title and making bottom dashboard panels equal height with internal scrolling."
+  -
+    author: "CODER"
+    body: "Verified: Added carnival subtitle under title and made History/City Initiatives/Status equal height on desktop with internal scroll behavior; lint/tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: Header includes carnival subtitle and bottom dashboard panels are equal height on desktop with internal scrolling; lint/tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T19:32:37.207Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added carnival subtitle under title and made History/City Initiatives/Status equal height on desktop with internal scroll behavior; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T19:32:13.547Z"
+doc_updated_at: "2026-02-28T19:32:37.207Z"
 doc_updated_by: "CODER"
 description: "Add a carnival-themed subtitle under the main title and make History, City Initiatives, and Status panels equal height on desktop."
 id_source: "generated"
