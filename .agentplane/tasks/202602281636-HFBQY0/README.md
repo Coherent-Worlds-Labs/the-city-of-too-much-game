@@ -1,7 +1,9 @@
 ---
 id: "202602281636-HFBQY0"
 title: "Remove placeholders and implement full runtime pipeline"
-status: "DOING"
+result_summary: "No-stub runtime pipeline implemented and validated for stage-ready baseline."
+risk_level: "med"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +20,16 @@ verification:
   updated_at: "2026-02-28T16:49:11.722Z"
   updated_by: "TESTER"
   note: "Runtime pipeline validated"
-commit: null
+commit:
+  hash: "c45b475688f3ceb58e6dcb0b0997a2b27b504a7c"
+  message: "✅ HFBQY0 runtime: remove stubs and ship full no-placeholder pipeline"
 comments:
   -
     author: "CODER"
     body: "Start: replacing prototype behavior with full runtime API or orchestration pipeline and removing placeholder build semantics."
+  -
+    author: "INTEGRATOR"
+    body: "Verified: runtime now serves real HTTP endpoints, UI uses backend API, placeholder build removed, tests and smoke checks passed without stub fallbacks."
 events:
   -
     type: "status"
@@ -37,9 +44,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Runtime pipeline validated"
+  -
+    type: "status"
+    at: "2026-02-28T16:49:44.308Z"
+    author: "INTEGRATOR"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: runtime now serves real HTTP endpoints, UI uses backend API, placeholder build removed, tests and smoke checks passed without stub fallbacks."
 doc_version: 2
-doc_updated_at: "2026-02-28T16:49:11.724Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T16:49:44.308Z"
+doc_updated_by: "INTEGRATOR"
 description: "Eliminate prototype/placeholder behavior by implementing real runtime flow: HTTP API endpoints, game turn orchestration (judge + image + persistence), UI-to-API integration, and production-ready build/start scripts."
 id_source: "generated"
 ---
