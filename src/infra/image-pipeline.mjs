@@ -83,7 +83,7 @@ export const createImagePipeline = ({
       ],
       modalities: ["image", "text"],
       image_config: {
-        aspect_ratio: "1:1"
+        aspect_ratio: "16:9"
       },
       seed: seed ?? undefined
     };
