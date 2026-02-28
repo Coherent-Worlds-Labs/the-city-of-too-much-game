@@ -370,7 +370,10 @@ h1 {
 }
 
 .motifs {
-  align-self: flex-end;
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2;
   max-width: 280px;
   color: #f4f2ee;
 }
