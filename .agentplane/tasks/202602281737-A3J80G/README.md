@@ -1,7 +1,9 @@
 ---
 id: "202602281737-A3J80G"
 title: "Refine judge JSON contract for gpt-5-mini and add robust shape normalization"
-status: "DOING"
+result_summary: "Judge contract clarity and schema-drift normalization implemented and verified."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +20,16 @@ verification:
   updated_at: "2026-02-28T17:39:32.361Z"
   updated_by: "TESTER"
   note: "Judge contract rewrite and normalization verified"
-commit: null
+commit:
+  hash: "ce258edf595fc56e4c5d65c7f06379ab36dd0755"
+  message: "✅ A3J80G judge: tighten gpt-5-mini contract and normalize schema drift"
 comments:
   -
     author: "CODER"
     body: "Start: rewriting judge schema instructions for gpt-5-mini and adding safe normalization for common malformed response shapes."
+  -
+    author: "INTEGRATOR"
+    body: "Verified: judge contract is now explicit for gpt-5-mini JSON output, and runtime normalizes common malformed shapes before strict validation to prevent avoidable turn failures."
 events:
   -
     type: "status"
@@ -37,9 +44,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Judge contract rewrite and normalization verified"
+  -
+    type: "status"
+    at: "2026-02-28T17:39:58.222Z"
+    author: "INTEGRATOR"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: judge contract is now explicit for gpt-5-mini JSON output, and runtime normalizes common malformed shapes before strict validation to prevent avoidable turn failures."
 doc_version: 2
-doc_updated_at: "2026-02-28T17:39:32.362Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T17:39:58.222Z"
+doc_updated_by: "INTEGRATOR"
 description: "Rewrite judge prompt contract to reduce schema drift on gpt-5-mini and normalize common malformed outputs (e.g., metrics under evaluation) into valid runtime shape."
 id_source: "generated"
 ---
