@@ -41,6 +41,7 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
 - Runtime target: Node.js 22+
 - Environment template: [`.env.example`](.env.example)
 - Architecture scaffold: [`docs/bootstrap.md`](docs/bootstrap.md)
+- Mechanics reference: [`docs/mechanics.md`](docs/mechanics.md)
 - Stage-ready overview: [`docs/stage-ready.md`](docs/stage-ready.md)
 - Runbook: [`docs/runbook.md`](docs/runbook.md)
 - Verification matrix: [`docs/verification-matrix.md`](docs/verification-matrix.md)
