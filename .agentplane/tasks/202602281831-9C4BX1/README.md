@@ -1,7 +1,8 @@
 ---
 id: "202602281831-9C4BX1"
 title: "Apply full image-cost optimization profile without turn-skipping"
-status: "DOING"
+result_summary: "Image generation now uses a full low-cost request profile without changing turn-by-turn rendering cadence."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T18:33:53.912Z"
   updated_by: "CODER"
   note: "Implemented all requested cost reductions except turn-skipping: image-only mode, reduced completion/reasoning budget, compact continuity prompt, and capped image_prompt length; lint and tests pass."
-commit: null
+commit:
+  hash: "dc95a2037e93b5877353234da1d6e2b0e3b67252"
+  message: "🚧 9C4BX1 code: apply full image cost optimization profile"
 comments:
   -
     author: "CODER"
     body: "Start: applying complete image cost optimization profile (except cadence changes): image-only modality, reasoning/output budget limits, compact continuity prompt, and capped image_prompt length."
+  -
+    author: "CODER"
+    body: "Verified: implemented image-only low-cost mode, constrained completion/reasoning budget, compact continuity prompts, and capped image_prompt length without reducing generation cadence; lint and tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Implemented all requested cost reductions except turn-skipping: image-only mode, reduced completion/reasoning budget, compact continuity prompt, and capped image_prompt length; lint and tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T18:34:28.228Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: implemented image-only low-cost mode, constrained completion/reasoning budget, compact continuity prompts, and capped image_prompt length without reducing generation cadence; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T18:33:53.913Z"
+doc_updated_at: "2026-02-28T18:34:28.228Z"
 doc_updated_by: "CODER"
 description: "Implement all approved cost cuts except reduced image frequency: image-only modality, lower completion/reasoning budget, compact continuity prompt, and image_prompt length cap for model-facing requests."
 id_source: "generated"
