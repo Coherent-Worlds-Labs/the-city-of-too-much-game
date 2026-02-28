@@ -1,7 +1,8 @@
 ---
 id: "202602282246-DAKBSK"
 title: "Ensure History list autoscroll on image overlay left-right navigation"
-status: "TODO"
+result_summary: "History auto-scroll is now reliable for image-overlay arrow navigation."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T22:48:18.921Z"
   updated_by: "CODER"
   note: "Verified: lint and full test suite pass; History auto-scroll remains local to the History panel during image overlay left/right navigation and does not move the main page."
-commit: null
-comments: []
+commit:
+  hash: "29683cdc53e331dcb8de52e52ef22759d9b879f1"
+  message: "🚧 DAKBSK ui: keep active history step visible on overlay arrow navigation"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: overlay arrow navigation now keeps the active History entry visible inside the History panel while preserving current main-page scroll position; lint and tests passed."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: lint and full test suite pass; History auto-scroll remains local to the History panel during image overlay left/right navigation and does not move the main page."
+  -
+    type: "status"
+    at: "2026-02-28T22:49:46.251Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: overlay arrow navigation now keeps the active History entry visible inside the History panel while preserving current main-page scroll position; lint and tests passed."
 doc_version: 2
-doc_updated_at: "2026-02-28T22:48:18.924Z"
+doc_updated_at: "2026-02-28T22:49:46.251Z"
 doc_updated_by: "CODER"
 description: "When user navigates scenes with left/right overlay arrows on the image, History list must auto-scroll inside the History panel to keep active step visible, without scrolling the main page."
 id_source: "generated"
