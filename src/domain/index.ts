@@ -11,3 +11,4 @@ export const createInitialWorldState = (): BootstrapWorldState => ({
 });
 
 export const worldPackContractVersion = 1;
+export const gameEngineContractVersion = 1;
