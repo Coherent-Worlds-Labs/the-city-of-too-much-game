@@ -1,7 +1,9 @@
 ---
 id: "202602282140-D3ZZ8Z"
 title: "Strengthen image prompt with explicit multi-turn history context"
-status: "TODO"
+result_summary: "Image prompt now includes compressed recent-turn evolution trail and stronger continuity guidance."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +20,13 @@ verification:
   updated_at: "2026-02-28T21:42:52.956Z"
   updated_by: "TESTER"
   note: "Image prompt now includes explicit cumulative multi-turn history context."
-commit: null
-comments: []
+commit:
+  hash: "8bc9641cf181f3e4b731e90b62413f2ff70a0b6c"
+  message: "🚧 D3ZZ8Z code: strengthen image prompt with turn-history trail"
+comments:
+  -
+    author: "INTEGRATOR"
+    body: "Verified: Added cumulative multi-turn evolution context to image continuity prompts so generation reflects history accumulation instead of only the latest action."
 events:
   -
     type: "verify"
@@ -27,9 +34,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Image prompt now includes explicit cumulative multi-turn history context."
+  -
+    type: "status"
+    at: "2026-02-28T21:43:32.892Z"
+    author: "INTEGRATOR"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Added cumulative multi-turn evolution context to image continuity prompts so generation reflects history accumulation instead of only the latest action."
 doc_version: 2
-doc_updated_at: "2026-02-28T21:42:52.958Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T21:43:32.892Z"
+doc_updated_by: "INTEGRATOR"
 description: "Augment continuity prompt with concise evolution trail from recent turns so image generation reflects accumulated history, not only latest card."
 id_source: "generated"
 ---
