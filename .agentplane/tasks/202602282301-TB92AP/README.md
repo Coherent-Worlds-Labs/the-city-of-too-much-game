@@ -1,7 +1,8 @@
 ---
 id: "202602282301-TB92AP"
 title: "Add Russian world-pack variant"
-status: "TODO"
+result_summary: "Russian world-pack variant is available as a schema-compatible file."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T23:03:16.270Z"
   updated_by: "CODER"
   note: "Verified: RU world-pack variant file added with locale=ru and preserved schema/IDs; lint and test suites pass."
-commit: null
-comments: []
+commit:
+  hash: "a78c16abbb67e21e4b05b6a211a666b61788b08e"
+  message: "🚧 TB92AP data: add russian world-pack variant"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: Added worlds/the-city-of-too-much.ru.json with locale=ru and translated textual content while preserving schema and IDs; updated worlds README; lint and tests passed."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: RU world-pack variant file added with locale=ru and preserved schema/IDs; lint and test suites pass."
+  -
+    type: "status"
+    at: "2026-02-28T23:03:56.165Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Added worlds/the-city-of-too-much.ru.json with locale=ru and translated textual content while preserving schema and IDs; updated worlds README; lint and tests passed."
 doc_version: 2
-doc_updated_at: "2026-02-28T23:03:16.272Z"
+doc_updated_at: "2026-02-28T23:03:56.165Z"
 doc_updated_by: "CODER"
 description: "Create worlds/the-city-of-too-much.ru.json as a Russian-language variant of the default world pack, preserving schema and card IDs while translating textual content."
 id_source: "generated"
