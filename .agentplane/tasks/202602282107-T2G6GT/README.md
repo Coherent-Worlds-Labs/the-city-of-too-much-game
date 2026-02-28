@@ -1,7 +1,8 @@
 ---
 id: "202602282107-T2G6GT"
 title: "Make saved-game resume resilient when session-list API fails"
-status: "DOING"
+result_summary: "Refreshing no longer creates a new world when session-list API is temporarily unavailable."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T21:08:57.361Z"
   updated_by: "CODER"
   note: "Verified: Saved-game resume no longer falls back to new world when session list endpoint fails; lint/tests pass."
-commit: null
+commit:
+  hash: "a3cbe4013d2f03990469bfa8d9647a0a69b2b957"
+  message: "🚧 T2G6GT ui: make saved-game resume robust to session-list failures"
 comments:
   -
     author: "CODER"
     body: "Start: Making session-list refresh best-effort so saved-game resume never falls back to new world due to catalog errors."
+  -
+    author: "CODER"
+    body: "Verified: Resume flow now tolerates /api/games catalog failures and keeps loading saved world; lint/tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: Saved-game resume no longer falls back to new world when session list endpoint fails; lint/tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T21:09:26.517Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Resume flow now tolerates /api/games catalog failures and keeps loading saved world; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T21:08:57.365Z"
+doc_updated_at: "2026-02-28T21:09:26.517Z"
 doc_updated_by: "CODER"
 description: "Prevent refresh fallback to new world when /api/games session list is unavailable; treat session catalog refresh as best-effort."
 id_source: "generated"
