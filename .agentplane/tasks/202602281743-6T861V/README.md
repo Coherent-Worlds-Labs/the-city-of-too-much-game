@@ -1,7 +1,9 @@
 ---
 id: "202602281743-6T861V"
 title: "Generate and display seed scene on game creation"
-status: "DOING"
+result_summary: "Seed-scene startup flow implemented and verified."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +20,16 @@ verification:
   updated_at: "2026-02-28T17:45:48.527Z"
   updated_by: "TESTER"
   note: "Seed scene on createGame verified"
-commit: null
+commit:
+  hash: "7b0567e94300916c1e77ce92b29b144a4fa207c8"
+  message: "✅ 6T861V runtime: generate seed scene before first turn"
 comments:
   -
     author: "CODER"
     body: "Start: implementing seed image generation during game creation and immediate scene rendering in UI."
+  -
+    author: "INTEGRATOR"
+    body: "Verified: game initialization now generates and displays a seed scene before the first card action, with updated API/UI flow and passing regression checks."
 events:
   -
     type: "status"
@@ -37,9 +44,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Seed scene on createGame verified"
+  -
+    type: "status"
+    at: "2026-02-28T17:46:08.051Z"
+    author: "INTEGRATOR"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: game initialization now generates and displays a seed scene before the first card action, with updated API/UI flow and passing regression checks."
 doc_version: 2
-doc_updated_at: "2026-02-28T17:45:48.528Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T17:46:08.051Z"
+doc_updated_by: "INTEGRATOR"
 description: "Create a seed image during /api/games flow and render it immediately in UI before the first card is enacted."
 id_source: "generated"
 ---
