@@ -1,7 +1,8 @@
 ---
 id: "202602281846-ZXBV27"
 title: "Remove redundant standalone timeline page and links"
-status: "DOING"
+result_summary: "Standalone timeline page and links were removed with no loss of timeline playback capability."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T18:47:41.430Z"
   updated_by: "CODER"
   note: "Removed standalone timeline page and navigation links; verified no remaining timeline page references and all lint/tests pass."
-commit: null
+commit:
+  hash: "7224b4025d3171f20e3cdfda9411c73fe35be353"
+  message: "🚧 ZXBV27 code: remove redundant standalone timeline ui"
 comments:
   -
     author: "CODER"
     body: "Start: removing redundant standalone timeline page and links now that History panel supports timeline navigation and image playback."
+  -
+    author: "CODER"
+    body: "Verified: removed standalone timeline page and links because equivalent/stronger timeline navigation exists in History panel on main screen; lint/tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Removed standalone timeline page and navigation links; verified no remaining timeline page references and all lint/tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T18:48:13.560Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: removed standalone timeline page and links because equivalent/stronger timeline navigation exists in History panel on main screen; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T18:47:41.432Z"
+doc_updated_at: "2026-02-28T18:48:13.560Z"
 doc_updated_by: "CODER"
 description: "Remove the separate timeline page and all navigation links to it because the main screen History panel now provides timeline navigation and image preview functionality."
 id_source: "generated"
