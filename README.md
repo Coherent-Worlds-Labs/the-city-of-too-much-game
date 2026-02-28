@@ -9,6 +9,9 @@ The city is not a static backdrop. It continuously evolves from your choices. As
 
 There is no fixed storyline, no predefined ending, and no single “correct” interpretation of events. Instead, the game is about maintaining a world that can continue. Stability does not mean uniformity, and chaos does not mean creativity. The challenge lies in sustaining a state where contradictions coexist without collapse.
 
+![The-City-of-Too-Much View 1](docs/assets/view-1.jpg)
+![The-City-of-Too-Much View 2](docs/assets/view-2.jpg)
+
 ---
 
 ## Coherent-World-Continuation
@@ -31,6 +34,8 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
 - Repository-facing implementation artifacts must remain in English.
 - World-specific content (setting flavor, card texts, and related narrative strings) must be loaded from a replaceable world-pack file rather than hardcoded.
 
+---
+
 ## Development Bootstrap
 
 - Runtime target: Node.js 22+
@@ -49,10 +54,11 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
   - `npm run test`
   - `npm run build`
 
+---
+
 ## License
 
 This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
 Commercial use requires a separate license.
 
 All contributions are subject to the Contributor License Agreement (CLA).
-
