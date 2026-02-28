@@ -1,7 +1,9 @@
 ---
 id: "202602282117-H2HF8W"
 title: "Replace blocking outcome modal with inline closed-world state"
-status: "TODO"
+result_summary: "Completed sessions no longer show blocking overlay; closure state is rendered inline in City Initiatives."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +20,13 @@ verification:
   updated_at: "2026-02-28T21:20:39.083Z"
   updated_by: "TESTER"
   note: "Automated checks pass after removing blocking outcome modal and adding inline closed-world panel."
-commit: null
-comments: []
+commit:
+  hash: "2cd71b6c197e2b361e8173e0e9894f42ce9be004"
+  message: "🚧 H2HF8W ui: inline closed-world status and hide outcome modal"
+comments:
+  -
+    author: "INTEGRATOR"
+    body: "Verified: Removed the blocking completed-world modal, moved closure messaging into City Initiatives, and preserved History-based navigation across closed sessions."
 events:
   -
     type: "verify"
@@ -27,9 +34,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Automated checks pass after removing blocking outcome modal and adding inline closed-world panel."
+  -
+    type: "status"
+    at: "2026-02-28T21:21:49.012Z"
+    author: "INTEGRATOR"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Removed the blocking completed-world modal, moved closure messaging into City Initiatives, and preserved History-based navigation across closed sessions."
 doc_version: 2
-doc_updated_at: "2026-02-28T21:20:39.085Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T21:21:49.012Z"
+doc_updated_by: "INTEGRATOR"
 description: "Remove blocking completion modal so closed sessions remain navigable; show closure info inside City Initiatives panel instead of disabled cards."
 id_source: "generated"
 ---
