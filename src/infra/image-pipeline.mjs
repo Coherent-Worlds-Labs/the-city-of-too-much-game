@@ -1,5 +1,7 @@
 import { saveImageBase64 } from "./image-storage.mjs";
 import { logDebugDetails, logDebugHeadline } from "./debug-log.mjs";
+import { readFileSync } from "node:fs";
+import { basename, join } from "node:path";
 
 const extractBase64FromDataUrl = (value) => {
   if (typeof value !== "string") {
@@ -86,6 +88,7 @@ export const createImagePipeline = ({
   modalities = ["image"],
   maxCompletionTokens = null,
   reasoningEffort = "low",
+  imageToImageEnabled = false,
   assetsDir = "storage/images",
   publicAssetsBaseUrl = "/assets",
   fetchFn = fetch,
@@ -103,10 +106,54 @@ export const createImagePipeline = ({
     return response;
   };
 
-  const buildPrimaryBody = ({ prompt, seed }) => {
+  const toLocalAssetDataUrl = (imageUrl) => {
+    if (typeof imageUrl !== "string" || !imageUrl.trim()) {
+      return null;
+    }
+    let fileName = null;
+    if (imageUrl.startsWith("/assets/")) {
+      fileName = basename(imageUrl);
+    } else {
+      try {
+        const parsed = new URL(imageUrl);
+        if (parsed.pathname.startsWith("/assets/")) {
+          fileName = basename(parsed.pathname);
+        }
+      } catch {
+        fileName = null;
+      }
+    }
+    if (!fileName) {
+      return null;
+    }
+    const absolutePath = join(assetsDir, fileName);
+    try {
+      const bytes = readFileSync(absolutePath);
+      return `data:image/png;base64,${bytes.toString("base64")}`;
+    } catch {
+      return null;
+    }
+  };
+
+  const buildUserContent = ({ prompt, previousImageDataUrl = null }) => {
+    if (!previousImageDataUrl) {
+      return prompt;
+    }
+    return [
+      { type: "text", text: prompt },
+      { type: "image_url", image_url: { url: previousImageDataUrl } }
+    ];
+  };
+
+  const buildPrimaryBody = ({ prompt, seed, previousImageDataUrl = null }) => {
     const body = {
       model,
-      messages: [{ role: "user", content: prompt }],
+      messages: [
+        {
+          role: "user",
+          content: buildUserContent({ prompt, previousImageDataUrl })
+        }
+      ],
       modalities,
       size: outputSize,
       image_config: {
@@ -124,13 +171,15 @@ export const createImagePipeline = ({
     return body;
   };
 
-  const buildRelaxedFallbackBody = (requestBody) => {
+  const buildRelaxedFallbackBody = ({ requestBody, prompt, seed }) => {
     const body = {
       ...requestBody,
+      messages: [{ role: "user", content: prompt }],
       modalities: ["image", "text"]
     };
     delete body.max_tokens;
     delete body.reasoning;
+    body.seed = seed ?? undefined;
     return body;
   };
 
@@ -140,6 +189,7 @@ export const createImagePipeline = ({
     turnIndex,
     imagePrompt,
     previousImageHint = null,
+    previousImageUrl = null,
     seed = null
   }) => {
     if (!apiKey || !apiKey.trim()) {
@@ -150,7 +200,13 @@ export const createImagePipeline = ({
       worldPack,
       previousImageHint
     });
-    const requestBody = buildPrimaryBody({ prompt: finalPrompt, seed });
+    const previousImageDataUrl =
+      imageToImageEnabled && turnIndex > 0 ? toLocalAssetDataUrl(previousImageUrl) : null;
+    const requestBody = buildPrimaryBody({
+      prompt: finalPrompt,
+      seed,
+      previousImageDataUrl
+    });
 
     if (debug) {
       logDebugHeadline("openrouter:image", `request model=${model}`);
@@ -160,7 +216,11 @@ export const createImagePipeline = ({
     let response = await requestImage(requestBody);
 
     if (!response.ok && (response.status === 400 || response.status === 422)) {
-      const fallbackBody = buildRelaxedFallbackBody(requestBody);
+      const fallbackBody = buildRelaxedFallbackBody({
+        requestBody,
+        prompt: finalPrompt,
+        seed
+      });
       response = await requestImage(fallbackBody);
       if (debug) {
         logDebugHeadline("openrouter:image", "fallback request applied due to provider validation error");
@@ -183,7 +243,11 @@ export const createImagePipeline = ({
       logDebugDetails("response payload", payload);
     }
     if (!hasImagePayload(payload)) {
-      const fallbackBody = buildRelaxedFallbackBody(requestBody);
+      const fallbackBody = buildRelaxedFallbackBody({
+        requestBody,
+        prompt: finalPrompt,
+        seed
+      });
       const fallbackResponse = await requestImage(fallbackBody);
       if (!fallbackResponse.ok) {
         const text = await fallbackResponse.text();

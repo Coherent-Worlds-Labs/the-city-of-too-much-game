@@ -124,13 +124,15 @@ export const createRuntimeApi = ({
       previousTimeline.length > 0
         ? `previous image url ${previousTimeline.at(-1).imageUrl}`
         : null;
+    const previousImageUrl = previousTimeline.length > 0 ? previousTimeline.at(-1).imageUrl : null;
 
     const image = await imagePipeline.renderTurnImage({
       worldPack,
       gameId,
       turnIndex: history.length + 1,
       imagePrompt: compactImagePrompt(judgeEval.judgeResult.image_prompt),
-      previousImageHint: previousHint
+      previousImageHint: previousHint,
+      previousImageUrl
     });
 
     const played = gameService.playTurn({

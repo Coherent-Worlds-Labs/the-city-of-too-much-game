@@ -45,6 +45,7 @@ const runtimeApi = createRuntimeApi({
     modalities: config.imageModalities,
     maxCompletionTokens: config.imageMaxCompletionTokens,
     reasoningEffort: config.imageReasoningEffort,
+    imageToImageEnabled: config.imageToImageEnabled,
     assetsDir: config.assetsDir,
     publicAssetsBaseUrl: "/assets",
     debug: config.openRouterDebug

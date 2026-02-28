@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createImagePipeline, buildContinuityPrompt } from "../src/infra/image-pipeline.mjs";
@@ -150,6 +150,65 @@ test("createImagePipeline retries with relaxed payload when first 200 has no ima
     assert.deepEqual(calls[1].modalities, ["image", "text"]);
     assert.equal(calls[1].max_tokens, undefined);
     assert.equal(calls[1].reasoning, undefined);
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+test("createImagePipeline sends previous frame as image input when image-to-image is enabled", async () => {
+  const worldPack = loadDefaultWorldPack();
+  const tempDir = mkdtempSync(join(tmpdir(), "city-too-much-img-i2i-"));
+  const previousImageBytes = Buffer.from("previous-image-bytes");
+  const fakePngBase64 = Buffer.from("new-image-bytes").toString("base64");
+  writeFileSync(join(tempDir, "game-03-turn-000.png"), previousImageBytes);
+
+  const calls = [];
+  const fetchFn = async (_url, init) => {
+    calls.push(JSON.parse(init.body));
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        choices: [
+          {
+            message: {
+              images: [
+                {
+                  image_url: {
+                    url: `data:image/png;base64,${fakePngBase64}`
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      })
+    };
+  };
+
+  try {
+    const pipeline = createImagePipeline({
+      apiKey: "test-key",
+      fetchFn,
+      assetsDir: tempDir,
+      publicAssetsBaseUrl: "/assets",
+      imageToImageEnabled: true
+    });
+
+    await pipeline.renderTurnImage({
+      worldPack,
+      gameId: "game-03",
+      turnIndex: 1,
+      imagePrompt: "Photorealistic city square.",
+      previousImageUrl: "/assets/game-03-turn-000.png"
+    });
+
+    assert.equal(calls.length, 1);
+    const userContent = calls[0].messages[0].content;
+    assert.equal(Array.isArray(userContent), true);
+    assert.equal(userContent[0].type, "text");
+    assert.equal(userContent[1].type, "image_url");
+    assert.equal(String(userContent[1].image_url.url).startsWith("data:image/png;base64,"), true);
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }

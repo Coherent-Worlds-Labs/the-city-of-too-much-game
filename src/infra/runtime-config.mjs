@@ -18,6 +18,14 @@ const parseOptionalInt = (value) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+const parseBoolean = (value, fallback = false) => {
+  if (value === undefined || value === null || String(value).trim() === "") {
+    return fallback;
+  }
+  const normalized = String(value).trim().toLowerCase();
+  return ["1", "true", "yes", "on"].includes(normalized);
+};
+
 export const readRuntimeConfig = () => ({
   nodeEnv: process.env.NODE_ENV ?? "development",
   appPort: Number.parseInt(process.env.APP_PORT ?? "3000", 10),
@@ -41,6 +49,7 @@ export const readRuntimeConfig = () => ({
   imageMaxCompletionTokens: parseOptionalInt(process.env.IMAGE_MAX_COMPLETION_TOKENS),
   imageReasoningEffort: process.env.IMAGE_REASONING_EFFORT ?? "low",
   imagePromptMaxChars: Number.parseInt(process.env.IMAGE_PROMPT_MAX_CHARS ?? "460", 10),
+  imageToImageEnabled: parseBoolean(process.env.IMAGE_TO_IMAGE_ENABLED, false),
   maxHistoryEntries: Number.parseInt(process.env.MAX_HISTORY_ENTRIES ?? "120", 10),
   rateLimitWindowMs: Number.parseInt(process.env.RATE_LIMIT_WINDOW_MS ?? "60000", 10),
   rateLimitMaxRequests: Number.parseInt(process.env.RATE_LIMIT_MAX_REQUESTS ?? "30", 10)
