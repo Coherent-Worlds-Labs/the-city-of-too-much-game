@@ -54,7 +54,7 @@ body.has-scene-background::before {
 }
 
 .header {
-  background: rgba(255, 253, 248, 0.9);
+  background: rgba(255, 253, 248, 0.7);
   border: 1px solid var(--line);
   border-radius: 16px;
   padding: 9px 14px;
@@ -316,7 +316,7 @@ h1 {
 }
 
 .panel {
-  background: rgba(255, 253, 248, 0.9);
+  background: rgba(255, 253, 248, 0.7);
   border: 1px solid var(--line);
   border-radius: 16px;
   box-shadow: var(--shadow);
