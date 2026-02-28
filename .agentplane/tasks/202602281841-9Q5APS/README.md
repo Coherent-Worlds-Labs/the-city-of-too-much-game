@@ -1,7 +1,8 @@
 ---
 id: "202602281841-9Q5APS"
 title: "Fix image generation regression from aggressive output cap"
-status: "DOING"
+result_summary: "Image generation now recovers automatically from 200/no-image responses and no longer hard-caps output by default."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T18:44:10.548Z"
   updated_by: "CODER"
   note: "Fixed regression where image requests ended with max_output_tokens and produced no image; added no-image fallback retry and safe defaults; lint/tests pass."
-commit: null
+commit:
+  hash: "b154e83e43448d194ac2cbd12f11c9209f25464b"
+  message: "🚧 9Q5APS code: fix no-image regression after cost tuning"
 comments:
   -
     author: "CODER"
     body: "Start: fixing image generation regression by removing unsafe max-output default and adding fallback retry when response has no generated image."
+  -
+    author: "CODER"
+    body: "Verified: fixed image regression caused by aggressive max-output cap by making token cap optional and adding retry when 200 payload has no image; lint and tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Fixed regression where image requests ended with max_output_tokens and produced no image; added no-image fallback retry and safe defaults; lint/tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T18:44:54.610Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: fixed image regression caused by aggressive max-output cap by making token cap optional and adding retry when 200 payload has no image; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T18:44:10.554Z"
+doc_updated_at: "2026-02-28T18:44:54.610Z"
 doc_updated_by: "CODER"
 description: "Restore stable image generation after low-cost tuning by removing unsafe low max output default and adding automatic fallback retry when provider returns 200 without image payload."
 id_source: "generated"
