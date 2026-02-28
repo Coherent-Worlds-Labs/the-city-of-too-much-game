@@ -1,7 +1,9 @@
 ---
 id: "202602281637-7N75FP"
 title: "Integration closeout for no-stub stage-ready release"
-status: "DOING"
+result_summary: "Integration closeout completed with exported workflow artifacts and committed task evidence."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "INTEGRATOR"
 depends_on:
@@ -19,11 +21,16 @@ verification:
   updated_at: "2026-02-28T16:55:01.443Z"
   updated_by: "INTEGRATOR"
   note: "Integration closeout checks passed"
-commit: null
+commit:
+  hash: "3d06ecdf5734976a107a9ac6c51a5822c97cf76c"
+  message: "✅ 7N75FP integration: record final closeout and export evidence"
 comments:
   -
     author: "INTEGRATOR"
     body: "Start: executing final integration closeout with export snapshot and artifact-only commit for stage-ready release."
+  -
+    author: "INTEGRATOR"
+    body: "Verified: dependency chain is complete, verification artifacts are committed, and export snapshot command executed successfully for stage-ready closeout."
 events:
   -
     type: "status"
@@ -38,8 +45,15 @@ events:
     author: "INTEGRATOR"
     state: "ok"
     note: "Integration closeout checks passed"
+  -
+    type: "status"
+    at: "2026-02-28T16:55:38.449Z"
+    author: "INTEGRATOR"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: dependency chain is complete, verification artifacts are committed, and export snapshot command executed successfully for stage-ready closeout."
 doc_version: 2
-doc_updated_at: "2026-02-28T16:55:11.749Z"
+doc_updated_at: "2026-02-28T16:55:38.449Z"
 doc_updated_by: "INTEGRATOR"
 description: "Finalize integration after runtime fixes and verification/review, export task snapshot, and close release handoff."
 id_source: "generated"
