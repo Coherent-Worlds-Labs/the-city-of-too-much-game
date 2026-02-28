@@ -303,6 +303,17 @@ h1 {
   padding: 0;
   display: grid;
   gap: 8px;
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 4px;
+}
+
+.panel.history {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: clamp(260px, 52vh, 560px);
+  overflow: hidden;
 }
 
 .history li {
@@ -518,6 +529,10 @@ h1 {
 
   .board {
     grid-template-columns: 1fr;
+  }
+
+  .panel.history {
+    max-height: 320px;
   }
 
   .scene-nav {
