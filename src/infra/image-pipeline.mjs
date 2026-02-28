@@ -28,23 +28,37 @@ const extractImageBase64 = (payload) => {
   throw new Error("Image provider response does not contain base64 image data.");
 };
 
+const normalizeCompactText = (value, maxLength) =>
+  String(value ?? "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, maxLength);
+
+const joinLimited = (items, maxItems = 3, maxLength = 220) =>
+  (Array.isArray(items) ? items : [])
+    .map((item) => normalizeCompactText(item, 80))
+    .filter((item) => item.length > 0)
+    .slice(0, maxItems)
+    .join(", ")
+    .slice(0, maxLength);
+
 export const buildContinuityPrompt = ({ basePrompt, worldPack, previousImageHint }) => {
-  const anchors = worldPack.prompt.persistentAnchors.join(", ");
-  const style = worldPack.prompt.style.join(", ");
-  const continuity = worldPack.prompt.continuityRules.join(", ");
-  const negative = worldPack.prompt.negativeConstraints.join(", ");
+  const anchors = joinLimited(worldPack.prompt.persistentAnchors, 3, 180);
+  const style = joinLimited(worldPack.prompt.style, 2, 140);
+  const continuity = joinLimited(worldPack.prompt.continuityRules, 2, 140);
+  const negative = joinLimited(worldPack.prompt.negativeConstraints, 2, 140);
 
   const previousClause = previousImageHint
-    ? `Preserve continuity with previous frame reference: ${previousImageHint}.`
-    : "Preserve continuity with prior city state and avoid abrupt scene changes.";
+    ? `Match previous frame: ${normalizeCompactText(previousImageHint, 120)}.`
+    : "Keep continuity with prior city state.";
 
   return [
-    basePrompt,
-    `Persistent anchors: ${anchors}.`,
-    `Style anchors: ${style}.`,
-    `${previousClause}`,
-    `Continuity constraints: ${continuity}.`,
-    `Negative constraints: ${negative}.`
+    normalizeCompactText(basePrompt, 460),
+    `Anchors: ${anchors}.`,
+    `Style: ${style}.`,
+    previousClause,
+    `Continuity: ${continuity}.`,
+    `Avoid: ${negative}.`
   ].join(" ");
 };
 
@@ -55,11 +69,26 @@ export const createImagePipeline = ({
   aspectRatio = "21:9",
   outputSize = "672x288",
   quality = "low",
+  modalities = ["image"],
+  maxCompletionTokens = 48,
+  reasoningEffort = "low",
   assetsDir = "storage/images",
   publicAssetsBaseUrl = "/assets",
   fetchFn = fetch,
   debug = false
 }) => {
+  const requestImage = async (requestBody) => {
+    const response = await fetchFn(`${baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(requestBody)
+    });
+    return response;
+  };
+
   const renderTurnImage = async ({
     worldPack,
     gameId,
@@ -84,11 +113,15 @@ export const createImagePipeline = ({
           content: finalPrompt
         }
       ],
-      modalities: ["image", "text"],
+      modalities,
       size: outputSize,
       image_config: {
         aspect_ratio: aspectRatio,
         quality
+      },
+      max_tokens: maxCompletionTokens,
+      reasoning: {
+        effort: reasoningEffort
       },
       seed: seed ?? undefined
     };
@@ -98,14 +131,21 @@ export const createImagePipeline = ({
       logDebugDetails("request payload", requestBody);
     }
 
-    const response = await fetchFn(`${baseUrl}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`
-      },
-      body: JSON.stringify(requestBody)
-    });
+    let response = await requestImage(requestBody);
+
+    if (!response.ok && (response.status === 400 || response.status === 422)) {
+      const fallbackBody = {
+        ...requestBody,
+        modalities: ["image", "text"]
+      };
+      delete fallbackBody.max_tokens;
+      delete fallbackBody.reasoning;
+      response = await requestImage(fallbackBody);
+      if (debug) {
+        logDebugHeadline("openrouter:image", "fallback request applied due to provider validation error");
+        logDebugDetails("fallback payload", fallbackBody);
+      }
+    }
 
     if (!response.ok) {
       const text = await response.text();

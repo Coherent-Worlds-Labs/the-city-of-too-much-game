@@ -27,7 +27,7 @@ const judgeResult = {
     active_motifs: [{ name: "avian_governance", strength: 0.7, direction: "carnival" }],
     coherence_level: 0.8
   },
-  image_prompt: "Photorealistic square."
+  image_prompt: `${"Photorealistic square with layered civic details and continuity emphasis. ".repeat(20)}`
 };
 
 test("runtime api orchestrates createGame and playTurn", async () => {
@@ -82,6 +82,7 @@ test("runtime api orchestrates createGame and playTurn", async () => {
     assert.equal(imageCalls.length, 2);
     assert.equal(imageCalls[0].turnIndex, 0);
     assert.equal(imageCalls[1].turnIndex, 1);
+    assert.equal(imageCalls[1].imagePrompt.length <= 460, true);
 
     const resumed = runtime.getGameState(created.game.game_id);
     assert.equal(resumed.game.game_id, created.game.game_id);

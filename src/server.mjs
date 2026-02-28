@@ -42,6 +42,9 @@ const runtimeApi = createRuntimeApi({
     aspectRatio: config.imageAspectRatio,
     outputSize: config.imageOutputSize,
     quality: config.imageQuality,
+    modalities: config.imageModalities,
+    maxCompletionTokens: config.imageMaxCompletionTokens,
+    reasoningEffort: config.imageReasoningEffort,
     assetsDir: config.assetsDir,
     publicAssetsBaseUrl: "/assets",
     debug: config.openRouterDebug
@@ -53,7 +56,8 @@ const runtimeApi = createRuntimeApi({
     }),
     dedupeCache: createTurnDedupeCache(),
     maxHistoryEntries: config.maxHistoryEntries
-  }
+  },
+  imagePromptMaxChars: config.imagePromptMaxChars
 });
 
 const mimeByExt = {

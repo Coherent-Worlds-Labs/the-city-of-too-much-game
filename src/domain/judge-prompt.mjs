@@ -28,6 +28,7 @@ export const buildJudgeSystemPrompt = (worldPack) => {
     "- DO NOT put prose in new_state (new_state must be an object, never a string).",
     "- DO NOT move absurdity_index/coherence_level/dominant_direction into evaluation.",
     "- Keep image_prompt photorealistic and continuity-preserving.",
+    "- Keep image_prompt concise (max 460 characters, one compact paragraph).",
     "",
     "Output template (types only):",
     "{\"reconstructed_state_before\":{},\"evaluation\":{},\"new_state\":{\"absurdity_index\":0.5,\"coherence_level\":0.7,\"dominant_direction\":\"balanced\",\"active_motifs\":[]},\"image_prompt\":\"...\"}",

@@ -25,6 +25,14 @@ export const readRuntimeConfig = () => ({
   imageAspectRatio: process.env.IMAGE_ASPECT_RATIO ?? "21:9",
   imageOutputSize: process.env.IMAGE_OUTPUT_SIZE ?? "672x288",
   imageQuality: process.env.IMAGE_QUALITY ?? "low",
+  imageModalities:
+    (process.env.IMAGE_MODALITIES ?? "image")
+      .split(",")
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0),
+  imageMaxCompletionTokens: Number.parseInt(process.env.IMAGE_MAX_COMPLETION_TOKENS ?? "48", 10),
+  imageReasoningEffort: process.env.IMAGE_REASONING_EFFORT ?? "low",
+  imagePromptMaxChars: Number.parseInt(process.env.IMAGE_PROMPT_MAX_CHARS ?? "460", 10),
   maxHistoryEntries: Number.parseInt(process.env.MAX_HISTORY_ENTRIES ?? "120", 10),
   rateLimitWindowMs: Number.parseInt(process.env.RATE_LIMIT_WINDOW_MS ?? "60000", 10),
   rateLimitMaxRequests: Number.parseInt(process.env.RATE_LIMIT_MAX_REQUESTS ?? "30", 10)

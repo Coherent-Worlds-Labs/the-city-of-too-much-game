@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { createImagePipeline, buildContinuityPrompt } from "../src/infra/image-pipeline.mjs";
 import { loadDefaultWorldPack } from "../src/infra/world-pack-loader.mjs";
 
-test("buildContinuityPrompt injects anchors and constraints", () => {
+test("buildContinuityPrompt injects compact anchors and constraints", () => {
   const worldPack = loadDefaultWorldPack();
   const prompt = buildContinuityPrompt({
     basePrompt: "Photorealistic city square with avian officials.",
@@ -14,8 +14,8 @@ test("buildContinuityPrompt injects anchors and constraints", () => {
     previousImageHint: "town hall clock tower unchanged"
   });
 
-  assert.equal(prompt.includes("Persistent anchors:"), true);
-  assert.equal(prompt.includes("Negative constraints:"), true);
+  assert.equal(prompt.includes("Anchors:"), true);
+  assert.equal(prompt.includes("Avoid:"), true);
   assert.equal(prompt.includes("town hall clock tower unchanged"), true);
 });
 
@@ -73,6 +73,9 @@ test("createImagePipeline stores rendered image and returns URL", async () => {
     assert.equal(body.image_config.aspect_ratio, "21:9");
     assert.equal(body.size, "672x288");
     assert.equal(body.image_config.quality, "low");
+    assert.deepEqual(body.modalities, ["image"]);
+    assert.equal(body.max_tokens, 48);
+    assert.equal(body.reasoning.effort, "low");
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
   }

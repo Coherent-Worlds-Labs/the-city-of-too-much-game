@@ -29,7 +29,8 @@ export const createRuntimeApi = ({
   worldPack,
   judge,
   imagePipeline,
-  reliability
+  reliability,
+  imagePromptMaxChars = 460
 }) => {
   const gameService = createGameService({
     store,
@@ -38,13 +39,19 @@ export const createRuntimeApi = ({
   });
   const handForTurn = createHandProvider(worldPack);
 
+  const compactImagePrompt = (value) =>
+    String(value ?? "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, imagePromptMaxChars);
+
   const createGame = async ({ seed = null } = {}) => {
     const created = gameService.createGame({ seed });
     const seedScene = await imagePipeline.renderTurnImage({
       worldPack,
       gameId: created.game.game_id,
       turnIndex: 0,
-      imagePrompt: buildSeedScenePrompt(worldPack),
+      imagePrompt: compactImagePrompt(buildSeedScenePrompt(worldPack)),
       previousImageHint: null,
       seed: created.game.seed ?? seed ?? null
     });
@@ -122,7 +129,7 @@ export const createRuntimeApi = ({
       worldPack,
       gameId,
       turnIndex: history.length + 1,
-      imagePrompt: judgeEval.judgeResult.image_prompt,
+      imagePrompt: compactImagePrompt(judgeEval.judgeResult.image_prompt),
       previousImageHint: previousHint
     });
 
