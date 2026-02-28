@@ -46,6 +46,101 @@ const unwrapJsonFence = (text) => {
   return text.trim();
 };
 
+const toNumberOrNull = (value) => {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string" && value.trim().length > 0) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+  return null;
+};
+
+const clamp01 = (value) => {
+  if (typeof value !== "number" || Number.isNaN(value)) {
+    return null;
+  }
+  if (value < 0) {
+    return 0;
+  }
+  if (value > 1) {
+    return 1;
+  }
+  return value;
+};
+
+const normalizeDirection = (value) => {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+  if (["protocol", "bureaucratization", "order", "regulation"].includes(normalized)) {
+    return "protocol";
+  }
+  if (["carnival", "chaos", "absurdity", "excess"].includes(normalized)) {
+    return "carnival";
+  }
+  if (["balanced", "balance", "neutral"].includes(normalized)) {
+    return "balanced";
+  }
+  return normalized;
+};
+
+const firstNonNull = (...values) => values.find((value) => value !== null && value !== undefined);
+
+export const normalizeJudgeResultShape = (input) => {
+  if (!input || typeof input !== "object") {
+    return input;
+  }
+
+  const evaluation = input.evaluation && typeof input.evaluation === "object" ? input.evaluation : {};
+  const originalNewState =
+    input.new_state && typeof input.new_state === "object" && !Array.isArray(input.new_state)
+      ? input.new_state
+      : {};
+
+  const absurdity = clamp01(
+    firstNonNull(
+      toNumberOrNull(originalNewState.absurdity_index),
+      toNumberOrNull(evaluation.absurdity_index),
+      toNumberOrNull(evaluation.absurdity)
+    )
+  );
+  const coherence = clamp01(
+    firstNonNull(
+      toNumberOrNull(originalNewState.coherence_level),
+      toNumberOrNull(evaluation.coherence_level),
+      toNumberOrNull(evaluation.coherence)
+    )
+  );
+  const direction = firstNonNull(
+    normalizeDirection(originalNewState.dominant_direction),
+    normalizeDirection(evaluation.dominant_direction),
+    normalizeDirection(evaluation.direction)
+  );
+
+  const activeMotifs = Array.isArray(originalNewState.active_motifs)
+    ? originalNewState.active_motifs
+    : [];
+
+  return {
+    ...input,
+    new_state: {
+      ...originalNewState,
+      ...(absurdity !== null ? { absurdity_index: absurdity } : {}),
+      ...(coherence !== null ? { coherence_level: coherence } : {}),
+      ...(direction ? { dominant_direction: direction } : {}),
+      active_motifs: activeMotifs
+    }
+  };
+};
+
 export const parseJudgeJson = (rawContent) => {
   const text = unwrapJsonFence(contentToText(rawContent));
   if (!text) {
@@ -115,7 +210,8 @@ export const createOpenRouterJudge = ({
       logDebugDetails("response payload", payload);
     }
     const content = payload?.choices?.[0]?.message?.content;
-    const judgeResult = parseJudgeJson(content);
+    const parsedJudgeResult = parseJudgeJson(content);
+    const judgeResult = normalizeJudgeResultShape(parsedJudgeResult);
     const validation = validateJudgeResult(judgeResult);
     if (!validation.ok) {
       if (debug) {
@@ -123,7 +219,8 @@ export const createOpenRouterJudge = ({
           "openrouter:judge",
           `validation_failed errors=${validation.errors.join(" | ")}`
         );
-        logDebugDetails("parsed judge result", judgeResult);
+        logDebugDetails("parsed judge result", parsedJudgeResult);
+        logDebugDetails("normalized judge result", judgeResult);
       }
       throw new JudgeValidationError("Judge response failed contract validation.", validation.errors);
     }

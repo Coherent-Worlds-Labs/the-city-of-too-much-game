@@ -53,7 +53,7 @@ export const validateJudgeResult = (judgeResult) => {
   }
 
   if (!judgeResult.new_state || typeof judgeResult.new_state !== "object") {
-    errors.push("new_state must be present.");
+    errors.push("new_state must be an object.");
   } else {
     const absurdity = judgeResult.new_state.absurdity_index;
     const coherence = judgeResult.new_state.coherence_level;

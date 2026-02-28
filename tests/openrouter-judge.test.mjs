@@ -100,3 +100,39 @@ test("createOpenRouterJudge rejects malformed schema", async () => {
     (error) => error instanceof JudgeValidationError
   );
 });
+
+test("createOpenRouterJudge normalizes common gpt-5-mini shape drift", async () => {
+  const worldPack = loadDefaultWorldPack();
+  const fetchFn = async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({
+      choices: [
+        {
+          message: {
+            content: JSON.stringify({
+              reconstructed_state_before: "text snapshot",
+              evaluation: {
+                absurdity_index: 0.45,
+                coherence_level: 0.85,
+                dominant_direction: "bureaucratization"
+              },
+              new_state: "prose that should not be here",
+              image_prompt: "Photorealistic city square with subtle bureaucratic drift."
+            })
+          }
+        }
+      ]
+    })
+  });
+
+  const judge = createOpenRouterJudge({
+    apiKey: "test-key",
+    fetchFn
+  });
+
+  const result = await judge.evaluateTurn(proposal, worldPack);
+  assert.equal(result.judgeResult.new_state.absurdity_index, 0.45);
+  assert.equal(result.judgeResult.new_state.coherence_level, 0.85);
+  assert.equal(result.judgeResult.new_state.dominant_direction, "protocol");
+});
