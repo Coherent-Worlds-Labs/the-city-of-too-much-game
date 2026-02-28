@@ -11,3 +11,5 @@
 AGENTS.md.bak-*
 .agentplane/agents/*.bak-*
 sow/
+dist/
+node_modules/
