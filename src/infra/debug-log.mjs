@@ -59,3 +59,8 @@ export const logDebugDetails = (label, value) => {
   const pretty = toPrettyText(value);
   console.log(paint(ANSI.gray, `${label}\n${pretty}`));
 };
+
+export const logDebugRawText = (label, value) => {
+  const raw = typeof value === "string" ? value : String(value ?? "");
+  console.log(paint(ANSI.gray, `${label}\n${raw}`));
+};

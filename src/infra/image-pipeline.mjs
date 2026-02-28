@@ -1,5 +1,5 @@
 import { saveImageBase64 } from "./image-storage.mjs";
-import { logDebugDetails, logDebugHeadline } from "./debug-log.mjs";
+import { logDebugDetails, logDebugHeadline, logDebugRawText } from "./debug-log.mjs";
 import { readFileSync } from "node:fs";
 import { basename, join } from "node:path";
 
@@ -269,6 +269,7 @@ export const createImagePipeline = ({
 
     if (debug) {
       logDebugHeadline("openrouter:image", `request model=${model}`);
+      logDebugRawText("request prompt (full)", finalPrompt);
       logDebugDetails("request payload", requestBody);
     }
 
