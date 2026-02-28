@@ -1,7 +1,9 @@
 ---
 id: "202602281720-N04H7S"
 title: "UX processing spinner and OpenRouter runtime request visibility"
-status: "DOING"
+result_summary: "Spinner UX and OpenRouter runtime visibility improvements implemented and verified."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +20,16 @@ verification:
   updated_at: "2026-02-28T17:23:22.355Z"
   updated_by: "TESTER"
   note: "Spinner + OpenRouter visibility checks passed"
-commit: null
+commit:
+  hash: "d16f1e2855acf75951ae8490f77f27336bcd94d2"
+  message: "✅ N04H7S runtime: add processing spinner and OpenRouter request visibility"
 comments:
   -
     author: "CODER"
     body: "Start: implementing process spinner feedback and fixing runtime env loading to ensure real OpenRouter request flow visibility."
+  -
+    author: "INTEGRATOR"
+    body: "Verified: UI now shows an active spinner during turn processing, local runtime loads environment config from .env, and OpenRouter request visibility is available via debug logs."
 events:
   -
     type: "status"
@@ -37,9 +44,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Spinner + OpenRouter visibility checks passed"
+  -
+    type: "status"
+    at: "2026-02-28T17:23:49.874Z"
+    author: "INTEGRATOR"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: UI now shows an active spinner during turn processing, local runtime loads environment config from .env, and OpenRouter request visibility is available via debug logs."
 doc_version: 2
-doc_updated_at: "2026-02-28T17:23:22.356Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T17:23:49.874Z"
+doc_updated_by: "INTEGRATOR"
 description: "Add visible processing spinner during turn execution and ensure real OpenRouter calls are made in local runtime by loading .env and adding optional request debug logs."
 id_source: "generated"
 ---
