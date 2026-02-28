@@ -1,7 +1,9 @@
 ---
 id: "202602281752-V4Z0QS"
 title: "Set image generation aspect ratio to landscape"
-status: "DOING"
+result_summary: "Landscape image aspect ratio configured and verified."
+risk_level: "low"
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on: []
@@ -18,11 +20,16 @@ verification:
   updated_at: "2026-02-28T17:53:53.478Z"
   updated_by: "TESTER"
   note: "Landscape aspect ratio applied"
-commit: null
+commit:
+  hash: "420acaea11d26c59945a2031afa3b467dda7ee52"
+  message: "✅ V4Z0QS image: switch aspect ratio to landscape 16:9"
 comments:
   -
     author: "CODER"
     body: "Start: updating image generation aspect ratio from square to landscape for scene alignment."
+  -
+    author: "INTEGRATOR"
+    body: "Verified: image generation now requests landscape ratio 16:9, matching the wide scene UI and validated by automated tests."
 events:
   -
     type: "status"
@@ -37,9 +44,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Landscape aspect ratio applied"
+  -
+    type: "status"
+    at: "2026-02-28T17:54:24.370Z"
+    author: "INTEGRATOR"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: image generation now requests landscape ratio 16:9, matching the wide scene UI and validated by automated tests."
 doc_version: 2
-doc_updated_at: "2026-02-28T17:53:53.479Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T17:54:24.370Z"
+doc_updated_by: "INTEGRATOR"
 description: "Change OpenRouter image_config aspect ratio from square to landscape to match wide scene UI."
 id_source: "generated"
 ---
