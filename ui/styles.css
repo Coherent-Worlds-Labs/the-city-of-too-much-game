@@ -12,12 +12,6 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  height: 100%;
-  overflow: hidden;
-}
-
 body {
   margin: 0;
   min-height: 100vh;
@@ -53,7 +47,6 @@ body.has-scene-background::before {
   width: min(1240px, 100%);
   margin: 0 auto;
   padding: 20px;
-  height: 100vh;
   display: grid;
   gap: 14px;
   position: relative;
