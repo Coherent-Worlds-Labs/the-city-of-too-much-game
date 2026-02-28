@@ -442,6 +442,26 @@ const applySelectedSceneEntry = (entry) => {
   state.sceneImageUrl = entry.imageUrl ?? null;
 };
 
+const ensureActiveHistoryEntryVisible = () => {
+  const active = elements.historyList.querySelector(".history-entry.is-active");
+  if (!(active instanceof HTMLElement)) {
+    return;
+  }
+  const container = elements.historyList;
+  const listTop = container.scrollTop;
+  const listBottom = listTop + container.clientHeight;
+  const entryTop = active.offsetTop;
+  const entryBottom = entryTop + active.offsetHeight;
+  const viewportPadding = 8;
+  if (entryTop - viewportPadding < listTop) {
+    container.scrollTop = Math.max(entryTop - viewportPadding, 0);
+    return;
+  }
+  if (entryBottom + viewportPadding > listBottom) {
+    container.scrollTop = entryBottom + viewportPadding - container.clientHeight;
+  }
+};
+
 const moveSelectedSceneEntry = (delta) => {
   const entries = getSceneEntries();
   if (entries.length === 0) {
@@ -455,6 +475,9 @@ const moveSelectedSceneEntry = (delta) => {
   }
   applySelectedSceneEntry(entries[nextIndex]);
   render();
+  requestAnimationFrame(() => {
+    ensureActiveHistoryEntryVisible();
+  });
 };
 
 const renderSceneStepOverlay = () => {
@@ -489,26 +512,6 @@ const applyVisualStateForSelectedTurn = (turnIndex) => {
 };
 
 const renderHistory = () => {
-  const ensureActiveHistoryEntryVisible = () => {
-    const active = elements.historyList.querySelector(".history-entry.is-active");
-    if (!(active instanceof HTMLElement)) {
-      return;
-    }
-    const container = elements.historyList;
-    const listTop = container.scrollTop;
-    const listBottom = listTop + container.clientHeight;
-    const entryTop = active.offsetTop;
-    const entryBottom = entryTop + active.offsetHeight;
-    const viewportPadding = 8;
-    if (entryTop - viewportPadding < listTop) {
-      container.scrollTop = Math.max(entryTop - viewportPadding, 0);
-      return;
-    }
-    if (entryBottom + viewportPadding > listBottom) {
-      container.scrollTop = entryBottom + viewportPadding - container.clientHeight;
-    }
-  };
-
   const entries = getSceneEntries().map((entry) => ({
     ...entry,
     active: state.selectedViewType === "timeline" && state.selectedTimelineIndex === entry.timelineIndex
