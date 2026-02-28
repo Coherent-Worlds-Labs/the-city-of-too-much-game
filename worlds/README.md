@@ -17,4 +17,5 @@ To swap to another world, replace the active pack path with a different JSON fil
 ## Active Pack
 
 - Default pack: `worlds/the-city-of-too-much.en.json`
+- Russian variant: `worlds/the-city-of-too-much.ru.json`
 - Loader module: `src/infra/world-pack-loader.mjs`
