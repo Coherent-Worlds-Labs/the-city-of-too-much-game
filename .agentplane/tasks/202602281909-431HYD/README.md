@@ -1,7 +1,8 @@
 ---
 id: "202602281909-431HYD"
 title: "Add optional image-to-image mode for image generation pipeline"
-status: "DOING"
+result_summary: "Image-to-image is now available as an opt-in environment option with safe fallback behavior."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T19:11:36.193Z"
   updated_by: "CODER"
   note: "Implemented optional image-to-image mode via env toggle with safe fallback to text-only generation; lint and full tests pass."
-commit: null
+commit:
+  hash: "53df86d27a8d4daf0402fa575b64e7aef9da50f1"
+  message: "🚧 431HYD code: add optional image-to-image generation mode"
 comments:
   -
     author: "CODER"
     body: "Start: implementing optional image-to-image generation mode via environment flag with graceful fallback to text-only mode."
+  -
+    author: "CODER"
+    body: "Verified: implemented optional image-to-image generation mode behind env toggle with graceful fallback to text-only requests; lint and tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Implemented optional image-to-image mode via env toggle with safe fallback to text-only generation; lint and full tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T19:12:14.351Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: implemented optional image-to-image generation mode behind env toggle with graceful fallback to text-only requests; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T19:11:36.195Z"
+doc_updated_at: "2026-02-28T19:12:14.351Z"
 doc_updated_by: "CODER"
 description: "Introduce a toggleable image-to-image mode via environment config so each turn can use previous frame as an input image when enabled, with graceful fallback to text-only mode."
 id_source: "generated"
