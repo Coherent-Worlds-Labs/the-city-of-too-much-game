@@ -90,6 +90,11 @@ test("runtime api orchestrates createGame and playTurn", async () => {
     assert.equal(resumed.history.length, 1);
     assert.equal(resumed.timeline.length, 2);
     assert.equal(resumed.seedScene?.imageUrl, "/assets/test-turn.png");
+
+    const listed = runtime.listGames();
+    assert.equal(listed.length >= 1, true);
+    const sameGame = listed.find((item) => item.gameId === created.game.game_id);
+    assert.equal(Boolean(sameGame), true);
   } finally {
     store.close();
     rmSync(tempDir, { recursive: true, force: true });

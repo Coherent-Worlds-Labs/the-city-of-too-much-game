@@ -59,6 +59,12 @@ test("game service persists turn and returns timeline", () => {
     const timeline = service.getTimeline(game.game_id);
     assert.equal(timeline.length, 1);
     assert.equal(timeline[0].imageUrl, "/assets/game-01-turn-001.png");
+
+    const listed = service.listGames();
+    assert.equal(listed.length >= 1, true);
+    const sameGame = listed.find((item) => item.game_id === game.game_id);
+    assert.equal(Boolean(sameGame), true);
+    assert.equal(sameGame.status, played.game.status);
   } finally {
     store.close();
     rmSync(tempDir, { recursive: true, force: true });

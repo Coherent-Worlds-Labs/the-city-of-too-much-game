@@ -4,6 +4,7 @@ const state = {
   hand: [],
   history: [],
   timeline: [],
+  availableGames: [],
   initialImageUrl: null,
   selectedViewType: "timeline",
   selectedTimelineIndex: -1,
@@ -34,6 +35,8 @@ const elements = {
   mood: document.getElementById("mood"),
   stability: document.getElementById("stability"),
   turn: document.getElementById("turn"),
+  worldSelect: document.getElementById("world-select"),
+  openWorldBtn: document.getElementById("open-world-btn"),
   overlay: document.getElementById("outcome-overlay"),
   outcomeTitle: document.getElementById("outcome-title"),
   outcomeText: document.getElementById("outcome-text"),
@@ -193,6 +196,70 @@ const hideProcessingStage = () => {
   elements.loadingStage.classList.add("hidden");
 };
 
+const formatSessionLabel = (game) => {
+  const statusLabel =
+    game.status === "active"
+      ? "Active"
+      : game.status === "survived"
+        ? "Survived"
+        : game.status === "protocol-collapse"
+          ? "Protocol Collapse"
+          : game.status === "carnival-collapse"
+            ? "Carnival Collapse"
+            : game.status === "incoherence-collapse"
+              ? "Incoherence Collapse"
+              : game.status ?? "Unknown";
+  return `${statusLabel} · Turn ${game.currentTurn}`;
+};
+
+const renderWorldSwitcher = () => {
+  const select = elements.worldSelect;
+  if (!(select instanceof HTMLSelectElement)) {
+    return;
+  }
+  const games = Array.isArray(state.availableGames) ? state.availableGames : [];
+  if (games.length === 0) {
+    select.innerHTML = "<option value=\"\">No sessions</option>";
+    select.disabled = true;
+    if (elements.openWorldBtn) {
+      elements.openWorldBtn.disabled = true;
+    }
+    return;
+  }
+
+  const activeOptions = games.filter((game) => game.status === "active");
+  const completedOptions = games.filter((game) => game.status !== "active");
+  const groups = [];
+  if (activeOptions.length > 0) {
+    groups.push({
+      title: "Active",
+      games: activeOptions
+    });
+  }
+  if (completedOptions.length > 0) {
+    groups.push({
+      title: "Completed",
+      games: completedOptions
+    });
+  }
+
+  select.innerHTML = groups
+    .map(
+      (group) =>
+        `<optgroup label="${group.title}">${group.games
+          .map(
+            (game) =>
+              `<option value="${game.gameId}" ${game.gameId === state.gameId ? "selected" : ""}>${formatSessionLabel(game)}</option>`
+          )
+          .join("")}</optgroup>`
+    )
+    .join("");
+  select.disabled = false;
+  if (elements.openWorldBtn) {
+    elements.openWorldBtn.disabled = !select.value || select.value === state.gameId;
+  }
+};
+
 const renderIndicator = () => {
   elements.axisDot.style.left = `calc(${state.axis * 100}% - 9px)`;
 };
@@ -303,6 +370,7 @@ const renderStatus = () => {
   elements.mood.textContent = state.mood;
   elements.stability.textContent = state.stability;
   elements.turn.textContent = String(state.turn);
+  renderWorldSwitcher();
 };
 
 const setNeutralVisualState = () => {
@@ -314,17 +382,6 @@ const setNeutralVisualState = () => {
 
 const getSceneEntries = () => {
   const entries = [];
-  if (state.initialImageUrl) {
-    entries.push({
-      key: "initial",
-      type: "initial",
-      title: "Initial state",
-      text: "World baseline",
-      cardText: "Initial state",
-      imageUrl: state.initialImageUrl,
-      turnIndex: 0
-    });
-  }
   state.timeline.forEach((entry, index) => {
     entries.push({
       key: `timeline-${index}`,
@@ -344,9 +401,6 @@ const getSelectedSceneEntry = (entries = getSceneEntries()) => {
   if (entries.length === 0) {
     return null;
   }
-  if (state.selectedViewType === "initial") {
-    return entries.find((entry) => entry.key === "initial") ?? entries[0];
-  }
   if (state.selectedViewType === "timeline" && state.selectedTimelineIndex >= 0) {
     return entries.find((entry) => entry.key === `timeline-${state.selectedTimelineIndex}`) ?? entries.at(-1);
   }
@@ -357,15 +411,9 @@ const applySelectedSceneEntry = (entry) => {
   if (!entry) {
     return;
   }
-  if (entry.type === "initial") {
-    state.selectedViewType = "initial";
-    state.selectedTimelineIndex = -1;
-    setNeutralVisualState();
-  } else {
-    state.selectedViewType = "timeline";
-    state.selectedTimelineIndex = entry.timelineIndex ?? -1;
-    applyVisualStateForSelectedTurn(entry.turnIndex ?? null);
-  }
+  state.selectedViewType = "timeline";
+  state.selectedTimelineIndex = entry.timelineIndex ?? -1;
+  applyVisualStateForSelectedTurn(entry.turnIndex ?? null);
   state.sceneImageUrl = entry.imageUrl ?? null;
 };
 
@@ -432,10 +480,7 @@ const renderHistory = () => {
 
   const entries = getSceneEntries().map((entry) => ({
     ...entry,
-    active:
-      entry.type === "initial"
-        ? state.selectedViewType === "initial"
-        : state.selectedViewType === "timeline" && state.selectedTimelineIndex === entry.timelineIndex
+    active: state.selectedViewType === "timeline" && state.selectedTimelineIndex === entry.timelineIndex
   }));
 
   if (entries.length === 0) {
@@ -587,13 +632,18 @@ const applyLoadedGameState = (payload) => {
     state.selectedTimelineIndex = state.timeline.length - 1;
     state.sceneImageUrl = state.timeline[state.selectedTimelineIndex].imageUrl ?? null;
   } else {
-    state.selectedViewType = state.initialImageUrl ? "initial" : "timeline";
+    state.selectedViewType = "timeline";
     state.selectedTimelineIndex = -1;
     state.sceneImageUrl = state.initialImageUrl;
   }
 
   elements.enactBtn.disabled = true;
   persistGameId();
+};
+
+const refreshAvailableGames = async () => {
+  const listing = await api("/api/games");
+  state.availableGames = listing?.games ?? [];
 };
 
 const startPendingRecoveryLoop = (marker) => {
@@ -666,12 +716,14 @@ const createGame = async () => {
     ...created,
     history: []
   });
+  await refreshAvailableGames();
   state.isProcessing = false;
 };
 
 const resumeGame = async (gameId) => {
   const loaded = await api(`/api/games/${gameId}/state`);
   applyLoadedGameState(loaded);
+  await refreshAvailableGames();
 };
 
 const enactSelectedCard = async () => {
@@ -711,6 +763,7 @@ const enactSelectedCard = async () => {
     state.selectedTimelineIndex = state.timeline.length - 1;
     state.sceneImageUrl = played.timeline.at(-1)?.imageUrl ?? state.sceneImageUrl;
     state.history = await api(`/api/games/${state.gameId}/history`).then((payload) => payload.history);
+    await refreshAvailableGames();
     hydrateFromTurn(played.turn);
     state.outcome = detectOutcome(
       played.turn.judge_json.new_state.absurdity_index,
@@ -760,6 +813,7 @@ const init = async () => {
     } else {
       await createGame();
     }
+    await refreshAvailableGames();
     recoveredPending = recoverPendingGenerationState();
   } catch (error) {
     if (readPersistedGameId()) {
@@ -767,6 +821,7 @@ const init = async () => {
       elements.loadingStage.textContent = "Saved game is unavailable. Starting a new city...";
       await wait(700);
       await createGame();
+      await refreshAvailableGames();
       recoveredPending = recoverPendingGenerationState();
     } else {
       elements.loadingStage.textContent = `Startup failed: ${error.message}`;
@@ -788,6 +843,21 @@ elements.restartBtn.addEventListener("click", () => {
 });
 elements.headerRestartBtn.addEventListener("click", () => {
   void restart();
+});
+elements.worldSelect.addEventListener("change", () => {
+  if (elements.openWorldBtn) {
+    elements.openWorldBtn.disabled = !elements.worldSelect.value || elements.worldSelect.value === state.gameId;
+  }
+});
+elements.openWorldBtn.addEventListener("click", async () => {
+  const targetGameId = elements.worldSelect.value;
+  if (!targetGameId || targetGameId === state.gameId) {
+    return;
+  }
+  clearPendingTurn();
+  hideProcessingStage();
+  await resumeGame(targetGameId);
+  render();
 });
 elements.scenePrevBtn.addEventListener("click", () => {
   moveSelectedSceneEntry(-1);

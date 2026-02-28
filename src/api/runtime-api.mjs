@@ -156,11 +156,22 @@ export const createRuntimeApi = ({
 
   const getHistory = (gameId) => gameService.getHistory(gameId);
   const getTimeline = (gameId) => gameService.getTimeline(gameId);
+  const listGames = () =>
+    gameService.listGames().map((game) => ({
+      gameId: game.game_id,
+      worldId: game.world_id,
+      status: game.status,
+      currentTurn: game.current_turn,
+      seedImageUrl: game.seed_image_url ?? null,
+      updatedAt: game.updated_at,
+      createdAt: game.created_at
+    }));
 
   return {
     createGame,
     getGameState,
     playTurn,
+    listGames,
     getHistory,
     getTimeline
   };

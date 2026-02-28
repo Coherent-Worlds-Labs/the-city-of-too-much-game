@@ -74,6 +74,12 @@ export const createSqliteStore = ({
       ORDER BY turn_index ASC
   `);
 
+  const listGamesStmt = db.prepare(`
+    SELECT game_id, world_id, seed, status, current_turn, seed_image_url, seed_image_prompt, created_at, updated_at
+      FROM games
+      ORDER BY updated_at DESC, created_at DESC
+  `);
+
   const createGame = ({ gameId, worldId, seed = null, status = "active" }) => {
     const createdAt = nowIso();
     insertGameStmt.run(gameId, worldId, seed, status, 0, createdAt, createdAt);
@@ -91,6 +97,11 @@ export const createSqliteStore = ({
       ...row,
       judge_json: fromJson(row.judge_json)
     }));
+  };
+
+  const listGames = () => {
+    const rows = listGamesStmt.all();
+    return rows.map((row) => ({ ...row }));
   };
 
   const appendTurn = (payload) => {
@@ -136,6 +147,7 @@ export const createSqliteStore = ({
   return {
     createGame,
     getGame,
+    listGames,
     getTurns,
     setSeedScene,
     appendTurn,

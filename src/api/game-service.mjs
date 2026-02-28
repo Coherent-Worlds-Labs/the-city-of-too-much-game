@@ -39,6 +39,7 @@ export const createGameService = ({
   };
 
   const getGame = (gameId) => store.getGame(gameId);
+  const listGames = () => store.listGames();
 
   const setSeedScene = ({ gameId, imageUrl, imagePrompt }) =>
     store.setSeedScene({ gameId, imageUrl, imagePrompt });
@@ -169,6 +170,7 @@ export const createGameService = ({
 
   return {
     createGame,
+    listGames,
     getGame,
     setSeedScene,
     playTurn,

@@ -28,9 +28,9 @@
       <section id="scene" class="scene">
         <div class="scene-overlay">
           <p class="scene-eyebrow">Live City Observatory</p>
-          <button id="scene-prev-btn" class="scene-nav scene-nav-prev" type="button" aria-label="Previous step">←</button>
-          <button id="scene-next-btn" class="scene-nav scene-nav-next" type="button" aria-label="Next step">→</button>
-          <p id="scene-step-card" class="scene-step-card">Turn 0: Initial state</p>
+          <button id="scene-prev-btn" class="scene-nav scene-nav-prev" type="button" aria-label="Previous step">&larr;</button>
+          <button id="scene-next-btn" class="scene-nav scene-nav-next" type="button" aria-label="Next step">&rarr;</button>
+          <p id="scene-step-card" class="scene-step-card">Turn 0: Seed scene</p>
           <p id="loading-stage" class="loading-stage hidden"></p>
           <div class="motifs">
             <h2>Active Motifs</h2>
@@ -61,6 +61,13 @@
             <dt>Turn</dt>
             <dd id="turn">0</dd>
           </dl>
+          <div class="world-switch">
+            <label for="world-select">World Sessions</label>
+            <div class="world-switch-row">
+              <select id="world-select"></select>
+              <button id="open-world-btn" type="button">Open</button>
+            </div>
+          </div>
         </aside>
       </section>
     </div>

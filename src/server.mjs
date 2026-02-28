@@ -119,6 +119,11 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    if (req.method === "GET" && pathname === "/api/games") {
+      sendJson(res, 200, { games: runtimeApi.listGames() });
+      return;
+    }
+
     if (req.method === "GET" && pathname === "/api/health") {
       sendJson(res, 200, {
         status: "ok",

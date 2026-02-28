@@ -474,6 +474,51 @@ h1 {
   font-weight: 700;
 }
 
+.world-switch {
+  margin-top: 14px;
+  border-top: 1px solid #d3c9bb;
+  padding-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.world-switch label {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #6f675d;
+}
+
+.world-switch-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.world-switch select {
+  width: 100%;
+  border: 1px solid #d7cdc0;
+  border-radius: 8px;
+  padding: 7px 9px;
+  background: rgba(255, 255, 255, 0.84);
+  color: #2a302d;
+}
+
+.world-switch button {
+  border: 1px solid #2d5b66;
+  border-radius: 8px;
+  padding: 7px 12px;
+  background: #2d5b66;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.world-switch button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .timeline-list {
   display: grid;
   gap: 10px;
