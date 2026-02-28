@@ -1,7 +1,8 @@
 ---
 id: "202602281937-G9TNP2"
 title: "Increase scene panel height and add faded monochrome page background from current image"
-status: "DOING"
+result_summary: "Scene panel is taller and selected scene now softly textures the whole page background."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T19:38:40.086Z"
   updated_by: "CODER"
   note: "Verified: Scene panel height increased and page background now mirrors selected scene image in pale monochrome style; lint and tests passed."
-commit: null
+commit:
+  hash: "e3d9acc0205f61a7bfb95340c8e3d4cbb9a6e434"
+  message: "🚧 G9TNP2 ui: raise scene panel and sync pale monochrome page background"
 comments:
   -
     author: "CODER"
     body: "Start: Increasing scene panel height and adding body-level grayscale background synced to selected scene image."
+  -
+    author: "CODER"
+    body: "Verified: Increased scene panel height and applied current scene image as pale grayscale page background; lint and tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: Scene panel height increased and page background now mirrors selected scene image in pale monochrome style; lint and tests passed."
+  -
+    type: "status"
+    at: "2026-02-28T19:39:01.795Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Increased scene panel height and applied current scene image as pale grayscale page background; lint and tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T19:38:40.088Z"
+doc_updated_at: "2026-02-28T19:39:01.795Z"
 doc_updated_by: "CODER"
 description: "Raise scene panel height by 15% and mirror the currently selected scene image as a pale grayscale site background."
 id_source: "generated"
