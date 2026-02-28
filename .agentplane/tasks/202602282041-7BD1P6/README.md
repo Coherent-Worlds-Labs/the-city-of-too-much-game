@@ -1,7 +1,8 @@
 ---
 id: "202602282041-7BD1P6"
 title: "Persist in-progress generation status across refresh"
-status: "DOING"
+result_summary: "Refresh no longer drops generation-status visualization during in-progress turn rendering."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T20:43:45.814Z"
   updated_by: "CODER"
   note: "Verified: Processing status survives refresh via pending-turn persistence and recovers visualization until completion detection; lint/tests pass."
-commit: null
+commit:
+  hash: "f744039eec21fad67c8855b4ae293eaca319399a"
+  message: "🚧 7BD1P6 ui: persist and recover in-progress generation status"
 comments:
   -
     author: "CODER"
     body: "Start: Implementing persisted pending-generation state and recovery after page refresh with completion polling."
+  -
+    author: "CODER"
+    body: "Verified: Enact processing marker persists across refresh and UI restores generation status until completion polling confirms updated turn; lint/tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: Processing status survives refresh via pending-turn persistence and recovers visualization until completion detection; lint/tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T20:44:14.954Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Enact processing marker persists across refresh and UI restores generation status until completion polling confirms updated turn; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T20:43:45.817Z"
+doc_updated_at: "2026-02-28T20:44:14.954Z"
 doc_updated_by: "CODER"
 description: "Keep and restore processing indicator after page refresh during turn enact, with pending-turn persistence and completion polling."
 id_source: "generated"
