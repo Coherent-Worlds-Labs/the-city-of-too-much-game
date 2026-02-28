@@ -1,7 +1,9 @@
 ---
 id: "202602282216-BMY0NY"
 title: "Extract mathematical game model into standalone documentation article"
-status: "TODO"
+result_summary: "Standalone docs/math-model.md added with cross-links from existing docs."
+risk_level: "low"
+status: "DONE"
 priority: "high"
 owner: "DOCS"
 depends_on: []
@@ -18,8 +20,13 @@ verification:
   updated_at: "2026-02-28T22:19:44.108Z"
   updated_by: "TESTER"
   note: "Standalone mathematical model article added and linked."
-commit: null
-comments: []
+commit:
+  hash: "183bd30415a58487603229b77416123b112ea497"
+  message: "🚧 BMY0NY docs: extract standalone mathematical model article"
+comments:
+  -
+    author: "INTEGRATOR"
+    body: "Verified: Mathematical model was extracted into a dedicated article and linked from mechanics and root README for clearer separation of formal and practical documentation."
 events:
   -
     type: "verify"
@@ -27,9 +34,16 @@ events:
     author: "TESTER"
     state: "ok"
     note: "Standalone mathematical model article added and linked."
+  -
+    type: "status"
+    at: "2026-02-28T22:20:15.800Z"
+    author: "INTEGRATOR"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: Mathematical model was extracted into a dedicated article and linked from mechanics and root README for clearer separation of formal and practical documentation."
 doc_version: 2
-doc_updated_at: "2026-02-28T22:19:44.110Z"
-doc_updated_by: "TESTER"
+doc_updated_at: "2026-02-28T22:20:15.800Z"
+doc_updated_by: "INTEGRATOR"
 description: "Move the formal mathematical model into a separate docs article and keep mechanics doc focused on runtime behavior with cross-links."
 id_source: "generated"
 ---
