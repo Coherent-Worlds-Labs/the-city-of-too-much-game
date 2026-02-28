@@ -1,7 +1,8 @@
 ---
 id: "202602281521-7YH1FK"
 title: "System reliability, safeguards, and cost controls"
-status: "DOING"
+result_summary: "Reliability safeguards and cost controls are integrated into the game service flow."
+status: "DONE"
 priority: "med"
 owner: "CODER"
 depends_on:
@@ -19,11 +20,16 @@ verification:
   updated_at: "2026-02-28T16:15:48.660Z"
   updated_by: "CODER"
   note: "Reliability safeguards verified: in-memory rate limiting, dedupe fingerprint cache, stale-turn protection, retry-ready utility helpers, and passing reliability tests."
-commit: null
+commit:
+  hash: "cc2720faafa84a9c46ed887de325f00229f94dc0"
+  message: "🚧 7YH1FK reliability: add safeguards and dedupe controls"
 comments:
   -
     author: "CODER"
     body: "Start: implementing reliability safeguards including rate limiting, dedupe, retry utility, and history guard integration."
+  -
+    author: "CODER"
+    body: "Verified: Added rate limiting, idempotent dedupe cache, stale turn guard, history limits, retry utility helpers, and passing reliability test coverage."
 events:
   -
     type: "status"
@@ -38,8 +44,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Reliability safeguards verified: in-memory rate limiting, dedupe fingerprint cache, stale-turn protection, retry-ready utility helpers, and passing reliability tests."
+  -
+    type: "status"
+    at: "2026-02-28T16:16:32.260Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: Added rate limiting, idempotent dedupe cache, stale turn guard, history limits, retry utility helpers, and passing reliability test coverage."
 doc_version: 2
-doc_updated_at: "2026-02-28T16:15:48.661Z"
+doc_updated_at: "2026-02-28T16:16:32.260Z"
 doc_updated_by: "CODER"
 description: "Add rate limiting, deduplication by input hash, timeout/retry policy, error surfaces, and guardrails for long histories and budget-sensitive operations."
 id_source: "generated"
