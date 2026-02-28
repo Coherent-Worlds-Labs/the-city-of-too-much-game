@@ -35,6 +35,7 @@ const elements = {
 };
 
 const loadingStages = ["Interpreting the city...", "Rendering the new reality..."];
+const bootstrapStage = "Preparing the first city snapshot...";
 const activeGameStorageKey = "city-too-much.active-game";
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -146,6 +147,24 @@ const renderHistory = () => {
 
 const renderCards = () => {
   elements.cardGrid.innerHTML = "";
+  if (state.hand.length === 0) {
+    if (state.isProcessing) {
+      for (let i = 0; i < 3; i += 1) {
+        const placeholder = document.createElement("button");
+        placeholder.type = "button";
+        placeholder.className = "card placeholder";
+        placeholder.disabled = true;
+        placeholder.innerHTML = "<small>loading</small>Preparing initiative...";
+        elements.cardGrid.append(placeholder);
+      }
+    } else {
+      const note = document.createElement("p");
+      note.textContent = "No initiatives are available yet.";
+      elements.cardGrid.append(note);
+    }
+    elements.enactBtn.disabled = true;
+    return;
+  }
   state.hand.forEach((card) => {
     const button = document.createElement("button");
     button.type = "button";
@@ -299,7 +318,20 @@ const restart = async () => {
 };
 
 const init = async () => {
-  await createGame();
+  state.isProcessing = true;
+  elements.loadingStage.classList.remove("hidden");
+  elements.loadingStage.textContent = bootstrapStage;
+  render();
+  try {
+    await createGame();
+  } catch (error) {
+    elements.loadingStage.textContent = `Startup failed: ${error.message}`;
+    await wait(1500);
+  } finally {
+    state.isProcessing = false;
+    elements.loadingStage.classList.add("hidden");
+    render();
+  }
 };
 
 elements.enactBtn.addEventListener("click", () => {

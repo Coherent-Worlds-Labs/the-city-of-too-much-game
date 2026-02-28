@@ -22,6 +22,9 @@ export const readRuntimeConfig = () => ({
     ["1", "true", "yes", "on"].includes((process.env.OPENROUTER_DEBUG ?? "").toLowerCase()),
   judgeModel: process.env.JUDGE_MODEL ?? "openai/gpt-5-mini",
   imageModel: process.env.IMAGE_MODEL ?? "openai/gpt-5-image",
+  imageAspectRatio: process.env.IMAGE_ASPECT_RATIO ?? "16:9",
+  imageOutputSize: process.env.IMAGE_OUTPUT_SIZE ?? "768x432",
+  imageQuality: process.env.IMAGE_QUALITY ?? "low",
   maxHistoryEntries: Number.parseInt(process.env.MAX_HISTORY_ENTRIES ?? "120", 10),
   rateLimitWindowMs: Number.parseInt(process.env.RATE_LIMIT_WINDOW_MS ?? "60000", 10),
   rateLimitMaxRequests: Number.parseInt(process.env.RATE_LIMIT_MAX_REQUESTS ?? "30", 10)

@@ -230,6 +230,17 @@ h1 {
   box-shadow: 0 8px 18px rgba(182, 81, 46, 0.2);
 }
 
+.card.placeholder {
+  opacity: 0.7;
+  background: repeating-linear-gradient(
+    135deg,
+    #f5f0e6,
+    #f5f0e6 10px,
+    #efe8dc 10px,
+    #efe8dc 20px
+  );
+}
+
 .card small {
   display: block;
   margin-bottom: 6px;
@@ -254,6 +265,11 @@ h1 {
 .enact:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.card-grid p {
+  margin: 6px 2px;
+  color: #6f675d;
 }
 
 .status dl {

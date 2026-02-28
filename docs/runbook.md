@@ -11,6 +11,10 @@
 2. Ensure writable local paths for DB and assets:
    - `DATABASE_URL`
    - `ASSETS_DIR`
+3. Cost-control image defaults:
+   - `IMAGE_OUTPUT_SIZE=768x432`
+   - `IMAGE_QUALITY=low`
+   - `IMAGE_ASPECT_RATIO=16:9`
 
 ## Verification Commands
 
@@ -49,6 +53,7 @@ OPENROUTER_DEBUG=true
 1. Start runtime with `npm run start`.
 2. Open `http://localhost:3000/`.
 2. Confirm:
+   - bootstrap state is visible while seed scene is generating (spinner + loading text + placeholder cards)
    - initial seed scene is generated at game start (before first card enact)
    - header and axis indicator render
    - card hand displays world-pack cards

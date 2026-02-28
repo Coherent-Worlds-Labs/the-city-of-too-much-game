@@ -39,6 +39,9 @@ const runtimeApi = createRuntimeApi({
     apiKey: config.openRouterApiKey,
     baseUrl: config.openRouterBaseUrl,
     model: config.imageModel,
+    aspectRatio: config.imageAspectRatio,
+    outputSize: config.imageOutputSize,
+    quality: config.imageQuality,
     assetsDir: config.assetsDir,
     publicAssetsBaseUrl: "/assets",
     debug: config.openRouterDebug

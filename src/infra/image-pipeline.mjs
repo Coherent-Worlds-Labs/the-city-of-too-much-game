@@ -52,6 +52,9 @@ export const createImagePipeline = ({
   apiKey,
   baseUrl = "https://openrouter.ai/api/v1",
   model = "openai/gpt-5-image",
+  aspectRatio = "16:9",
+  outputSize = "768x432",
+  quality = "low",
   assetsDir = "storage/images",
   publicAssetsBaseUrl = "/assets",
   fetchFn = fetch,
@@ -82,8 +85,10 @@ export const createImagePipeline = ({
         }
       ],
       modalities: ["image", "text"],
+      size: outputSize,
       image_config: {
-        aspect_ratio: "16:9"
+        aspect_ratio: aspectRatio,
+        quality
       },
       seed: seed ?? undefined
     };

@@ -6,14 +6,43 @@ const ANSI = {
 
 const paint = (color, text) => `${color}${text}${ANSI.reset}`;
 
-const toPrettyText = (value) => {
-  if (typeof value === "string") {
+const truncateValue = (value, limit) => {
+  if (value.length <= limit) {
     return value;
   }
+  return `${value.slice(0, limit)}...`;
+};
+
+const sanitizeDebugValue = (value) => {
+  if (typeof value === "string") {
+    if (value.startsWith("data:image/") || value.includes("base64,")) {
+      return truncateValue(value, 100);
+    }
+    if (value.length > 300) {
+      return truncateValue(value, 200);
+    }
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.map((item) => sanitizeDebugValue(item));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, entry]) => [key, sanitizeDebugValue(entry)])
+    );
+  }
+  return value;
+};
+
+const toPrettyText = (value) => {
+  const sanitized = sanitizeDebugValue(value);
+  if (typeof sanitized === "string") {
+    return sanitized;
+  }
   try {
-    return JSON.stringify(value, null, 2);
+    return JSON.stringify(sanitized, null, 2);
   } catch {
-    return String(value);
+    return String(sanitized);
   }
 };
 
@@ -25,4 +54,3 @@ export const logDebugDetails = (label, value) => {
   const pretty = toPrettyText(value);
   console.log(paint(ANSI.gray, `${label}\n${pretty}`));
 };
-
