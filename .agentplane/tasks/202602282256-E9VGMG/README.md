@@ -1,7 +1,8 @@
 ---
 id: "202602282256-E9VGMG"
 title: "Make default world pack file configurable via environment"
-status: "TODO"
+result_summary: "Default world-pack file is now configurable via WORLD_PACK_FILE."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,8 +19,13 @@ verification:
   updated_at: "2026-02-28T22:58:22.653Z"
   updated_by: "CODER"
   note: "Verified: WORLD_PACK_FILE added to env template; loader now resolves worlds/<WORLD_PACK_FILE> with safe fallback; lint and tests pass."
-commit: null
-comments: []
+commit:
+  hash: "b021478d7ee2ac74a5bda7edd1cdd6740b6dbf42"
+  message: "🚧 E9VGMG config: make default world pack file env-configurable"
+comments:
+  -
+    author: "CODER"
+    body: "Verified: default world-pack file name is now configured via WORLD_PACK_FILE in env template, loader resolves worlds/<file> with basename sanitization and safe fallback, docs updated, lint/tests passed."
 events:
   -
     type: "verify"
@@ -27,8 +33,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Verified: WORLD_PACK_FILE added to env template; loader now resolves worlds/<WORLD_PACK_FILE> with safe fallback; lint and tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T22:59:19.958Z"
+    author: "CODER"
+    from: "TODO"
+    to: "DONE"
+    note: "Verified: default world-pack file name is now configured via WORLD_PACK_FILE in env template, loader resolves worlds/<file> with basename sanitization and safe fallback, docs updated, lint/tests passed."
 doc_version: 2
-doc_updated_at: "2026-02-28T22:58:22.655Z"
+doc_updated_at: "2026-02-28T22:59:19.958Z"
 doc_updated_by: "CODER"
 description: "Move default world-pack file name to environment configuration and expose it in .env.example. Runtime must load worlds/<WORLD_PACK_FILE> with safe fallback to current default file."
 id_source: "generated"
