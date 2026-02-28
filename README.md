@@ -36,6 +36,8 @@ The objective is therefore not to “win” by maximizing a value, but to sustai
 - Runtime target: Node.js 22+
 - Environment template: [`.env.example`](.env.example)
 - Architecture scaffold: [`docs/bootstrap.md`](docs/bootstrap.md)
+- World-pack contract: [`worlds/README.md`](worlds/README.md)
+- Default world-pack: [`worlds/the-city-of-too-much.en.json`](worlds/the-city-of-too-much.en.json)
 - Core scripts:
   - `npm run check:bootstrap`
   - `npm run lint`

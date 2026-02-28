@@ -9,3 +9,5 @@ export const createInitialWorldState = (): BootstrapWorldState => ({
   direction: "balanced",
   coherence: "medium"
 });
+
+export const worldPackContractVersion = 1;

@@ -16,6 +16,7 @@ This document defines the initial project layout created in task `202602281520-R
 - `src/infra`: storage/model provider adapters and runtime config.
 - `scripts`: repository-level quality/build helper scripts.
 - `tests`: bootstrap and regression tests.
+- `worlds`: replaceable world-pack files containing world-specific content.
 
 ## Toolchain Scripts
 
