@@ -185,6 +185,31 @@ const normalizeOutcome = (status) => {
   return "active";
 };
 
+const outcomeContentMap = {
+  "protocol-collapse": {
+    title: "Protocol Collapse",
+    text: "The city became too rigid. Nothing unpredictable remains."
+  },
+  "carnival-collapse": {
+    title: "Carnival Collapse",
+    text: "Meaning dissolved into excess. The city can no longer continue."
+  },
+  "incoherence-collapse": {
+    title: "Incoherence Collapse",
+    text: "Contradictions overwhelmed coherence and the city fragmented."
+  },
+  survived: {
+    title: "The City Survives",
+    text: "Not perfect and not broken. The city remains alive."
+  }
+};
+
+const getOutcomeContent = (outcome) =>
+  outcomeContentMap[outcome] ?? {
+    title: "World Closed",
+    text: "This city session is complete."
+  };
+
 const showProcessingStage = (text) => {
   state.isProcessing = true;
   elements.loadingStage.classList.remove("hidden");
@@ -512,6 +537,15 @@ const renderHistory = () => {
 
 const renderCards = () => {
   elements.cardGrid.innerHTML = "";
+  if (state.outcome !== "active") {
+    const content = getOutcomeContent(state.outcome);
+    const note = document.createElement("article");
+    note.className = "closed-world-note";
+    note.innerHTML = `<strong>${content.title}</strong><p>${content.text}</p><p>This session is complete. Use History to inspect every step from Genesis to the final state.</p>`;
+    elements.cardGrid.append(note);
+    elements.enactBtn.disabled = true;
+    return;
+  }
   if (state.hand.length === 0) {
     if (state.isProcessing) {
       for (let i = 0; i < 3; i += 1) {
@@ -551,32 +585,9 @@ const renderCards = () => {
 };
 
 const renderOutcomeOverlay = () => {
-  if (state.outcome === "active") {
-    elements.overlay.classList.add("hidden");
-    return;
-  }
-  const map = {
-    "protocol-collapse": {
-      title: "Protocol Collapse",
-      text: "The city became too rigid. Nothing unpredictable remains."
-    },
-    "carnival-collapse": {
-      title: "Carnival Collapse",
-      text: "Meaning dissolved into excess. The city can no longer continue."
-    },
-    "incoherence-collapse": {
-      title: "Incoherence Collapse",
-      text: "Contradictions overwhelmed coherence and the city fragmented."
-    },
-    survived: {
-      title: "The City Survives",
-      text: "Not perfect and not broken. The city remains alive."
-    }
-  };
-  const content = map[state.outcome];
-  elements.outcomeTitle.textContent = content.title;
-  elements.outcomeText.textContent = content.text;
-  elements.overlay.classList.remove("hidden");
+  elements.overlay.classList.add("hidden");
+  elements.outcomeTitle.textContent = "";
+  elements.outcomeText.textContent = "";
 };
 
 const render = () => {

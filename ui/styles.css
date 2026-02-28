@@ -456,6 +456,27 @@ h1 {
   color: #6f675d;
 }
 
+.closed-world-note {
+  border: 1px solid #d8d0c6;
+  border-left: 4px solid var(--accent-warm);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  display: grid;
+  gap: 8px;
+}
+
+.closed-world-note strong {
+  font-size: 0.95rem;
+}
+
+.closed-world-note p {
+  margin: 0;
+  color: #5f564d;
+  line-height: 1.35;
+}
+
 .status dl {
   margin: 0;
   display: grid;
