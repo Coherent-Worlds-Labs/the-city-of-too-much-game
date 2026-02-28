@@ -4,7 +4,9 @@ const state = {
   hand: [],
   history: [],
   timeline: [],
-  timelineCursor: -1,
+  initialImageUrl: null,
+  selectedViewType: "timeline",
+  selectedTimelineIndex: -1,
   selectedCardId: null,
   axis: 0.5,
   direction: "balanced",
@@ -148,7 +150,10 @@ const renderScene = () => {
 };
 
 const renderMotifs = () => {
-  const selectedTurnIndex = state.timeline[state.timelineCursor]?.turnIndex ?? null;
+  const selectedTurnIndex =
+    state.selectedViewType === "timeline"
+      ? state.timeline[state.selectedTimelineIndex]?.turnIndex ?? null
+      : null;
   const sourceTurn =
     selectedTurnIndex && selectedTurnIndex > 0
       ? state.history.find((entry) => entry.turnIndex === selectedTurnIndex) ?? null
@@ -192,29 +197,53 @@ const renderStatus = () => {
 };
 
 const renderHistory = () => {
-  if (state.timeline.length === 0) {
+  const entries = [];
+  if (state.initialImageUrl) {
+    entries.push({
+      key: "initial",
+      title: "Initial state",
+      text: "World baseline",
+      imageUrl: state.initialImageUrl,
+      active: state.selectedViewType === "initial"
+    });
+  }
+  entries.push(
+    ...state.timeline.map((entry, index) => ({
+      key: `timeline-${index}`,
+      timelineIndex: index,
+      title: entry.turnIndex === 0 ? "Genesis" : `Turn ${entry.turnIndex}`,
+      text: entry.cardText ?? (entry.turnIndex === 0 ? "Seed scene" : "Scene update"),
+      imageUrl: entry.imageUrl ?? null,
+      active: state.selectedViewType === "timeline" && state.selectedTimelineIndex === index
+    }))
+  );
+
+  if (entries.length === 0) {
     elements.historyList.innerHTML = "<li class=\"history-empty\">No snapshots yet.</li>";
     return;
   }
-  elements.historyList.innerHTML = state.timeline
-    .map((entry, index) => {
-      const title = entry.turnIndex === 0 ? "Genesis" : `Turn ${entry.turnIndex}`;
-      const text = entry.cardText ?? (entry.turnIndex === 0 ? "Seed scene" : "Scene update");
-      const active = state.timelineCursor === index ? "is-active" : "";
-      return `<li><button type="button" class="history-entry ${active}" data-index="${index}"><strong>${title}</strong><span>${text}</span></button></li>`;
+  elements.historyList.innerHTML = entries
+    .map((entry) => {
+      const active = entry.active ? "is-active" : "";
+      return `<li><button type="button" class="history-entry ${active}" data-key="${entry.key}"><strong>${entry.title}</strong><span>${entry.text}</span></button></li>`;
     })
     .join("");
-  elements.historyList.querySelectorAll("button[data-index]").forEach((button) => {
+  elements.historyList.querySelectorAll("button[data-key]").forEach((button) => {
     button.addEventListener("click", () => {
-      const index = Number(button.dataset.index);
-      if (!Number.isInteger(index)) {
+      const key = button.dataset.key;
+      if (!key) {
         return;
       }
-      const entry = state.timeline[index];
+      const entry = entries.find((item) => item.key === key);
       if (!entry) {
         return;
       }
-      state.timelineCursor = index;
+      if (entry.key === "initial") {
+        state.selectedViewType = "initial";
+      } else {
+        state.selectedViewType = "timeline";
+        state.selectedTimelineIndex = entry.timelineIndex ?? -1;
+      }
       state.sceneImageUrl = entry.imageUrl ?? null;
       render();
     });
@@ -326,6 +355,10 @@ const applyLoadedGameState = (payload) => {
   state.timeline = payload?.timeline ?? [];
   state.selectedCardId = null;
   state.outcome = normalizeOutcome(game.status);
+  state.initialImageUrl =
+    payload?.seedScene?.imageUrl ??
+    state.timeline.find((entry) => entry.turnIndex === 0)?.imageUrl ??
+    null;
 
   if (state.history.length > 0) {
     hydrateFromTurn(state.history.at(-1));
@@ -337,11 +370,13 @@ const applyLoadedGameState = (payload) => {
   }
 
   if (state.timeline.length > 0) {
-    state.timelineCursor = state.timeline.length - 1;
-    state.sceneImageUrl = state.timeline[state.timelineCursor].imageUrl ?? null;
+    state.selectedViewType = "timeline";
+    state.selectedTimelineIndex = state.timeline.length - 1;
+    state.sceneImageUrl = state.timeline[state.selectedTimelineIndex].imageUrl ?? null;
   } else {
-    state.timelineCursor = -1;
-    state.sceneImageUrl = payload?.seedScene?.imageUrl ?? null;
+    state.selectedViewType = state.initialImageUrl ? "initial" : "timeline";
+    state.selectedTimelineIndex = -1;
+    state.sceneImageUrl = state.initialImageUrl;
   }
 
   elements.enactBtn.disabled = true;
@@ -391,7 +426,12 @@ const enactSelectedCard = async () => {
     state.turn = played.game.current_turn;
     state.hand = played.hand;
     state.timeline = played.timeline;
-    state.timelineCursor = state.timeline.length - 1;
+    state.initialImageUrl =
+      state.initialImageUrl ??
+      state.timeline.find((entry) => entry.turnIndex === 0)?.imageUrl ??
+      null;
+    state.selectedViewType = "timeline";
+    state.selectedTimelineIndex = state.timeline.length - 1;
     state.sceneImageUrl = played.timeline.at(-1)?.imageUrl ?? state.sceneImageUrl;
     state.history = await api(`/api/games/${state.gameId}/history`).then((payload) => payload.history);
     hydrateFromTurn(played.turn);
