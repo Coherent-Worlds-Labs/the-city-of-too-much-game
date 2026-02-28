@@ -63,23 +63,33 @@ h1 {
 }
 
 .axis {
-  display: grid;
-  gap: 6px;
+  display: block;
   font-size: 0.88rem;
-  text-align: center;
+  text-align: left;
 }
 
-.timeline-link {
-  color: #174b52;
-  font-weight: 700;
-  text-decoration: none;
+.axis-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .restart-link {
-  border: 0;
-  background: transparent;
+  margin-left: auto;
+  border: 1px solid #7a1f1f;
+  background: linear-gradient(120deg, #c0392b, #9f1f1f);
+  color: #fff;
   cursor: pointer;
-  padding: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  line-height: 1;
+  box-shadow: 0 6px 14px rgba(159, 31, 31, 0.32);
+}
+
+.restart-link:hover {
+  background: linear-gradient(120deg, #d64536, #ac2323);
 }
 
 .axis-track {
@@ -444,7 +454,16 @@ h1 {
   }
 
   .axis-track {
-    width: 100%;
+    width: min(100%, 240px);
+  }
+
+  .axis-row {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .restart-link {
+    margin-left: 0;
   }
 
   .board {
