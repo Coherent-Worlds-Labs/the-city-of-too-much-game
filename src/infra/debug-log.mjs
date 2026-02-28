@@ -15,7 +15,12 @@ const truncateValue = (value, limit) => {
 
 const sanitizeDebugValue = (value) => {
   if (typeof value === "string") {
+    const looksLikeBase64Blob =
+      value.length > 120 && /^[A-Za-z0-9+/=]+$/.test(value);
     if (value.startsWith("data:image/") || value.includes("base64,")) {
+      return truncateValue(value, 100);
+    }
+    if (looksLikeBase64Blob) {
       return truncateValue(value, 100);
     }
     if (value.length > 300) {

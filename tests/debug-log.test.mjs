@@ -12,7 +12,8 @@ test("logDebugDetails truncates base64-like strings", () => {
   try {
     const longDataUrl = `data:image/png;base64,${"A".repeat(500)}`;
     logDebugDetails("response payload", {
-      choices: [{ message: { images: [{ image_url: { url: longDataUrl } }] } }]
+      choices: [{ message: { images: [{ image_url: { url: longDataUrl } }] } }],
+      data: [{ b64_json: "B".repeat(500) }]
     });
   } finally {
     console.log = originalConsoleLog;
@@ -22,5 +23,5 @@ test("logDebugDetails truncates base64-like strings", () => {
   assert.equal(output.includes("data:image/png;base64,"), true);
   assert.equal(output.includes("..."), true);
   assert.equal(output.includes("A".repeat(200)), false);
+  assert.equal(output.includes("B".repeat(200)), false);
 });
-

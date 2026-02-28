@@ -117,8 +117,27 @@ const renderScene = () => {
 
 const renderMotifs = () => {
   const latest = state.history[0]?.judgeResult?.new_state?.active_motifs ?? [];
-  const items = latest.slice(0, 3).map((item) => item.name?.replaceAll("_", " ") ?? "motif");
-  elements.motifList.innerHTML = (items.length > 0 ? items : ["balance"])
+  const items = latest
+    .slice(0, 6)
+    .map((item) => {
+      if (typeof item === "string") {
+        return item.trim();
+      }
+      if (item && typeof item === "object") {
+        return (
+          item.name ??
+          item.label ??
+          item.title ??
+          item.motif ??
+          ""
+        ).trim();
+      }
+      return "";
+    })
+    .map((item) => item.replaceAll("_", " "))
+    .filter((item) => item.length > 0)
+    .slice(0, 3);
+  elements.motifList.innerHTML = (items.length > 0 ? items : ["No motifs detected yet"])
     .map((item) => `<li>${item}</li>`)
     .join("");
 };

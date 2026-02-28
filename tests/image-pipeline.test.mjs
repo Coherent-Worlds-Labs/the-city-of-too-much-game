@@ -70,8 +70,8 @@ test("createImagePipeline stores rendered image and returns URL", async () => {
     assert.equal(calls.length, 1);
     assert.equal(calls[0].url.endsWith("/chat/completions"), true);
     const body = JSON.parse(calls[0].init.body);
-    assert.equal(body.image_config.aspect_ratio, "16:9");
-    assert.equal(body.size, "768x432");
+    assert.equal(body.image_config.aspect_ratio, "21:9");
+    assert.equal(body.size, "672x288");
     assert.equal(body.image_config.quality, "low");
   } finally {
     rmSync(tempDir, { recursive: true, force: true });

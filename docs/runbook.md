@@ -12,9 +12,9 @@
    - `DATABASE_URL`
    - `ASSETS_DIR`
 3. Cost-control image defaults:
-   - `IMAGE_OUTPUT_SIZE=768x432`
+   - `IMAGE_OUTPUT_SIZE=672x288`
    - `IMAGE_QUALITY=low`
-   - `IMAGE_ASPECT_RATIO=16:9`
+   - `IMAGE_ASPECT_RATIO=21:9`
 
 ## Verification Commands
 
