@@ -1,7 +1,8 @@
 ---
 id: "202602281849-5043QN"
 title: "Add automatic pan-tilt playback for scene images"
-status: "DOING"
+result_summary: "Scene images now auto-pan and tilt to reveal oversized frames without user interaction."
+status: "DONE"
 priority: "high"
 owner: "CODER"
 depends_on: []
@@ -18,11 +19,16 @@ verification:
   updated_at: "2026-02-28T18:50:39.758Z"
   updated_by: "CODER"
   note: "Implemented automatic scene pan-tilt playback for oversized images with random motion path per frame; lint and tests pass."
-commit: null
+commit:
+  hash: "bbaedd4ccab29cfaf548989037004c17fc95ffcb"
+  message: "🚧 5043QN frontend: add automatic scene pan tilt playback"
 comments:
   -
     author: "CODER"
     body: "Start: implementing automatic pan-tilt playback for scene images so oversized generated frames are explored without user interaction."
+  -
+    author: "CODER"
+    body: "Verified: added automatic pan-tilt playback for scene images using animated image layer and per-frame randomized motion path; lint/tests pass."
 events:
   -
     type: "status"
@@ -37,8 +43,15 @@ events:
     author: "CODER"
     state: "ok"
     note: "Implemented automatic scene pan-tilt playback for oversized images with random motion path per frame; lint and tests pass."
+  -
+    type: "status"
+    at: "2026-02-28T18:51:13.554Z"
+    author: "CODER"
+    from: "DOING"
+    to: "DONE"
+    note: "Verified: added automatic pan-tilt playback for scene images using animated image layer and per-frame randomized motion path; lint/tests pass."
 doc_version: 2
-doc_updated_at: "2026-02-28T18:50:39.759Z"
+doc_updated_at: "2026-02-28T18:51:13.554Z"
 doc_updated_by: "CODER"
 description: "Implement automatic cinematic pan-tilt motion on the main scene image so oversized generated images are explored over time without user interaction."
 id_source: "generated"
