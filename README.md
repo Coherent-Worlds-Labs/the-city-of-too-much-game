@@ -12,6 +12,9 @@ There is no fixed storyline, no predefined ending, and no single “correct” i
 ![The-City-of-Too-Much View 1](docs/assets/view-1.jpg)
 ![The-City-of-Too-Much View 2](docs/assets/view-2.jpg)
 
+![Epstein-Island View 1](docs/assets/view-1a.jpg)
+![Epstein-Island View 2](docs/assets/view-2a.jpg)
+
 ---
 
 ## Coherent-World-Continuation
