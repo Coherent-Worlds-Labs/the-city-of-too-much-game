@@ -15,6 +15,8 @@ There is no fixed storyline, no predefined ending, and no single “correct” i
 ![Epstein-Island View 1](docs/assets/view-1a.jpg)
 ![Epstein-Island View 2](docs/assets/view-2a.jpg)
 
+![Epstein-Island View 3](docs/assets/view-3a.jpg)
+
 ---
 
 ## Coherent-World-Continuation
