@@ -27,69 +27,332 @@
       "restraint": "Drifting Toward Restraint",
       "balanced": "Tense Equilibrium",
       "excess": "Overheated Freedom"
-    }
+    },
+    "statusLabels": {
+      "mood": "Island Mood",
+      "stability": "Social Stability",
+      "emergingThemes": "Emerging Themes"
+    },
+    "actionLabels": {
+      "enact": "Enact",
+      "restart": "Restart",
+      "timeline": "View Evolution Timeline"
+    },
+    "loadingStages": [
+      "Interpreting island dynamics...",
+      "Rendering the new reality..."
+    ]
   },
   "motifs": [
-    { "id": "open-indulgence", "name": "Open Indulgence", "direction": "excess", "description": "Public celebration of desire and unrestricted expression." },
-    { "id": "moral-regulation", "name": "Moral Regulation", "direction": "restraint", "description": "Committees, dress codes, and formalized limits on behavior." },
-    { "id": "hidden-tension", "name": "Hidden Tension", "direction": "mixed", "description": "Suppressed desire re-emerges indirectly." },
-    { "id": "privacy-erosion", "name": "Eroded Privacy", "direction": "excess", "description": "Personal boundaries dissolve as public life expands." },
-    { "id": "ritualized-modesty", "name": "Ritualized Modesty", "direction": "restraint", "description": "Formality replaces spontaneity in social interactions." }
+    {
+      "id": "open-indulgence",
+      "name": "Open Indulgence",
+      "direction": "excess",
+      "description": "Public celebration of desire and unrestricted expression."
+    },
+    {
+      "id": "moral-regulation",
+      "name": "Moral Regulation",
+      "direction": "restraint",
+      "description": "Committees, dress codes, and formalized limits on behavior."
+    },
+    {
+      "id": "hidden-tension",
+      "name": "Hidden Tension",
+      "direction": "mixed",
+      "description": "Suppressed desire re-emerges indirectly."
+    },
+    {
+      "id": "privacy-erosion",
+      "name": "Eroded Privacy",
+      "direction": "excess",
+      "description": "Personal boundaries dissolve as public life expands."
+    },
+    {
+      "id": "ritualized-modesty",
+      "name": "Ritualized Modesty",
+      "direction": "restraint",
+      "description": "Formality replaces spontaneity in social interactions."
+    }
   ],
   "cards": [
-    { "id": "e01", "group": "excess", "text": "A 24-hour beach gathering becomes permanent." },
-    { "id": "e02", "group": "excess", "text": "Private villas begin hosting open-door celebrations." },
-    { "id": "e03", "group": "excess", "text": "Dress expectations are lifted across the island." },
-    { "id": "e04", "group": "excess", "text": "Public displays of affection become normalized." },
-    { "id": "e05", "group": "excess", "text": "Music is allowed to continue through the night." },
-    { "id": "e06", "group": "excess", "text": "A festival of uninhibited expression is announced." },
-    { "id": "e07", "group": "excess", "text": "The central pavilion hosts continuous performances." },
-    { "id": "e08", "group": "excess", "text": "Beach bonfires become nightly tradition." },
-    { "id": "e09", "group": "excess", "text": "Guests are encouraged to abandon formal identities." },
-    { "id": "e10", "group": "excess", "text": "Privacy screens are removed from common areas." },
-
-    { "id": "e11", "group": "tension", "text": "Some guests quietly request secluded spaces." },
-    { "id": "e12", "group": "tension", "text": "A proposal for voluntary quiet hours circulates." },
-    { "id": "e13", "group": "tension", "text": "Whispers of discomfort spread among residents." },
-    { "id": "e14", "group": "tension", "text": "Certain villas begin restricting entry to invitation only." },
-    { "id": "e15", "group": "tension", "text": "Temporary partitions appear in shared areas." },
-    { "id": "e16", "group": "tension", "text": "A debate over boundaries divides the island." },
-    { "id": "e17", "group": "tension", "text": "Morning gatherings replace late-night events in some districts." },
-    { "id": "e18", "group": "tension", "text": "A suggestion box for concerns is installed." },
-    { "id": "e19", "group": "tension", "text": "Some guests begin dressing more conservatively." },
-    { "id": "e20", "group": "tension", "text": "Security presence subtly increases." },
-
-    { "id": "e21", "group": "restraint", "text": "A voluntary code of conduct is drafted." },
-    { "id": "e22", "group": "restraint", "text": "Late-night gatherings require registration." },
-    { "id": "e23", "group": "restraint", "text": "Designated hours of silence are announced." },
-    { "id": "e24", "group": "restraint", "text": "A committee for island decorum is formed." },
-    { "id": "e25", "group": "restraint", "text": "Certain areas are marked as reserved and private." },
-    { "id": "e26", "group": "restraint", "text": "A modest dress advisory is issued." },
-    { "id": "e27", "group": "restraint", "text": "Night events must conclude before dawn." },
-    { "id": "e28", "group": "restraint", "text": "Beach access is limited to specific hours." },
-    { "id": "e29", "group": "restraint", "text": "A registry of visitors is introduced." },
-    { "id": "e30", "group": "restraint", "text": "Public gatherings require prior approval." },
-
-    { "id": "e31", "group": "fracture", "text": "Power briefly fails during a crowded evening event." },
-    { "id": "e32", "group": "fracture", "text": "Archived footage from early island days is erased." },
-    { "id": "e33", "group": "fracture", "text": "An island-wide day of silence is declared." },
-    { "id": "e34", "group": "fracture", "text": "The slogan 'Freedom Without Limits' disappears overnight." },
-    { "id": "e35", "group": "fracture", "text": "Guests are asked to reflect publicly on boundaries." },
-    { "id": "e36", "group": "fracture", "text": "The oceanfront pavilion closes temporarily for restructuring." },
-    { "id": "e37", "group": "fracture", "text": "A storm forces everyone indoors for a day." },
-    { "id": "e38", "group": "fracture", "text": "A confidential letter circulates questioning the island’s purpose." },
-    { "id": "e39", "group": "fracture", "text": "An early founder returns to address the community." },
-    { "id": "e40", "group": "fracture", "text": "A public vote on the island’s values is proposed." },
-
-    { "id": "e41", "group": "paradox", "text": "A celebration of modesty is held on the main beach." },
-    { "id": "e42", "group": "paradox", "text": "Guests wear identical masks during an open festival." },
-    { "id": "e43", "group": "paradox", "text": "An art exhibit explores the limits of freedom." },
-    { "id": "e44", "group": "paradox", "text": "The committee of decorum hosts a dance." },
-    { "id": "e45", "group": "paradox", "text": "Silence becomes the theme of the next celebration." },
-    { "id": "e46", "group": "paradox", "text": "Private gatherings are publicly announced." },
-    { "id": "e47", "group": "paradox", "text": "A dress code encourages expressive restraint." },
-    { "id": "e48", "group": "paradox", "text": "Guests debate whether freedom requires limits." },
-    { "id": "e49", "group": "paradox", "text": "A mural depicting balance appears overnight." },
-    { "id": "e50", "group": "paradox", "text": "The island’s founding charter is rewritten in neutral language." }
-  ]
+    {
+      "id": "e01",
+      "group": "excess",
+      "text": "A 24-hour beach gathering becomes permanent."
+    },
+    {
+      "id": "e02",
+      "group": "excess",
+      "text": "Private villas begin hosting open-door celebrations."
+    },
+    {
+      "id": "e03",
+      "group": "excess",
+      "text": "Dress expectations are lifted across the island."
+    },
+    {
+      "id": "e04",
+      "group": "excess",
+      "text": "Public displays of affection become normalized."
+    },
+    {
+      "id": "e05",
+      "group": "excess",
+      "text": "Music is allowed to continue through the night."
+    },
+    {
+      "id": "e06",
+      "group": "excess",
+      "text": "A festival of uninhibited expression is announced."
+    },
+    {
+      "id": "e07",
+      "group": "excess",
+      "text": "The central pavilion hosts continuous performances."
+    },
+    {
+      "id": "e08",
+      "group": "excess",
+      "text": "Beach bonfires become nightly tradition."
+    },
+    {
+      "id": "e09",
+      "group": "excess",
+      "text": "Guests are encouraged to abandon formal identities."
+    },
+    {
+      "id": "e10",
+      "group": "excess",
+      "text": "Privacy screens are removed from common areas."
+    },
+    {
+      "id": "e11",
+      "group": "tension",
+      "text": "Some guests quietly request secluded spaces."
+    },
+    {
+      "id": "e12",
+      "group": "tension",
+      "text": "A proposal for voluntary quiet hours circulates."
+    },
+    {
+      "id": "e13",
+      "group": "tension",
+      "text": "Whispers of discomfort spread among residents."
+    },
+    {
+      "id": "e14",
+      "group": "tension",
+      "text": "Certain villas begin restricting entry to invitation only."
+    },
+    {
+      "id": "e15",
+      "group": "tension",
+      "text": "Temporary partitions appear in shared areas."
+    },
+    {
+      "id": "e16",
+      "group": "tension",
+      "text": "A debate over boundaries divides the island."
+    },
+    {
+      "id": "e17",
+      "group": "tension",
+      "text": "Morning gatherings replace late-night events in some districts."
+    },
+    {
+      "id": "e18",
+      "group": "tension",
+      "text": "A suggestion box for concerns is installed."
+    },
+    {
+      "id": "e19",
+      "group": "tension",
+      "text": "Some guests begin dressing more conservatively."
+    },
+    {
+      "id": "e20",
+      "group": "tension",
+      "text": "Security presence subtly increases."
+    },
+    {
+      "id": "e21",
+      "group": "restraint",
+      "text": "A voluntary code of conduct is drafted."
+    },
+    {
+      "id": "e22",
+      "group": "restraint",
+      "text": "Late-night gatherings require registration."
+    },
+    {
+      "id": "e23",
+      "group": "restraint",
+      "text": "Designated hours of silence are announced."
+    },
+    {
+      "id": "e24",
+      "group": "restraint",
+      "text": "A committee for island decorum is formed."
+    },
+    {
+      "id": "e25",
+      "group": "restraint",
+      "text": "Certain areas are marked as reserved and private."
+    },
+    {
+      "id": "e26",
+      "group": "restraint",
+      "text": "A modest dress advisory is issued."
+    },
+    {
+      "id": "e27",
+      "group": "restraint",
+      "text": "Night events must conclude before dawn."
+    },
+    {
+      "id": "e28",
+      "group": "restraint",
+      "text": "Beach access is limited to specific hours."
+    },
+    {
+      "id": "e29",
+      "group": "restraint",
+      "text": "A registry of visitors is introduced."
+    },
+    {
+      "id": "e30",
+      "group": "restraint",
+      "text": "Public gatherings require prior approval."
+    },
+    {
+      "id": "e31",
+      "group": "fracture",
+      "text": "Power briefly fails during a crowded evening event."
+    },
+    {
+      "id": "e32",
+      "group": "fracture",
+      "text": "Archived footage from early island days is erased."
+    },
+    {
+      "id": "e33",
+      "group": "fracture",
+      "text": "An island-wide day of silence is declared."
+    },
+    {
+      "id": "e34",
+      "group": "fracture",
+      "text": "The slogan 'Freedom Without Limits' disappears overnight."
+    },
+    {
+      "id": "e35",
+      "group": "fracture",
+      "text": "Guests are asked to reflect publicly on boundaries."
+    },
+    {
+      "id": "e36",
+      "group": "fracture",
+      "text": "The oceanfront pavilion closes temporarily for restructuring."
+    },
+    {
+      "id": "e37",
+      "group": "fracture",
+      "text": "A storm forces everyone indoors for a day."
+    },
+    {
+      "id": "e38",
+      "group": "fracture",
+      "text": "A confidential letter circulates questioning the island’s purpose."
+    },
+    {
+      "id": "e39",
+      "group": "fracture",
+      "text": "An early founder returns to address the community."
+    },
+    {
+      "id": "e40",
+      "group": "fracture",
+      "text": "A public vote on the island’s values is proposed."
+    },
+    {
+      "id": "e41",
+      "group": "paradox",
+      "text": "A celebration of modesty is held on the main beach."
+    },
+    {
+      "id": "e42",
+      "group": "paradox",
+      "text": "Guests wear identical masks during an open festival."
+    },
+    {
+      "id": "e43",
+      "group": "paradox",
+      "text": "An art exhibit explores the limits of freedom."
+    },
+    {
+      "id": "e44",
+      "group": "paradox",
+      "text": "The committee of decorum hosts a dance."
+    },
+    {
+      "id": "e45",
+      "group": "paradox",
+      "text": "Silence becomes the theme of the next celebration."
+    },
+    {
+      "id": "e46",
+      "group": "paradox",
+      "text": "Private gatherings are publicly announced."
+    },
+    {
+      "id": "e47",
+      "group": "paradox",
+      "text": "A dress code encourages expressive restraint."
+    },
+    {
+      "id": "e48",
+      "group": "paradox",
+      "text": "Guests debate whether freedom requires limits."
+    },
+    {
+      "id": "e49",
+      "group": "paradox",
+      "text": "A mural depicting balance appears overnight."
+    },
+    {
+      "id": "e50",
+      "group": "paradox",
+      "text": "The island’s founding charter is rewritten in neutral language."
+    }
+  ],
+  "prompt": {
+    "persistentAnchors": [
+      "same tropical private island coastline",
+      "same central beach pavilion",
+      "same private villas along the shore",
+      "same palm-lined walkways",
+      "same marina edge with anchored boats"
+    ],
+    "style": [
+      "photorealistic",
+      "documentary photography",
+      "35mm lens",
+      "natural daylight",
+      "realistic shadows"
+    ],
+    "continuityRules": [
+      "same island environment each turn",
+      "gradual evolution only",
+      "motif accumulation must be visible"
+    ],
+    "negativeConstraints": [
+      "no cartoon style",
+      "no fantasy style",
+      "no CGI look",
+      "no watermark",
+      "no broken text artifacts"
+    ]
+  }
 }
